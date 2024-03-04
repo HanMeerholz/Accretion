@@ -400,7 +400,8 @@ void Sprite::Draw( Surface* a_Target, int a_X, int a_Y )
 				xs = (lsx > x1)?lsx - x1:0;
 				for ( int x = xs; x < width; x++ )
 				{
-					const Pixel c1 = *(src + x);
+					Pixel c1 = *(src + x);
+					c1 = ApplyTransparency(c1);
 					if (c1 & 0xffffff) 
 					{
 						const Pixel c2 = *(dest + addr + x);
@@ -413,7 +414,8 @@ void Sprite::Draw( Surface* a_Target, int a_X, int a_Y )
 				xs = (lsx > x1)?lsx - x1:0;
 				for ( int x = xs; x < width; x++ )
 				{
-					const Pixel c1 = *(src + x);
+					Pixel c1 = *(src + x);
+					c1 = ApplyTransparency(c1);
 					if (c1 & 0xffffff) *(dest + addr + x) = c1;
 				}
 			}
@@ -454,6 +456,18 @@ void Sprite::InitializeStartData()
             }
 		}
 	}
+}
+
+Pixel Sprite::ApplyTransparency(Pixel p)
+{
+	int alpha = (p & AlphaMask) >> 24;
+	float scale = (float)alpha / 0xff;
+
+	int red = ((p & RedMask) >> 16) * scale;
+	int green = ((p & GreenMask) >> 8) * scale;
+	int blue = (p & BlueMask) * scale;
+
+	return (red << 16) + (green << 8) + blue;
 }
 
 Font::Font( char* a_File, char* a_Chars )

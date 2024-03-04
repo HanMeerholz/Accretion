@@ -5,6 +5,7 @@
 
 namespace Tmpl8 {
 
+constexpr int AlphaMask = 0xff000000;
 constexpr int RedMask = 0xff0000;
 constexpr int GreenMask = 0x00ff00;
 constexpr int BlueMask = 0x0000ff;
@@ -112,6 +113,7 @@ public:
 private:
 	// Methods
 	void InitializeStartData();
+	Pixel ApplyTransparency(Pixel p);
 	// Attributes
 	int m_Width, m_Height, m_Pitch;
 	unsigned int m_NumFrames;          

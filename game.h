@@ -3,6 +3,7 @@
 namespace Tmpl8 {
 
 class Surface;
+class Sprite;
 class Game
 {
 public:
@@ -17,6 +18,16 @@ public:
 	void KeyDown( int key ) { /* implement if you want to handle keys */ }
 private:
 	Surface* screen;
+	Sprite* blackHole;
+	int const blackHoleNrFrames = 30;
+	float const blackHoleSpeed = 0.8f;
+	float blackHoleX = 100, blackHoleY = 100;
+	int curFrame = 0;
+
+	// animation speed in frames per second
+	float const animationSpeed = 10.0f;
+	float const animationLength = blackHoleNrFrames / animationSpeed;
+	float curAnimationTime = 0;
 };
 
 }; // namespace Tmpl8

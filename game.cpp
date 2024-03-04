@@ -42,25 +42,25 @@ namespace Tmpl8
 		// handle input
 		if (GetAsyncKeyState(VK_UP))
 		{
-			blackHoleY -= blackHoleSpeed;
+			blackHolePosition.y -= blackHoleSpeed;
 		}
 		if (GetAsyncKeyState(VK_RIGHT))
 		{
-			blackHoleX += blackHoleSpeed;
+			blackHolePosition.x += blackHoleSpeed;
 		}
 		if (GetAsyncKeyState(VK_DOWN))
 		{
-			blackHoleY += blackHoleSpeed;
+			blackHolePosition.y += blackHoleSpeed;
 		}
 		if (GetAsyncKeyState(VK_LEFT))
 		{
-			blackHoleX -= blackHoleSpeed;
+			blackHolePosition.x -= blackHoleSpeed;
 		}
 
 		// draw the black hole
 		curFrame = (float)(curAnimationTime / animationLength) * blackHoleNrFrames;
 		blackHole->SetFrame(curFrame);
-		blackHole->Draw(screen, blackHoleX, blackHoleY);
+		blackHole->Draw(screen, blackHolePosition.x, blackHolePosition.y);
 
 		curAnimationTime += deltaTime;
 		if (curAnimationTime > animationLength) curAnimationTime = fmod(curAnimationTime, animationLength);

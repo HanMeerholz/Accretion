@@ -1,5 +1,7 @@
 #pragma once
 
+#include "template.h"
+
 namespace Tmpl8 {
 
 class Surface;
@@ -21,7 +23,7 @@ private:
 	Sprite* blackHole;
 	int const blackHoleNrFrames = 30;
 	float const blackHoleSpeed = 0.8f;
-	float blackHoleX = 100, blackHoleY = 100;
+	Tmpl8::vec2 blackHolePosition = { 100, 100 };
 	int curFrame = 0;
 
 	// animation speed in frames per second

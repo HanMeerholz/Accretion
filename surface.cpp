@@ -90,13 +90,13 @@ void Surface::Clear( Pixel a_Color )
 	for ( int i = 0; i < s; i++ ) m_Buffer[i] = a_Color;
 }
 
-void Surface::Centre( char* a_String, int y1, Pixel color )
+void Surface::Centre( const char* a_String, int y1, Pixel color )
 {
 	int x = (m_Width - (int)strlen( a_String ) * 6) / 2;
 	Print( a_String, x, y1, color );
 }
 
-void Surface::Print( char* a_String, int x1, int y1, Pixel color )
+void Surface::Print( const char* a_String, int x1, int y1, Pixel color )
 {
 	if (!fontInitialized) 
 	{
@@ -434,12 +434,12 @@ void Sprite::DrawScaled( int a_X, int a_Y, int a_Width, int a_Height, Surface* a
 	for (int x = 0; x < a_Width; x++)
 	{
 		int destX = a_X + x;
-		if (destX < 0 || destX > a_Target->GetWidth()) continue;
+		if (destX < 0 || destX >= a_Target->GetWidth()) continue;
 
 		for (int y = 0; y < a_Height; y++)
 		{
 			int destY = a_Y + y;
-			if (destY < 0 || destY > a_Target->GetHeight()) continue;
+			if (destY < 0 || destY >= a_Target->GetHeight()) continue;
 
 			int u = (int)((float)x * ((float)m_Width / (float)a_Width));
 			int v = (int)((float)y * ((float)m_Height / (float)a_Height));

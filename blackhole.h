@@ -9,20 +9,28 @@ namespace Accretion
 class BlackHole
 {
 public:
+	// structors
 	BlackHole() = delete;
 	BlackHole(Tmpl8::Sprite* const sprite);
 	~BlackHole();
 
+	// getters/setters
 	Tmpl8::vec2 getPosition();
 	void setPosition(Tmpl8::vec2 position);
 	bool isDestroyed();
+	float getMass();
+	float getRadius();
 
+	// movement
 	void moveUp();
 	void moveDown();
 	void moveLeft();
 	void moveRight();
 
+	// physics
 	void update();
+
+	// sprite
 	void draw(Tmpl8::Surface* const screen, float currentTime);
 private:
 	float const speed = 1.8f;
@@ -44,7 +52,7 @@ private:
 	float const animationLength;
 
 	Tmpl8::vec2 getLeftTopPosition();
-	void drawScaled(Tmpl8::Surface* screen);
+	void draw(Tmpl8::Surface* const screen);
 	float calculateRadius(float mass);
 };
 }

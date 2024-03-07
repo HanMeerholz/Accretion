@@ -32,6 +32,16 @@ namespace Accretion
 		return destroyed;
 	}
 
+	float BlackHole::getMass()
+	{
+		return mass;
+	}
+
+	float BlackHole::getRadius()
+	{
+		return radius;
+	}
+
 	void BlackHole::moveUp()
 	{
 		this->position.y -= speed;
@@ -63,7 +73,7 @@ namespace Accretion
 	{
 		int curFrame = (float)(fmod(currentTime, animationLength) / animationLength) * sprite->GetNumFrames();
 		sprite->SetFrame(curFrame);
-		drawScaled(screen);
+		draw(screen);
 	}
 
 	float BlackHole::calculateRadius(float mass)
@@ -76,7 +86,7 @@ namespace Accretion
 		return { position.x - radius , position.y - radius };
 	}
 
-	void BlackHole::drawScaled(Tmpl8::Surface* screen)
+	void BlackHole::draw(Tmpl8::Surface* const screen)
 	{
 		vec2 leftTopPosition = getLeftTopPosition();
 		sprite->DrawScaled(leftTopPosition.x, leftTopPosition.y, 2 * radius, 2 * radius, screen);

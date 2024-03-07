@@ -2,6 +2,7 @@
 #include "surface.h"
 #include <cstdio> //printf
 #include <cmath>
+#include <string>
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -43,6 +44,9 @@ namespace Tmpl8
 			blackHole->update();
 			blackHole->draw(screen, currentTime);
 		}
+
+		string info = to_string(blackHole->getMass()) + " solar masses";
+		screen->Print(info.c_str(), 665, 5, 0xffffff);
 
 		currentTime += deltaTime;
 	}

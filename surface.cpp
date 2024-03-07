@@ -427,13 +427,32 @@ void Sprite::Draw( Surface* a_Target, int a_X, int a_Y )
 
 void Sprite::DrawScaled( int a_X, int a_Y, int a_Width, int a_Height, Surface* a_Target )
 {
-	if ((a_Width == 0) || (a_Height == 0)) return;
-	for ( int x = 0; x < a_Width; x++ ) for ( int y = 0; y < a_Height; y++ )
+	if ((a_X < -a_Width) || (a_X > (a_Target->GetWidth()))) return;
+	if ((a_Y < -a_Height) || (a_Y > (a_Target->GetHeight()))) return;
+
+	if ((a_Width <= 0) || (a_Height <= 0)) return;
+	for (int x = 0; x < a_Width; x++)
 	{
-		int u = (int)((float)x * ((float)m_Width / (float)a_Width));
-		int v = (int)((float)y * ((float)m_Height / (float)a_Height));
-		Pixel color = GetBuffer()[u + v * m_Pitch];
-		if (color & 0xffffff) a_Target->GetBuffer()[a_X + x + ((a_Y + y) * a_Target->GetPitch())] = color;
+		int destX = a_X + x;
+		if (destX < 0 || destX > a_Target->GetWidth()) continue;
+
+		for (int y = 0; y < a_Height; y++)
+		{
+			int destY = a_Y + y;
+			if (destY < 0 || destY > a_Target->GetHeight()) continue;
+
+			int u = (int)((float)x * ((float)m_Width / (float)a_Width));
+			int v = (int)((float)y * ((float)m_Height / (float)a_Height));
+
+			int srcPixelIndex = m_CurrentFrame * m_Width + u + (v * m_Pitch);
+			int destPixelIndex = destX + (destY * a_Target->GetPitch());
+
+			Pixel existingColor = a_Target->GetBuffer()[destPixelIndex];
+
+			Pixel color = GetBuffer()[srcPixelIndex];
+			color = ApplyTransparency(color);
+			a_Target->GetBuffer()[destPixelIndex] = AddBlend(existingColor, color);
+		}
 	}
 }
 

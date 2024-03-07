@@ -15,9 +15,7 @@ namespace Tmpl8
 	// -----------------------------------------------------------
 	void Game::Init()
 	{
-		blackHole = new Sprite(new Surface("assets/blackhole.png"), blackHoleNrFrames);
-
-
+		blackHole = new Accretion::BlackHole(new Sprite(new Tmpl8::Surface("assets/blackhole.png"), 30));
 	}
 	
 	// -----------------------------------------------------------
@@ -25,6 +23,7 @@ namespace Tmpl8
 	// -----------------------------------------------------------
 	void Game::Shutdown()
 	{
+		delete blackHole;
 	}
 
 	// -----------------------------------------------------------
@@ -36,33 +35,35 @@ namespace Tmpl8
 		deltaTime /= 1000;
 
 		// clear the graphics window
-		int black = 0x000000;
 		screen->Clear(black);
 
-		// handle input
+		handleInput();
+		if (!blackHole->isDestroyed())
+		{
+			blackHole->update();
+			blackHole->draw(screen, currentTime);
+		}
+
+		currentTime += deltaTime;
+	}
+
+	void Game::handleInput()
+	{
 		if (GetAsyncKeyState(VK_UP))
 		{
-			blackHolePosition.y -= blackHoleSpeed;
-		}
-		if (GetAsyncKeyState(VK_RIGHT))
-		{
-			blackHolePosition.x += blackHoleSpeed;
+			blackHole->moveUp();
 		}
 		if (GetAsyncKeyState(VK_DOWN))
 		{
-			blackHolePosition.y += blackHoleSpeed;
+			blackHole->moveDown();
 		}
 		if (GetAsyncKeyState(VK_LEFT))
 		{
-			blackHolePosition.x -= blackHoleSpeed;
+			blackHole->moveLeft();
 		}
-
-		// draw the black hole
-		curFrame = (float)(curAnimationTime / animationLength) * blackHoleNrFrames;
-		blackHole->SetFrame(curFrame);
-		blackHole->Draw(screen, blackHolePosition.x, blackHolePosition.y);
-
-		curAnimationTime += deltaTime;
-		if (curAnimationTime > animationLength) curAnimationTime = fmod(curAnimationTime, animationLength);
+		if (GetAsyncKeyState(VK_RIGHT))
+		{
+			blackHole->moveRight();
+		}
 	}
 };

@@ -1,13 +1,16 @@
 #pragma once
 
 #include "template.h"
+#include "blackhole.h"
+
+constexpr int black = 0x000000;
 
 namespace Tmpl8 {
 
 class Surface;
-class Sprite;
 class Game
 {
+
 public:
 	void SetTarget( Surface* surface ) { screen = surface; }
 	void Init();
@@ -20,16 +23,11 @@ public:
 	void KeyDown( int key ) { /* implement if you want to handle keys */ }
 private:
 	Surface* screen;
-	Sprite* blackHole;
-	int const blackHoleNrFrames = 30;
-	float const blackHoleSpeed = 0.8f;
-	Tmpl8::vec2 blackHolePosition = { 100, 100 };
-	int curFrame = 0;
+	Accretion::BlackHole* blackHole;
+	
+	float currentTime = 0;
 
-	// animation speed in frames per second
-	float const animationSpeed = 10.0f;
-	float const animationLength = blackHoleNrFrames / animationSpeed;
-	float curAnimationTime = 0;
+	void handleInput();
 };
 
 }; // namespace Tmpl8

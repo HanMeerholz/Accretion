@@ -19,6 +19,7 @@ public:
 	void setPosition(Tmpl8::vec2 position);
 	bool isDestroyed();
 	float getMass();
+	void addMass(float mass);
 	float getRadius();
 
 	// movement
@@ -36,6 +37,7 @@ private:
 	float const speed = 1.8f;
 	float const criticalMass = 0.003f;
 	float const metersPerSolarMass = 2953.337;
+	float const massLossRate = 0.001f;
 
 	Tmpl8::Sprite* const sprite;
 	Tmpl8::vec2 position = { 150, 150 };

@@ -10,7 +10,14 @@ constexpr int RedMask = 0xff0000;
 constexpr int GreenMask = 0x00ff00;
 constexpr int BlueMask = 0x0000ff;
 
+constexpr int CIRCLE_RESOLUTION = 64;
+
 typedef unsigned int Pixel; // unsigned int is assumed to be 32-bit, which seems a safe assumption.
+
+constexpr Pixel BLACK = 0x000000;
+constexpr Pixel WHITE = 0xffffff;
+constexpr Pixel RED = 0xff0000;
+constexpr Pixel YELLOW = 0xffff00;
 
 inline Pixel AddBlend( Pixel a_Color1, Pixel a_Color2 )
 {
@@ -58,6 +65,7 @@ public:
 	void Print( const char* a_String, int x1, int y1, Pixel color );
 	void Clear( Pixel a_Color );
 	void Line( float x1, float y1, float x2, float y2, Pixel color );
+	void Circle( float x, float y, float r, Pixel color );
 	void Plot( int x, int y, Pixel c );
 	void LoadImage( char* a_File );
 	void CopyTo( Surface* a_Dst, int a_X, int a_Y );

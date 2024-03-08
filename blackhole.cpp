@@ -37,6 +37,11 @@ namespace Accretion
 		return mass;
 	}
 
+	void BlackHole::addMass(float mass)
+	{
+		this->mass += mass;
+	}
+
 	float BlackHole::getRadius()
 	{
 		return radius;
@@ -64,8 +69,11 @@ namespace Accretion
 
 	void BlackHole::update()
 	{
-		mass *= 0.999f;
+		if (destroyed) return;
+
+		mass *= 1 - massLossRate;
 		if (mass < criticalMass) destroyed = true;
+
 		radius = calculateRadius(mass);
 	}
 

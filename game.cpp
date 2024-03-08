@@ -8,6 +8,7 @@
 #include <windows.h>
 
 using namespace std;
+using namespace Accretion;
 
 namespace Tmpl8
 {
@@ -16,7 +17,18 @@ namespace Tmpl8
 	// -----------------------------------------------------------
 	void Game::Init()
 	{
-		blackHole = new Accretion::BlackHole(new Sprite(new Tmpl8::Surface("assets/blackhole.png"), 30));
+		blackHole = new BlackHole(new Sprite(new Tmpl8::Surface("assets/blackhole.png"), 30));
+
+		int const nrAsteroids = 20;
+
+		for (int i = 0; i < nrAsteroids; i++)
+		{
+			float x = Rand(ScreenWidth);
+			float y = Rand(ScreenHeight);
+			float radius = Rand(5.0f, 50.0f);
+
+			asteroids.push_back(Asteroid(vec2(x, y), radius));
+		}
 	}
 	
 	// -----------------------------------------------------------
@@ -25,6 +37,12 @@ namespace Tmpl8
 	void Game::Shutdown()
 	{
 		delete blackHole;
+	}
+
+	bool circle1IsInCircle2(float c1x, float c1y, float c1r, float c2x, float c2y, float c2r)
+	{
+		float distance = sqrt(pow(c1x - c2x, 2) + pow(c1y - c2y, 2));
+		return distance + c1r < c2r;
 	}
 
 	// -----------------------------------------------------------
@@ -36,18 +54,32 @@ namespace Tmpl8
 		deltaTime /= 1000;
 
 		// clear the graphics window
-		screen->Clear(black);
+		screen->Clear(BLACK);
 
 		handleInput();
 		if (!blackHole->isDestroyed())
 		{
 			blackHole->update();
 			blackHole->draw(screen, currentTime);
+			screen->Circle(blackHole->getPosition().x, blackHole->getPosition().y, blackHole->getRadius(), YELLOW);
+		}
+		
+		for (Asteroid& asteroid : asteroids)
+		{
+			if (!asteroid.isDestroyed())
+			{
+				if (circle1IsInCircle2(asteroid.getPosition().x, asteroid.getPosition().y, asteroid.getRadius(), blackHole->getPosition().x, blackHole->getPosition().y, blackHole->getRadius()))
+				{
+					asteroid.setDestroyed();
+					blackHole->addMass(0.0001f * asteroid.getRadius());
+				}
+				asteroid.draw(screen);
+			}
 		}
 
 		string info = to_string(blackHole->getMass()) + " solar masses";
-		screen->Print(info.c_str(), 665, 5, 0xffffff);
-
+		screen->Print(info.c_str(), 665, 5, WHITE);
+		
 		currentTime += deltaTime;
 	}
 

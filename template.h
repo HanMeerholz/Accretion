@@ -23,6 +23,7 @@ static const char* TemplateVersion = "Template_v2019.08";
 //#include "immintrin.h"
 
 inline float Rand( float range ) { return ((float)rand() / RAND_MAX) * range; }
+inline float Rand( float min, float max ) { return min + ((float)rand() / RAND_MAX) * max; }
 inline int IRand( int range ) { return rand() % range; }
 int filesize( FILE* f );
 #define MALLOC64(x) _aligned_malloc(x,64)
@@ -45,7 +46,8 @@ constexpr T Max(T a, T b) { return (a > b) ? a : b; }
 template <typename T>
 constexpr T Clamp(T value, T min, T max) { return Min(max, Max(value, min)); }
 
-constexpr float PI = 3.14159265358979323846264338327950288419716939937510582097494459072381640628620899862803482534211706798f;
+constexpr float PI =  3.14159265358979323846264338327950288419716939937510582097494459072381640628620899862803482534211706798f;
+constexpr float TAU = 6.28318530717958647692528676655900576839433879875021164194988918461563281257241799725606965068423413596f;
 
 #define PREFETCH(x)			_mm_prefetch((const char*)(x),_MM_HINT_T0)
 #define PREFETCH_ONCE(x)	_mm_prefetch((const char*)(x),_MM_HINT_NTA)

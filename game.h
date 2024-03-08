@@ -1,9 +1,9 @@
 #pragma once
 
+#include <vector>
 #include "template.h"
 #include "blackhole.h"
-
-constexpr int black = 0x000000;
+#include "asteroid.h"
 
 namespace Tmpl8 {
 
@@ -24,6 +24,7 @@ public:
 private:
 	Surface* screen;
 	Accretion::BlackHole* blackHole;
+	std::vector<Accretion::Asteroid> asteroids;
 	
 	float currentTime = 0;
 

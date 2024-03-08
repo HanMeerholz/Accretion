@@ -184,6 +184,16 @@ void Surface::Line( float x1, float y1, float x2, float y2, Pixel c )
 	}
 }
 
+void Surface::Circle(float x, float y, float r, Pixel color)
+{
+	for (int i = 0; i < CIRCLE_RESOLUTION; i++)
+	{
+		float r1 = (float)i * TAU / CIRCLE_RESOLUTION, r2 = (float)(i + 1) * TAU / CIRCLE_RESOLUTION;
+		Line(x - r * sinf(r1), y - r * cosf(r1),
+			x - r * sinf(r2), y - r * cosf(r2), color);
+	}
+}
+
 void Surface::Plot( int x, int y, Pixel c )
 { 
 	if ((x >= 0) && (y >= 0) && (x < m_Width) && (y < m_Height)) m_Buffer[x + y * m_Pitch] = c;

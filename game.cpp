@@ -25,7 +25,7 @@ namespace Tmpl8
 		{
 			float x = Rand(ScreenWidth);
 			float y = Rand(ScreenHeight);
-			float radius = Rand(5.0f, 50.0f);
+			float radius = Rand(2.0f, 50.0f);
 
 			asteroids.push_back(Asteroid(vec2(x, y), radius));
 		}
@@ -37,12 +37,6 @@ namespace Tmpl8
 	void Game::Shutdown()
 	{
 		delete blackHole;
-	}
-
-	bool circle1IsInCircle2(float c1x, float c1y, float c1r, float c2x, float c2y, float c2r)
-	{
-		float distance = sqrt(pow(c1x - c2x, 2) + pow(c1y - c2y, 2));
-		return distance + c1r < c2r;
 	}
 
 	// -----------------------------------------------------------
@@ -68,10 +62,9 @@ namespace Tmpl8
 		{
 			if (!asteroid.isDestroyed())
 			{
-				if (circle1IsInCircle2(asteroid.getPosition().x, asteroid.getPosition().y, asteroid.getRadius(), blackHole->getPosition().x, blackHole->getPosition().y, blackHole->getRadius()))
+				if (asteroid.isConsumedBy(*blackHole))
 				{
-					asteroid.setDestroyed();
-					blackHole->addMass(0.0001f * asteroid.getRadius());
+					blackHole->consumeAsteroid(asteroid);
 				}
 				asteroid.draw(screen);
 			}

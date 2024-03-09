@@ -9,27 +9,12 @@ namespace Accretion
 		sprite(sprite),
 		animationLength(sprite->GetNumFrames() / animationSpeed)
 	{
-		radius = calculateRadius(mass);
+		setRadius(calculateRadius(mass));
 	}
 
 	BlackHole::~BlackHole()
 	{
 		delete sprite;
-	}
-
-	vec2 BlackHole::getPosition()
-	{
-		return position;
-	}
-
-	void BlackHole::setPosition(vec2 position)
-	{
-		this->position = position;
-	}
-
-	bool BlackHole::isDestroyed()
-	{
-		return destroyed;
 	}
 
 	float BlackHole::getMass()
@@ -42,39 +27,49 @@ namespace Accretion
 		this->mass += mass;
 	}
 
-	float BlackHole::getRadius()
-	{
-		return radius;
-	}
-
 	void BlackHole::moveUp()
 	{
-		this->position.y -= speed;
+		vec2 position = getPosition();
+		setPosition({position.x, position.y - speed});
 	}
 
 	void BlackHole::moveDown()
 	{
-		this->position.y += speed;
+		vec2 position = getPosition();
+		setPosition({ position.x, position.y + speed });
 	}
 
 	void BlackHole::moveLeft()
 	{
-		this->position.x -= speed;
+		vec2 position = getPosition();
+		setPosition({ position.x - speed, position.y });
 	}
 
 	void BlackHole::moveRight()
 	{
-		this->position.x += speed;
+		vec2 position = getPosition();
+		setPosition({ position.x + speed, position.y });
 	}
 
 	void BlackHole::update()
 	{
-		if (destroyed) return;
+		if (isDestroyed()) return;
 
 		mass *= 1 - massLossRate;
-		if (mass < criticalMass) destroyed = true;
+		if (mass < criticalMass) setDestroyed();
 
-		radius = calculateRadius(mass);
+		setRadius(calculateRadius(mass));
+	}
+
+	float BlackHole::calculateRadius(float mass)
+	{
+		return mass * BlackHole::metersPerSolarMass;
+	}
+
+	void BlackHole::consumeAsteroid(Asteroid& asteroid)
+	{
+		asteroid.setDestroyed();
+		addMass(0.0001f * asteroid.getRadius());
 	}
 
 	void BlackHole::draw(Tmpl8::Surface* const screen, float const currentTime)
@@ -84,19 +79,17 @@ namespace Accretion
 		draw(screen);
 	}
 
-	float BlackHole::calculateRadius(float mass)
+	void BlackHole::draw(Tmpl8::Surface* const screen)
 	{
-		return mass * BlackHole::metersPerSolarMass;
+		vec2 leftTopPosition = getLeftTopPosition();
+		float radius = getRadius();
+		sprite->DrawScaled(leftTopPosition.x, leftTopPosition.y, 2 * radius, 2 * radius, screen);
 	}
 
 	vec2 BlackHole::getLeftTopPosition()
 	{
+		vec2 position = getPosition();
+		float radius = getRadius();
 		return { position.x - radius , position.y - radius };
-	}
-
-	void BlackHole::draw(Tmpl8::Surface* const screen)
-	{
-		vec2 leftTopPosition = getLeftTopPosition();
-		sprite->DrawScaled(leftTopPosition.x, leftTopPosition.y, 2 * radius, 2 * radius, screen);
 	}
 }

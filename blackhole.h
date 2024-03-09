@@ -2,11 +2,13 @@
 
 #include "template.h"
 #include "surface.h"
+#include "asteroid.h"
+#include "gameobject.h"
 
 namespace Accretion
 {
 
-class BlackHole
+class BlackHole : public GameObject
 {
 public:
 	// structors
@@ -15,12 +17,7 @@ public:
 	~BlackHole();
 
 	// getters/setters
-	Tmpl8::vec2 getPosition();
-	void setPosition(Tmpl8::vec2 position);
-	bool isDestroyed();
 	float getMass();
-	void addMass(float mass);
-	float getRadius();
 
 	// movement
 	void moveUp();
@@ -30,6 +27,8 @@ public:
 
 	// physics
 	void update();
+		void consumeAsteroid(Asteroid& asteroid);
+
 
 	// sprite
 	void draw(Tmpl8::Surface* const screen, float currentTime);
@@ -40,21 +39,17 @@ private:
 	float const massLossRate = 0.001f;
 
 	Tmpl8::Sprite* const sprite;
-	Tmpl8::vec2 position = { 150, 150 };
-
-	bool destroyed = false;
 	
 	// in solar masses
 	float mass = 0.03386f;
-	// in meters
-	float radius;
 
 	// animation speed in frames per second
 	float const animationSpeed = 10.0f;
 	float const animationLength;
 
-	Tmpl8::vec2 getLeftTopPosition();
-	void draw(Tmpl8::Surface* const screen);
+	void addMass(float mass);
 	float calculateRadius(float mass);
+	void draw(Tmpl8::Surface* const screen);
+	Tmpl8::vec2 getLeftTopPosition();
 };
 }

@@ -10,6 +10,7 @@
     </ClCompile>
     <ClCompile Include="blackhole.cpp" />
     <ClCompile Include="asteroid.cpp" />
+    <ClCompile Include="gameobject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />

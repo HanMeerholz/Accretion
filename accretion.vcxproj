@@ -225,6 +225,7 @@
     <ClCompile Include="asteroid.cpp" />
     <ClCompile Include="blackhole.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="gameobject.cpp" />
     <ClCompile Include="surface.cpp" />
     <ClCompile Include="template.cpp" />
   </ItemGroup>

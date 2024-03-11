@@ -3,6 +3,7 @@
 #include <cstdio> //printf
 #include <cmath>
 #include <string>
+#include <iostream>
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -19,15 +20,17 @@ namespace Tmpl8
 	{
 		blackHole = new BlackHole(new Sprite(new Tmpl8::Surface("assets/blackhole.png"), 30));
 
-		int const nrAsteroids = 20;
+		int const nrAsteroids = 30;
 
 		for (int i = 0; i < nrAsteroids; i++)
 		{
 			float x = Rand(ScreenWidth);
 			float y = Rand(ScreenHeight);
 			float radius = Rand(2.0f, 50.0f);
+			float velocityX = Rand(-1.0f, 1.0f);
+			float velocityY = Rand(-1.0f, 1.0f);
 
-			asteroids.push_back(Asteroid(vec2(x, y), radius));
+			asteroids.push_back(Asteroid({x, y}, radius, {velocityX, velocityY}));
 		}
 	}
 	
@@ -56,20 +59,22 @@ namespace Tmpl8
 			blackHole->update();
 			blackHole->draw(screen, currentTime);
 			screen->Circle(blackHole->getPosition().x, blackHole->getPosition().y, blackHole->getRadius(), YELLOW);
-		}
-		
-		for (Asteroid& asteroid : asteroids)
-		{
-			if (!asteroid.isDestroyed())
-			{
-				if (asteroid.isConsumedBy(*blackHole))
+
+			for (Asteroid& asteroid : asteroids)
+				if (!asteroid.isDestroyed())
 				{
-					blackHole->consumeAsteroid(asteroid);
+					if (asteroid.isConsumedBy(*blackHole))
+						blackHole->consumeAsteroid(asteroid);
+					asteroid.draw(screen);
 				}
-				asteroid.draw(screen);
-			}
 		}
 
+		for (Asteroid& asteroid : asteroids)
+			if (!asteroid.isDestroyed()) {
+				asteroid.update(*blackHole);
+				asteroid.draw(screen);
+			}
+		
 		string info = to_string(blackHole->getMass()) + " solar masses";
 		screen->Print(info.c_str(), 665, 5, WHITE);
 		

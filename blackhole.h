@@ -8,6 +8,8 @@
 namespace Accretion
 {
 
+class Asteroid;
+
 class BlackHole : public GameObject
 {
 public:
@@ -27,7 +29,7 @@ public:
 
 	// physics
 	void update();
-		void consumeAsteroid(Asteroid& asteroid);
+	void consumeAsteroid(Asteroid& asteroid);
 
 
 	// sprite

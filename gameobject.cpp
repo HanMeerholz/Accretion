@@ -46,7 +46,10 @@ void GameObject::setRadius(float radius)
 }
 bool GameObject::isConsumedBy(GameObject& gameObject)
 {
-	float distance = sqrt(pow(position.x - gameObject.position.x, 2) + pow(position.y - gameObject.position.y, 2));
-	return distance + radius < gameObject.radius;
+	return distance(gameObject) + radius < gameObject.radius;
+}
+float GameObject::distance(GameObject& gameObject)
+{
+	return (position - gameObject.position).length();
 }
 }

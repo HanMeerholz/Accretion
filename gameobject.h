@@ -20,6 +20,7 @@ public:
 
 	// collision
 	bool isConsumedBy(GameObject& gameObject);
+	float distance(GameObject& gameObject);
 private:
 	float radius;
 	bool destroyed = false;

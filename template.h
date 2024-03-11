@@ -23,7 +23,7 @@ static const char* TemplateVersion = "Template_v2019.08";
 //#include "immintrin.h"
 
 inline float Rand( float range ) { return ((float)rand() / RAND_MAX) * range; }
-inline float Rand( float min, float max ) { return min + ((float)rand() / RAND_MAX) * max; }
+inline float Rand( float min, float max ) { return min + ((float)rand() / RAND_MAX) * (max - min); }
 inline int IRand( int range ) { return rand() % range; }
 int filesize( FILE* f );
 #define MALLOC64(x) _aligned_malloc(x,64)
@@ -96,7 +96,7 @@ public:
 	void operator *= ( float a ) { x *= a; y *= a; }
 	float& operator [] ( const int idx ) { return cell[idx]; }
 	float length() { return sqrtf( x * x + y * y ); }
-	float sqrLentgh() { return x * x + y * y; }
+	float sqrLength() { return x * x + y * y; }
 	vec2 normalized() { float r = 1.0f / length(); return vec2( x * r, y * r ); }
 	void normalize() { float r = 1.0f / length(); x *= r; y *= r; }
 	static vec2 normalize( vec2 v ) { return v.normalized(); }
@@ -121,7 +121,7 @@ public:
 	float operator [] ( const uint& idx ) const { return cell[idx]; }
 	float& operator [] ( const uint& idx ) { return cell[idx]; }
 	float length() const { return sqrtf( x * x + y * y + z * z ); }
-	float sqrLentgh() const { return x * x + y * y + z * z; }
+	float sqrLength() const { return x * x + y * y + z * z; }
 	vec3 normalized() const { float r = 1.0f / length(); return vec3( x * r, y * r, z * r ); }
 	void normalize() { float r = 1.0f / length(); x *= r; y *= r; z *= r; }
 	static vec3 normalize( const vec3 v ) { return v.normalized(); }
@@ -151,7 +151,7 @@ public:
 	float& operator [] ( const int idx ) { return cell[idx]; }
 	float operator [] ( const uint& idx ) const { return cell[idx]; }
 	float length() { return sqrtf( x * x + y * y + z * z + w * w ); }
-	float sqrLentgh() { return x * x + y * y + z * z + w * w; }
+	float sqrLength() { return x * x + y * y + z * z + w * w; }
 	vec4 normalized() { float r = 1.0f / length(); return vec4( x * r, y * r, z * r, w * r ); }
 	void normalize() { float r = 1.0f / length(); x *= r; y *= r; z *= r; w *= r; }
 	static vec4 normalize( vec4 v ) { return v.normalized(); }

@@ -25,5 +25,7 @@ private:
 	float radius;
 	bool destroyed = false;
 	Tmpl8::vec2 position = { 150, 150 };
+
+	virtual float calculateRadius(float mass) = 0;
 };
 }

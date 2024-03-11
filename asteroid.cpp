@@ -27,10 +27,14 @@ namespace Accretion
 	void Asteroid::update(BlackHole& blackHole)
 	{
 		setPosition(getPosition() + velocity);
-		float force = blackHole.getMass() / pow(distance(blackHole), 2.0) * 10000;
+		float force = blackHole.getMass() / powf(distance(blackHole), 2.0f) * gravity;
 
 		vec2 direction = (blackHole.getPosition() - getPosition()).normalized();
 
 		velocity += {force * direction.x, force * direction.y};
+	}
+	float Asteroid::calculateRadius(float mass)
+	{
+		return cbrtf(mass / (2 / 3 * TAU * density));
 	}
 }

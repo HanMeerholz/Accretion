@@ -35,6 +35,7 @@ public:
 	// sprite
 	void draw(Tmpl8::Surface* const screen, float currentTime);
 private:
+	// pixels per frame
 	float const speed = 1.8f;
 	float const criticalMass = 0.003f;
 	float const metersPerSolarMass = 2953.337;

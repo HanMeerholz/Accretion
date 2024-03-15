@@ -8,9 +8,18 @@
     <ClCompile Include="template.cpp">
       <Filter>template code</Filter>
     </ClCompile>
-    <ClCompile Include="blackhole.cpp" />
-    <ClCompile Include="asteroid.cpp" />
-    <ClCompile Include="gameobject.cpp" />
+    <ClCompile Include="asteroid.cpp">
+      <Filter>game objects</Filter>
+    </ClCompile>
+    <ClCompile Include="blackhole.cpp">
+      <Filter>game objects</Filter>
+    </ClCompile>
+    <ClCompile Include="gameobject.cpp">
+      <Filter>game objects</Filter>
+    </ClCompile>
+    <ClCompile Include="spritedgameobject.cpp">
+      <Filter>game objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -20,13 +29,25 @@
     <ClInclude Include="template.h">
       <Filter>template code</Filter>
     </ClInclude>
-    <ClInclude Include="blackhole.h" />
-    <ClInclude Include="gameobject.h" />
-    <ClInclude Include="asteroid.h" />
+    <ClInclude Include="asteroid.h">
+      <Filter>game objects</Filter>
+    </ClInclude>
+    <ClInclude Include="blackhole.h">
+      <Filter>game objects</Filter>
+    </ClInclude>
+    <ClInclude Include="gameobject.h">
+      <Filter>game objects</Filter>
+    </ClInclude>
+    <ClInclude Include="spritedgameobject.h">
+      <Filter>game objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="template code">
       <UniqueIdentifier>{bf32dd6e-4be7-4889-8ac6-49e7ee163c40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game objects">
+      <UniqueIdentifier>{abc88c46-2794-480f-8646-827b1806d093}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

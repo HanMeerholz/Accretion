@@ -24,5 +24,7 @@ private:
 	// animation speed in frames per second
 	float const animationSpeed = 10.0f;
 	float const animationLength = sprite->GetNumFrames() / animationSpeed;
+
+	virtual Tmpl8::vec2 getLeftTopPosition() = 0;
 };
 }

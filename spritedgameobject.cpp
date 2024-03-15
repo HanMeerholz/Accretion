@@ -6,7 +6,7 @@ namespace Accretion {
 	{ }
 
 	SpritedGameObject::SpritedGameObject(Tmpl8::Sprite* const sprite, Tmpl8::vec2 position, float radius) :
-		sprite(sprite)
+		GameObject(position, radius), sprite(sprite)
 	{
 	}
 

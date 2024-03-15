@@ -20,10 +20,19 @@ namespace Accretion
 		this->velocity = velocity;
 	}
 
+	void Asteroid::draw(Tmpl8::Surface* const screen, float currentTime)
+	{
+		SpritedGameObject::draw(screen, currentTime);
+	}
+
 	void Asteroid::draw(Surface* const screen)
 	{
+		vec2 leftTopPosition = getLeftTopPosition();
+		float spriteRadius = getRadius() * 1.13f;
+		sprite->DrawScaled((int)leftTopPosition.x, (int)leftTopPosition.y, (int)(2 * spriteRadius), (int)(2 * spriteRadius), screen);
+
 		vec2 position = getPosition();
-		screen->Circle(position.x, position.y, getRadius(), WHITE);
+		screen->Circle(position.x, position.y, getRadius(), YELLOW);
 	}
 
 	void Asteroid::update(BlackHole& blackHole)
@@ -38,5 +47,11 @@ namespace Accretion
 	float Asteroid::calculateRadius(float mass)
 	{
 		return cbrtf(mass / (2 / 3 * TAU * density));
+	}
+	Tmpl8::vec2 Asteroid::getLeftTopPosition()
+	{
+		vec2 position = getPosition();
+		float radius = getRadius();
+		return { position.x - radius , position.y - radius };
 	}
 }

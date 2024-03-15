@@ -24,7 +24,7 @@ public:
 private:
 	Surface* screen;
 	Accretion::BlackHole* blackHole;
-	std::vector<Accretion::Asteroid> asteroids;
+	std::vector<Accretion::Asteroid*> asteroids;
 	
 	float currentTime = 0;
 

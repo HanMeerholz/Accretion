@@ -18,19 +18,19 @@ namespace Tmpl8
 	// -----------------------------------------------------------
 	void Game::Init()
 	{
-		blackHole = new BlackHole(new Sprite(new Tmpl8::Surface("assets/blackhole.png"), 30));
+		blackHole = new BlackHole(new Sprite(new Surface("assets/blackhole.png"), 30));
 
-		int const nrAsteroids = 1;
+		int const nrAsteroids = 30;
 
 		for (int i = 0; i < nrAsteroids; i++)
 		{
 			float x = Rand(ScreenWidth);
 			float y = Rand(ScreenHeight);
-			float radius = Rand(2.0f, 50.0f);
+			float radius = Rand(10.0f, 40.0f);
 			float velocityX = Rand(-1.0f, 1.0f);
 			float velocityY = Rand(-1.0f, 1.0f);
 
-			asteroids.push_back(Asteroid(new Sprite(new Tmpl8::Surface("assets/asteroid.png"), 24), {x, y}, radius, {velocityX, velocityY}));
+			asteroids.push_back(new Asteroid(new Sprite(new Surface("assets/asteroid.png"), 24), {x, y}, radius, {velocityX, velocityY}));
 		}
 	}
 	
@@ -40,6 +40,8 @@ namespace Tmpl8
 	void Game::Shutdown()
 	{
 		delete blackHole;
+		for (Asteroid* asteroid : asteroids)
+			delete asteroid;
 	}
 
 	// -----------------------------------------------------------
@@ -58,21 +60,17 @@ namespace Tmpl8
 		{
 			blackHole->update();
 			blackHole->draw(screen, currentTime);
-			screen->Circle(blackHole->getPosition().x, blackHole->getPosition().y, blackHole->getRadius(), YELLOW);
 
-			for (Asteroid& asteroid : asteroids)
-				if (!asteroid.isDestroyed())
-				{
-					if (asteroid.isConsumedBy(*blackHole))
-						blackHole->consumeAsteroid(asteroid);
-					asteroid.draw(screen);
-				}
+			for (Asteroid* asteroid : asteroids)
+				if (!asteroid->isDestroyed())
+					if (asteroid->isConsumedBy(*blackHole))
+						blackHole->consumeAsteroid(*asteroid);
 		}
 
-		for (Asteroid& asteroid : asteroids)
-			if (!asteroid.isDestroyed()) {
-				asteroid.update(*blackHole);
-				asteroid.draw(screen);
+		for (Asteroid* asteroid : asteroids)
+			if (!asteroid->isDestroyed()) {
+				asteroid->update(*blackHole);
+				asteroid->draw(screen, currentTime);
 			}
 		
 		string info = to_string(blackHole->getMass()) + " solar masses";

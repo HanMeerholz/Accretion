@@ -20,7 +20,7 @@ namespace Tmpl8
 	{
 		blackHole = new BlackHole(new Sprite(new Tmpl8::Surface("assets/blackhole.png"), 30));
 
-		int const nrAsteroids = 30;
+		int const nrAsteroids = 1;
 
 		for (int i = 0; i < nrAsteroids; i++)
 		{
@@ -30,7 +30,7 @@ namespace Tmpl8
 			float velocityX = Rand(-1.0f, 1.0f);
 			float velocityY = Rand(-1.0f, 1.0f);
 
-			asteroids.push_back(Asteroid({x, y}, radius, {velocityX, velocityY}));
+			asteroids.push_back(Asteroid(new Sprite(new Tmpl8::Surface("assets/asteroid.png"), 24), {x, y}, radius, {velocityX, velocityY}));
 		}
 	}
 	

@@ -1,20 +1,20 @@
 #pragma once
 #include "template.h"
 #include "surface.h"
-#include "gameobject.h"
+#include "spritedgameobject.h"
 #include "blackhole.h"
 
 namespace Accretion
 {
 	class BlackHole;
 
-	class Asteroid : public GameObject
+	class Asteroid : public SpritedGameObject
 	{
 	public:
 		// structors
-		Asteroid();
-		Asteroid(Tmpl8::vec2 position, float radius);
-		Asteroid(Tmpl8::vec2 position, float radius, Tmpl8::vec2 velocity);
+		Asteroid(Tmpl8::Sprite* const sprite);
+		Asteroid(Tmpl8::Sprite* const sprite, Tmpl8::vec2 position, float radius);
+		Asteroid(Tmpl8::Sprite* const sprite, Tmpl8::vec2 position, float radius, Tmpl8::vec2 velocity);
 
 		// sprite
 		void draw(Tmpl8::Surface* const screen);

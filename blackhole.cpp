@@ -6,16 +6,10 @@ using namespace Tmpl8;
 namespace Accretion
 {
 	BlackHole::BlackHole(Sprite* const sprite) :
-		sprite(sprite),
-		animationLength(sprite->GetNumFrames() / animationSpeed)
+		SpritedGameObject(sprite)
 	{
 		setRadius(calculateRadius(mass));
 		setPosition(startPosition);
-	}
-
-	BlackHole::~BlackHole()
-	{
-		delete sprite;
 	}
 
 	float BlackHole::getMass()
@@ -77,18 +71,16 @@ namespace Accretion
 		addMass(0.0001f * asteroid.getRadius());
 	}
 
-	void BlackHole::draw(Tmpl8::Surface* const screen, float const currentTime)
+	void BlackHole::draw(Tmpl8::Surface* const screen, float currentTime)
 	{
-		int curFrame = (float)(fmod(currentTime, animationLength) / animationLength) * sprite->GetNumFrames();
-		sprite->SetFrame(curFrame);
-		draw(screen);
+		SpritedGameObject::draw(screen, currentTime);
 	}
 
 	void BlackHole::draw(Tmpl8::Surface* const screen)
 	{
 		vec2 leftTopPosition = getLeftTopPosition();
 		float radius = getRadius();
-		sprite->DrawScaledWrapAround(leftTopPosition.x, leftTopPosition.y, 2 * radius, 2 * radius, screen);
+		sprite->DrawScaledWrapAround((int) leftTopPosition.x, (int) leftTopPosition.y, (int) (2 * radius), (int) (2 * radius), screen);
 	}
 
 	vec2 BlackHole::getLeftTopPosition()

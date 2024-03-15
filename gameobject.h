@@ -1,11 +1,13 @@
 #pragma once
 
 #include "template.h"
+#include "surface.h"
 
 namespace Accretion
 {
 class GameObject {
 public:
+	// constructors
 	GameObject();
 	GameObject(Tmpl8::vec2 position);
 	GameObject(Tmpl8::vec2 position, float radius);
@@ -21,6 +23,9 @@ public:
 	// collision
 	bool isConsumedBy(GameObject& gameObject);
 	float distance(GameObject& gameObject);
+
+	// draw
+	virtual void draw(Tmpl8::Surface* const screen) = 0;
 private:
 	float radius;
 	bool destroyed = false;

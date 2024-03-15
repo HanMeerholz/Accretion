@@ -1,19 +1,21 @@
 #include "asteroid.h"
+#include "spritedgameobject.h"
 #include <iostream>
 
 using namespace Tmpl8;
 
 namespace Accretion
 {
-	Asteroid::Asteroid()
+	Asteroid::Asteroid(Tmpl8::Sprite* const sprite)
+		: SpritedGameObject(sprite)
 	{}
 
-	Asteroid::Asteroid(Tmpl8::vec2 position, float radius)
-		: GameObject(position, radius)
+	Asteroid::Asteroid(Tmpl8::Sprite* const sprite, Tmpl8::vec2 position, float radius)
+		: SpritedGameObject(sprite, position, radius)
 	{}
 
-	Asteroid::Asteroid(Tmpl8::vec2 position, float radius, Tmpl8::vec2 velocity)
-		: Asteroid(position, radius)
+	Asteroid::Asteroid(Tmpl8::Sprite* const sprite, Tmpl8::vec2 position, float radius, Tmpl8::vec2 velocity)
+		: Asteroid(sprite, position, radius)
 	{
 		this->velocity = velocity;
 	}

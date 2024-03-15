@@ -266,5 +266,7 @@ inline bool BadFloat(float x)
 {
 	return ((*reinterpret_cast<uint*>(&x) & 0x7f000000) == 0x7f000000);
 }
+
+float Modulo(float numerator, float denominator);
 	
 }; // namespace Tmpl8

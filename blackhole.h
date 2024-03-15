@@ -40,6 +40,7 @@ private:
 	float const criticalMass = 0.003f;
 	float const metersPerSolarMass = 2953.337;
 	float const massLossRate = 0.001f;
+	Tmpl8::vec2 startPosition = { ScreenWidth / 2, ScreenHeight / 2 };
 
 	Tmpl8::Sprite* const sprite;
 	

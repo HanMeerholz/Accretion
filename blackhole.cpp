@@ -10,6 +10,7 @@ namespace Accretion
 		animationLength(sprite->GetNumFrames() / animationSpeed)
 	{
 		setRadius(calculateRadius(mass));
+		setPosition(startPosition);
 	}
 
 	BlackHole::~BlackHole()
@@ -30,25 +31,29 @@ namespace Accretion
 	void BlackHole::moveUp()
 	{
 		vec2 position = getPosition();
-		setPosition({position.x, position.y - speed});
+		position.y = Modulo(position.y - speed, ScreenHeight);
+		setPosition(position);
 	}
 
 	void BlackHole::moveDown()
 	{
 		vec2 position = getPosition();
-		setPosition({ position.x, position.y + speed });
+		position.y = Modulo(position.y + speed, ScreenHeight);
+		setPosition(position);
 	}
 
 	void BlackHole::moveLeft()
 	{
 		vec2 position = getPosition();
-		setPosition({ position.x - speed, position.y });
+		position.x = Modulo(position.x - speed, ScreenWidth);
+		setPosition(position);
 	}
 
 	void BlackHole::moveRight()
 	{
 		vec2 position = getPosition();
-		setPosition({ position.x + speed, position.y });
+		position.x = Modulo(position.x + speed, ScreenWidth);
+		setPosition(position);
 	}
 
 	void BlackHole::update()
@@ -83,7 +88,7 @@ namespace Accretion
 	{
 		vec2 leftTopPosition = getLeftTopPosition();
 		float radius = getRadius();
-		sprite->DrawScaled(leftTopPosition.x, leftTopPosition.y, 2 * radius, 2 * radius, screen);
+		sprite->DrawScaledWrapAround(leftTopPosition.x, leftTopPosition.y, 2 * radius, 2 * radius, screen);
 	}
 
 	vec2 BlackHole::getLeftTopPosition()

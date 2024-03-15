@@ -92,6 +92,13 @@ vec4 operator * ( const vec4& v, const mat4& M )
 	return v.x * mx + v.y * my + v.z * mz + v.w * mw;
 }
 
+float Modulo(float numerator, float denominator)
+{
+	float result = fmod(numerator, denominator);
+	if (result < 0) result += denominator;
+	return result;
+}
+
 mat4::mat4()
 {
 	memset(cell, 0, 64);

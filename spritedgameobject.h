@@ -19,12 +19,12 @@ public:
 
 protected:
 	Tmpl8::Sprite* const sprite;
+	int animationOffset = 0;
+	bool drawReverse = false;
+	// animation speed in frames per second
+	float animationSpeed = 10.0f;
 
 private:
-	// animation speed in frames per second
-	float const animationSpeed = 10.0f;
-	float const animationLength = sprite->GetNumFrames() / animationSpeed;
-
 	virtual Tmpl8::vec2 getLeftTopPosition() = 0;
 };
 }

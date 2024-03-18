@@ -16,7 +16,13 @@ namespace Accretion {
 
 	void SpritedGameObject::draw(Tmpl8::Surface* const screen, float currentTime)
 	{
-		int curFrame = (int) ((float)(fmod(currentTime, animationLength) / animationLength) * sprite->GetNumFrames());
+		float const animationLength = sprite->GetNumFrames() / animationSpeed;
+		int numFrames = sprite->GetNumFrames();
+		int curFrame = (int) ((float)(fmod(currentTime, animationLength) / animationLength) * numFrames);
+
+		curFrame = (curFrame + animationOffset) % numFrames;
+		if (drawReverse) curFrame = numFrames - curFrame - 1;
+
 		sprite->SetFrame(curFrame);
 		draw(screen);
 	}

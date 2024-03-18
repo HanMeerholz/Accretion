@@ -65,7 +65,7 @@ namespace Accretion
 		vec2 leftTopPosition = getLeftTopPosition();
 		sprite->DrawScaledWrapAround((int) leftTopPosition.x, (int) leftTopPosition.y, (int) (2 * radius), (int) (2 * radius), screen);
 
-		screen->Circle(position.x, position.y, radius, YELLOW);
+		//screen->Circle(position.x, position.y, radius, YELLOW);
 	}
 
 	vec2 BlackHole::getLeftTopPosition()

@@ -10,7 +10,7 @@ namespace Accretion
 
 class Asteroid;
 
-static float const BLACK_HOLE_START_MASS = 0.03386f;
+static constexpr float BLACK_HOLE_START_MASS = 0.03386f;
 static Tmpl8::vec2 const BLACK_HOLE_START_POSITION = { ScreenWidth / 2, ScreenHeight / 2 };
 
 class BlackHole : public SpritedGameObject

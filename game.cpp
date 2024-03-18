@@ -20,13 +20,13 @@ namespace Tmpl8
 	{
 		blackHole = new BlackHole(new Sprite(new Surface("assets/blackhole.png"), 30));
 
-		int const nrAsteroids = 100;
+		int const nrAsteroids = 300;
 
 		for (int i = 0; i < nrAsteroids; i++)
 		{
 			float x = Rand(ScreenWidth);
 			float y = Rand(ScreenHeight);
-			float mass = Rand(BLACK_HOLE_START_MASS / 200, BLACK_HOLE_START_MASS / 50);
+			float mass = Rand(BLACK_HOLE_START_MASS / 1000, BLACK_HOLE_START_MASS / 100);
 			float velocityX = Rand(-1.0f, 1.0f);
 			float velocityY = Rand(-1.0f, 1.0f);
 

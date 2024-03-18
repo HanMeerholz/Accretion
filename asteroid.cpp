@@ -14,6 +14,9 @@ namespace Accretion
 		: SpritedGameObject(sprite, position, mass), velocity(velocity)
 	{
 		radius = calculateRadius(mass);
+		animationOffset = IRand(sprite->GetNumFrames());
+		drawReverse = IRand(2);
+		animationSpeed = Rand(8.0f, 30.0f);
 	}
 
 	void Asteroid::draw(Tmpl8::Surface* const screen, float currentTime)
@@ -24,23 +27,22 @@ namespace Accretion
 	void Asteroid::draw(Surface* const screen)
 	{
 		vec2 leftTopPosition = getLeftTopPosition();
-		// TODO constant
-		float spriteRadius = radius * 1.13f;
+		float spriteRadius = radius * ASTEROID_SPRITE_RADIUS_FACTOR;
 		sprite->DrawScaled((int)leftTopPosition.x, (int)leftTopPosition.y, (int)(2 * spriteRadius), (int)(2 * spriteRadius), screen);
 
-		screen->Circle(position.x, position.y, radius, YELLOW);
+		// screen->Circle(position.x, position.y, radius, YELLOW);
 	}
 
 	void Asteroid::update(BlackHole& blackHole)
 	{
 		GameObject::update();
 
-		setPosition(position + velocity);
-
-		float force = blackHole.getMass() / powf(distance(blackHole), 2.0f) * gravity;
+		float force = mass * blackHole.getMass() / powf(distance(blackHole), 2.0f) * GRAVITATIONAL_CONSTANT;
 		vec2 direction = (blackHole.getPosition() - getPosition()).normalized();
 
 		velocity += {force * direction.x, force * direction.y};
+
+		position += velocity;
 	}
 
 	float Asteroid::calculateRadius(float mass)

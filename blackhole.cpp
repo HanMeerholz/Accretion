@@ -46,7 +46,7 @@ namespace Accretion
 
 	float BlackHole::calculateRadius(float mass)
 	{
-		return mass * BlackHole::metersPerSolarMass;
+		return mass * METERS_PER_EARTH_MASS;
 	}
 
 	void BlackHole::consumeAsteroid(Asteroid& asteroid)

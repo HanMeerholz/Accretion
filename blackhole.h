@@ -10,7 +10,9 @@ namespace Accretion
 
 class Asteroid;
 
-static constexpr float BLACK_HOLE_START_MASS = 0.03386f;
+// in earth masses
+static constexpr float BLACK_HOLE_START_MASS = 10000.0f;
+static constexpr float METERS_PER_EARTH_MASS = 0.008868f;
 static Tmpl8::vec2 const BLACK_HOLE_START_POSITION = { ScreenWidth / 2, ScreenHeight / 2 };
 
 class BlackHole : public SpritedGameObject
@@ -36,8 +38,7 @@ public:
 private:
 	// pixels per frame
 	float const speed = 1.8f;
-	float const criticalMass = 0.003f;
-	float const metersPerSolarMass = 2953.337;
+	float const criticalMass = 1000.0f;
 	float const massLossRate = 0.001f;
 
 	void addMass(float mass);

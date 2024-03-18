@@ -12,9 +12,8 @@ namespace Accretion
 	{
 	public:
 		// structors
-		Asteroid(Tmpl8::Sprite* const sprite);
-		Asteroid(Tmpl8::Sprite* const sprite, Tmpl8::vec2 position, float radius);
-		Asteroid(Tmpl8::Sprite* const sprite, Tmpl8::vec2 position, float radius, Tmpl8::vec2 velocity);
+		Asteroid(Tmpl8::Sprite* const sprite, Tmpl8::vec2 position, float mass);
+		Asteroid(Tmpl8::Sprite* const sprite, Tmpl8::vec2 position, float mass, Tmpl8::vec2 velocity);
 
 		// sprite
 		void draw(Tmpl8::Surface* const screen, float currentTime);
@@ -24,9 +23,9 @@ namespace Accretion
 		// gravitational constant in newton m^2 / (solar mass)^2
 		float const gravity = 10000;
 		// solar masses per m^3
-		float density = 1000.0f;
+		float const density = .00000001;
 
-		Tmpl8::vec2 velocity = { 0.0f, 0.0f };
+		Tmpl8::vec2 velocity;
 		bool destroyed = false;
 
 		float calculateRadius(float mass);

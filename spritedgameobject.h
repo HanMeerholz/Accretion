@@ -9,8 +9,8 @@ class SpritedGameObject : public GameObject {
 public:
 	// structors
 	SpritedGameObject() = delete;
-	SpritedGameObject(Tmpl8::Sprite* const sprite);
-	SpritedGameObject(Tmpl8::Sprite* const sprite, Tmpl8::vec2 position, float radius);
+	SpritedGameObject(Tmpl8::Sprite* const sprite, Tmpl8::vec2 position);
+	SpritedGameObject(Tmpl8::Sprite* const sprite, Tmpl8::vec2 position, float mass);
 	~SpritedGameObject();
 
 	// sprite

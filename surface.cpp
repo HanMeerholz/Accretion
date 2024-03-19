@@ -246,6 +246,34 @@ void Surface::CopyTo( Surface* a_Dst, int a_X, int a_Y )
 	}
 }
 
+void Surface::DrawScaled(Surface* a_Dst, int a_X, int a_Y, int a_Width, int a_Height)
+{
+	if ((a_X < -a_Width) || (a_X > (a_Dst->GetWidth()))) return;
+	if ((a_Y < -a_Height) || (a_Y > (a_Dst->GetHeight()))) return;
+
+	if ((a_Width <= 0) || (a_Height <= 0)) return;
+	for (int x = 0; x < a_Width; x++)
+	{
+		int destX = a_X + x;
+		if (destX < 0 || destX >= a_Dst->GetWidth()) continue;
+
+		for (int y = 0; y < a_Height; y++)
+		{
+			int destY = a_Y + y;
+			if (destY < 0 || destY >= a_Dst->GetHeight()) continue;
+
+			int u = (int)((float)x * ((float)m_Width / (float)a_Width));
+			int v = (int)((float)y * ((float)m_Height / (float)a_Height));
+
+			int srcPixelIndex = u + (v * m_Pitch);
+			int destPixelIndex = destX + (destY * a_Dst->GetPitch());
+
+			Pixel color = GetBuffer()[srcPixelIndex];
+			a_Dst->GetBuffer()[destPixelIndex] = color;
+		}
+	}
+}
+
 void Surface::BlendCopyTo( Surface* a_Dst, int a_X, int a_Y )
 {
 	Pixel* dst = a_Dst->GetBuffer();

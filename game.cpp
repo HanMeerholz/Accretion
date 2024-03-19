@@ -21,6 +21,10 @@ namespace Tmpl8
 	void Game::Init()
 	{
 		blackHole = new BlackHole(new Sprite(new Surface("assets/blackhole.png"), 30));
+		bar = new Surface("assets/empty_bar.png");
+		massLeft = new Surface("assets/mass_bar_1.png");
+		massCenter = new Surface("assets/mass_bar_2.png");
+		massRight = new Surface("assets/mass_bar_3.png");
 
 		int const nrAsteroids = 200;
 
@@ -44,6 +48,7 @@ namespace Tmpl8
 		delete blackHole;
 		for (Asteroid* asteroid : asteroids)
 			delete asteroid;
+		delete bar;
 	}
 
 	// -----------------------------------------------------------
@@ -74,13 +79,22 @@ namespace Tmpl8
 				asteroid->update(*blackHole);
 				asteroid->draw(screen, currentTime);
 			}
+
+		float scale = blackHole->getMass() / 25000.0f;
+
+		int barPosX = (ScreenWidth / 2) - (bar->GetWidth() / 2);
+		int barPosY = ScreenHeight - bar->GetHeight() - 25;
+		bar->CopyTo(screen, barPosX, barPosY);
+		massLeft->CopyTo(screen, barPosX + 3, barPosY + 3);
+		massCenter->DrawScaled(screen, barPosX + 3 + massLeft->GetWidth(), barPosY + 3, massCenter->GetWidth() * scale, massCenter->GetHeight());
+		massRight->CopyTo(screen, barPosX + 3 + massLeft->GetWidth() + massCenter->GetWidth() * scale, barPosY + 3);
 		
 		stringstream stream;
 		stream << fixed << setprecision(1) << blackHole->getMass();
 		string nrEarthMasses = stream.str();
 
 		string info = nrEarthMasses + " earth masses";
-		screen->Print(info.c_str(), 660, 5, WHITE);
+		screen->Print(info.c_str(), 340, 490, WHITE);
 		
 		currentTime += deltaTime;
 	}

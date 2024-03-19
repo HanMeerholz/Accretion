@@ -25,6 +25,11 @@ private:
 	Surface* screen;
 	Accretion::BlackHole* blackHole;
 	std::vector<Accretion::Asteroid*> asteroids;
+
+	Surface* bar;
+	Surface* massLeft;
+	Surface* massCenter;
+	Surface* massRight;
 	
 	float currentTime = 0;
 

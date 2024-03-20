@@ -4,6 +4,7 @@
 #include "template.h"
 #include "blackhole.h"
 #include "asteroid.h"
+#include "progressBar.h"
 
 namespace Tmpl8 {
 
@@ -23,13 +24,12 @@ public:
 	void KeyDown( int key ) { /* implement if you want to handle keys */ }
 private:
 	Surface* screen;
+	Sprite* blackHoleSprite;
 	Accretion::BlackHole* blackHole;
+	Sprite* asteroidSprite;
 	std::vector<Accretion::Asteroid*> asteroids;
 
-	Surface* bar;
-	Surface* massLeft;
-	Surface* massCenter;
-	Surface* massRight;
+	Accretion::ProgressBar* massBar;
 	
 	float currentTime = 0;
 	int score = 0;

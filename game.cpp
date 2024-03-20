@@ -10,6 +10,7 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
+
 using namespace std;
 using namespace Accretion;
 
@@ -20,13 +21,12 @@ namespace Tmpl8
 	// -----------------------------------------------------------
 	void Game::Init()
 	{
-		blackHole = new BlackHole(new Sprite(new Surface("assets/blackhole.png"), 30));
-		bar = new Surface("assets/empty_bar.png");
-		massLeft = new Surface("assets/mass_bar_1.png");
-		massCenter = new Surface("assets/mass_bar_2.png");
-		massRight = new Surface("assets/mass_bar_3.png");
+		blackHoleSprite = new Sprite(new Surface("assets/blackhole.png"), 30);
+		blackHole = new BlackHole(blackHoleSprite);
+		massBar = new ProgressBar(new Surface("assets/empty_bar.png"), new Surface("assets/mass_bar_1.png"), new Surface("assets/mass_bar_2.png"), new Surface("assets/mass_bar_3.png"), 3);
 
 		int const nrAsteroids = 200;
+		asteroidSprite = new Sprite(new Surface("assets/asteroid.png"), 24);
 
 		for (int i = 0; i < nrAsteroids; i++)
 		{
@@ -36,7 +36,7 @@ namespace Tmpl8
 			float velocityX = Rand(-1.0f, 1.0f);
 			float velocityY = Rand(-1.0f, 1.0f);
 
-			asteroids.push_back(new Asteroid(new Sprite(new Surface("assets/asteroid.png"), 24), {x, y}, mass, {velocityX, velocityY}));
+			asteroids.push_back(new Asteroid(asteroidSprite, {x, y}, mass, {velocityX, velocityY}));
 		}
 	}
 	
@@ -46,9 +46,10 @@ namespace Tmpl8
 	void Game::Shutdown()
 	{
 		delete blackHole;
+		delete blackHoleSprite;
 		for (Asteroid* asteroid : asteroids)
 			delete asteroid;
-		delete bar;
+		delete asteroidSprite;
 	}
 
 	// -----------------------------------------------------------
@@ -80,14 +81,8 @@ namespace Tmpl8
 				asteroid->draw(screen, currentTime);
 			}
 
-		float scale = blackHole->getMass() / 25000.0f;
-
-		int barPosX = (ScreenWidth / 2) - (bar->GetWidth() / 2);
-		int barPosY = ScreenHeight - bar->GetHeight() - 25;
-		bar->CopyTo(screen, barPosX, barPosY);
-		massLeft->CopyTo(screen, barPosX + 3, barPosY + 3);
-		massCenter->DrawScaled(screen, barPosX + 3 + massLeft->GetWidth(), barPosY + 3, massCenter->GetWidth() * scale, massCenter->GetHeight());
-		massRight->CopyTo(screen, barPosX + 3 + massLeft->GetWidth() + massCenter->GetWidth() * scale, barPosY + 3);
+		intvec2 barPos = { (ScreenWidth / 2) - (massBar->getDimensions().x / 2), ScreenHeight - massBar->getDimensions().y - 25 };
+		massBar->draw(screen, barPos, blackHole->getMass() / 25000.0f);
 		
 		stringstream stream;
 		stream << fixed << setprecision(1) << blackHole->getMass();

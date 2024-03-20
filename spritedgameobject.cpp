@@ -9,11 +9,6 @@ namespace Accretion {
 		GameObject(position, mass), sprite(sprite)
 	{ }
 
-	SpritedGameObject::~SpritedGameObject()
-	{
-		delete sprite;
-	}
-
 	void SpritedGameObject::draw(Tmpl8::Surface* const screen, float currentTime)
 	{
 		float const animationLength = sprite->GetNumFrames() / animationSpeed;

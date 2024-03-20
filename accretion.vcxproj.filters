@@ -20,6 +20,9 @@
     <ClCompile Include="spritedgameobject.cpp">
       <Filter>game objects</Filter>
     </ClCompile>
+    <ClCompile Include="progressBar.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -41,6 +44,9 @@
     <ClInclude Include="spritedgameobject.h">
       <Filter>game objects</Filter>
     </ClInclude>
+    <ClInclude Include="progressBar.h">
+      <Filter>ui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="template code">
@@ -48,6 +54,9 @@
     </Filter>
     <Filter Include="game objects">
       <UniqueIdentifier>{abc88c46-2794-480f-8646-827b1806d093}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ui">
+      <UniqueIdentifier>{140f3f47-c54d-42d5-9880-1307e0c5fb7f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

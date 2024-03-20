@@ -11,7 +11,6 @@ public:
 	SpritedGameObject() = delete;
 	SpritedGameObject(Tmpl8::Sprite* const sprite, Tmpl8::vec2 position);
 	SpritedGameObject(Tmpl8::Sprite* const sprite, Tmpl8::vec2 position, float mass);
-	~SpritedGameObject();
 
 	// sprite
 	void draw(Tmpl8::Surface* const screen, float currentTime);

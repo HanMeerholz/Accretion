@@ -226,6 +226,7 @@
     <ClCompile Include="blackhole.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gameobject.cpp" />
+    <ClCompile Include="progressBar.cpp" />
     <ClCompile Include="spritedgameobject.cpp" />
     <ClCompile Include="surface.cpp" />
     <ClCompile Include="template.cpp" />
@@ -235,6 +236,7 @@
     <ClInclude Include="blackhole.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gameobject.h" />
+    <ClInclude Include="progressBar.h" />
     <ClInclude Include="spritedgameobject.h" />
     <ClInclude Include="surface.h" />
     <ClInclude Include="template.h" />

@@ -63,6 +63,7 @@ public:
 	void SetChar( int c, char* c1, char* c2, char* c3, char* c4, char* c5 );
 	void Centre( const char* a_String, int y1, Pixel color );
 	void Print( const char* a_String, int x1, int y1, Pixel color );
+	void PrintScaled(const char* a_String, int x1, int y1, Pixel color, int scale);
 	void Clear( Pixel a_Color );
 	void Line( float x1, float y1, float x2, float y2, Pixel color );
 	void Circle( float x, float y, float r, Pixel color );

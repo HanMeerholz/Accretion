@@ -32,6 +32,7 @@ private:
 	Surface* massRight;
 	
 	float currentTime = 0;
+	int score = 0;
 
 	void handleInput();
 };

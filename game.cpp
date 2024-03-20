@@ -71,7 +71,7 @@ namespace Tmpl8
 			for (Asteroid* asteroid : asteroids)
 				if (!asteroid->isDestroyed())
 					if (asteroid->isConsumedBy(*blackHole))
-						blackHole->consumeAsteroid(*asteroid);
+						blackHole->consumeAsteroid(*asteroid, score);
 		}
 
 		for (Asteroid* asteroid : asteroids)
@@ -93,8 +93,15 @@ namespace Tmpl8
 		stream << fixed << setprecision(1) << blackHole->getMass();
 		string nrEarthMasses = stream.str();
 
+		int charSize = 5, paddingSize = 1;
 		string info = nrEarthMasses + " earth masses";
-		screen->Print(info.c_str(), 340, 490, WHITE);
+		int infoWidth = info.length() * (charSize + paddingSize);
+		screen->Print(info.c_str(), ScreenWidth / 2 - infoWidth / 2, 490, WHITE);
+
+		int scoreScale = 5;
+		string scoreString = "Score: " + to_string(score);
+		int scoreStringWidth = scoreString.length() * scoreScale * (charSize + paddingSize);
+		screen->PrintScaled(scoreString.c_str(), ScreenWidth / 2 - scoreStringWidth / 2, 20, YELLOW, scoreScale);
 		
 		currentTime += deltaTime;
 	}

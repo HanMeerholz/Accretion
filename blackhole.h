@@ -30,7 +30,7 @@ public:
 
 	// physics
 	void update();
-	void consumeAsteroid(Asteroid& asteroid);
+	void consumeAsteroid(Asteroid& asteroid, int& score);
 
 	// sprite
 	void draw(Tmpl8::Surface* const screen, float currentTime);

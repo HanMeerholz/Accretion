@@ -116,6 +116,31 @@ void Surface::Print( const char* a_String, int x1, int y1, Pixel color )
 	}
 }
 
+void Surface::PrintScaled(const char* a_String, int x1, int y1, Pixel color, int scale)
+{
+	if (!fontInitialized)
+	{
+		InitCharset();
+		fontInitialized = true;
+	}
+	Pixel* t = m_Buffer + x1 + y1 * m_Pitch;
+	for (int i = 0; i < (int)(strlen(a_String)); i++, t += 6 * scale)
+	{
+		long pos = 0;
+		if ((a_String[i] >= 'A') && (a_String[i] <= 'Z')) pos = s_Transl[(unsigned short)(a_String[i] - ('A' - 'a'))];
+		else pos = s_Transl[(unsigned short)a_String[i]];
+
+		for (int row = 0; row < scale; row++) for (int col = 0; col < scale; col++) {
+			Pixel* a = t + m_Pitch * col;
+			char* c = (char*)s_Font[pos];
+
+			for (int v = 0; v < 5 * scale; v += scale, c++, a += m_Pitch * scale)
+				for (int h = 0; h < 5 * scale; h += scale) if (*c++ == 'o') *(a + h + row) = color, * (a + h + row + m_Pitch * scale) = 0;
+		}
+	}
+	
+}
+
 void Surface::Resize( Surface* a_Orig )
 {
 	Pixel* src = a_Orig->GetBuffer(), *dst = m_Buffer;

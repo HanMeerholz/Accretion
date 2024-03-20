@@ -38,9 +38,10 @@ namespace Accretion
 		GameObject::update();
 
 		float force = mass * blackHole.getMass() / powf(distance(blackHole), 2.0f) * GRAVITATIONAL_CONSTANT;
+		float acceleration = force / mass;
 		vec2 direction = (blackHole.getPosition() - getPosition()).normalized();
 
-		velocity += {force * direction.x, force * direction.y};
+		velocity += {acceleration * direction.x, acceleration * direction.y};
 
 		position += velocity;
 	}

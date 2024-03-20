@@ -9,7 +9,7 @@ namespace Accretion
 	class BlackHole;
 
 	// gravitational constant in newton m^2 / (solar mass)^2
-	static constexpr float GRAVITATIONAL_CONSTANT = 0.0002;
+	static constexpr float GRAVITATIONAL_CONSTANT = 0.02;
 	static constexpr float ASTEROID_SPRITE_RADIUS_FACTOR = 1.13f;
 
 	class Asteroid : public SpritedGameObject

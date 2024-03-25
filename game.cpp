@@ -23,10 +23,17 @@ namespace Tmpl8
 	{
 		blackHoleSprite = new Sprite(new Surface("assets/blackhole.png"), 30);
 		blackHole = new BlackHole(blackHoleSprite);
+		asteroidSprite = new Sprite(new Surface("assets/asteroid.png"), 24);
+		
 		massBar = new ProgressBar(new Surface("assets/empty_bar.png"), new Surface("assets/mass_bar_1.png"), new Surface("assets/mass_bar_2.png"), new Surface("assets/mass_bar_3.png"), 3);
+		int barBotPadding = 25;
+		massBar->setPosition({ (ScreenWidth / 2), ScreenHeight - massBar->getHeight() / 2 - barBotPadding });
+
+		int scoreTopPadding = 20;
+		score = new Score(5, YELLOW);
+		score->setPosition({ ScreenWidth / 2,  score->getHeight() / 2 + scoreTopPadding });
 
 		int const nrAsteroids = 200;
-		asteroidSprite = new Sprite(new Surface("assets/asteroid.png"), 24);
 
 		for (int i = 0; i < nrAsteroids; i++)
 		{
@@ -50,6 +57,8 @@ namespace Tmpl8
 		for (Asteroid* asteroid : asteroids)
 			delete asteroid;
 		delete asteroidSprite;
+		delete massBar;
+		delete score;
 	}
 
 	// -----------------------------------------------------------
@@ -72,7 +81,10 @@ namespace Tmpl8
 			for (Asteroid* asteroid : asteroids)
 				if (!asteroid->isDestroyed())
 					if (asteroid->isConsumedBy(*blackHole))
-						blackHole->consumeAsteroid(*asteroid, score);
+					{
+						score->increaseScore((int) asteroid->getMass());
+						blackHole->consumeAsteroid(*asteroid);
+					}
 		}
 
 		for (Asteroid* asteroid : asteroids)
@@ -81,22 +93,19 @@ namespace Tmpl8
 				asteroid->draw(screen, currentTime);
 			}
 
-		intvec2 barPos = { (ScreenWidth / 2) - (massBar->getDimensions().x / 2), ScreenHeight - massBar->getDimensions().y - 25 };
-		massBar->draw(screen, barPos, blackHole->getMass() / 25000.0f);
+		massBar->setProgress(blackHole->getMass() / BLACK_HOLE_MAX_MASS);
+		massBar->draw(screen);
 		
 		stringstream stream;
 		stream << fixed << setprecision(1) << blackHole->getMass();
 		string nrEarthMasses = stream.str();
-
-		int charSize = 5, paddingSize = 1;
 		string info = nrEarthMasses + " earth masses";
-		int infoWidth = info.length() * (charSize + paddingSize);
-		screen->Print(info.c_str(), ScreenWidth / 2 - infoWidth / 2, 490, WHITE);
+		int infoWidth = (int) info.length() * (CHAR_WIDTH + CHAR_PADDING);
+		int barBotPadding = 25;
+		int infoBotPadding = barBotPadding + massBar->getHeight() + CHAR_HEIGHT + 2;
+		screen->Print(info.c_str(), ScreenWidth / 2 - infoWidth / 2, ScreenHeight - infoBotPadding, WHITE);
 
-		int scoreScale = 5;
-		string scoreString = "Score: " + to_string(score);
-		int scoreStringWidth = scoreString.length() * scoreScale * (charSize + paddingSize);
-		screen->PrintScaled(scoreString.c_str(), ScreenWidth / 2 - scoreStringWidth / 2, 20, YELLOW, scoreScale);
+		score->draw(screen);
 		
 		currentTime += deltaTime;
 	}

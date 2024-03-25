@@ -12,6 +12,10 @@ constexpr int BlueMask = 0x0000ff;
 
 constexpr int CIRCLE_RESOLUTION = 64;
 
+constexpr int CHAR_HEIGHT = 6;
+constexpr int CHAR_WIDTH = 5;
+constexpr int CHAR_PADDING = 1;
+
 typedef unsigned int Pixel; // unsigned int is assumed to be 32-bit, which seems a safe assumption.
 
 constexpr Pixel BLACK = 0x000000;

@@ -49,11 +49,10 @@ namespace Accretion
 		return mass * METERS_PER_EARTH_MASS;
 	}
 
-	void BlackHole::consumeAsteroid(Asteroid& asteroid, int &score)
+	void BlackHole::consumeAsteroid(Asteroid& asteroid)
 	{
 		asteroid.setDestroyed();
 		addMass(asteroid.getMass());
-		score += asteroid.getMass();
 	}
 
 	void BlackHole::draw(Tmpl8::Surface* const screen, float currentTime)

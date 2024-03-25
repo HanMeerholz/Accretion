@@ -227,9 +227,11 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gameobject.cpp" />
     <ClCompile Include="progressBar.cpp" />
+    <ClCompile Include="score.cpp" />
     <ClCompile Include="spritedgameobject.cpp" />
     <ClCompile Include="surface.cpp" />
     <ClCompile Include="template.cpp" />
+    <ClCompile Include="uiElement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="asteroid.h" />
@@ -237,9 +239,11 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="gameobject.h" />
     <ClInclude Include="progressBar.h" />
+    <ClInclude Include="score.h" />
     <ClInclude Include="spritedgameobject.h" />
     <ClInclude Include="surface.h" />
     <ClInclude Include="template.h" />
+    <ClInclude Include="uiElement.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="_readme.txt" />

@@ -5,6 +5,7 @@
 #include "blackhole.h"
 #include "asteroid.h"
 #include "progressBar.h"
+#include "score.h"
 
 namespace Tmpl8 {
 
@@ -30,9 +31,9 @@ private:
 	std::vector<Accretion::Asteroid*> asteroids;
 
 	Accretion::ProgressBar* massBar;
+	Accretion::Score* score;
 	
 	float currentTime = 0;
-	int score = 0;
 
 	void handleInput();
 };

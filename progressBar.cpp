@@ -6,8 +6,10 @@ namespace Accretion {
 
 ProgressBar::ProgressBar(Surface* frame, Surface* leftEdge, Surface* mainBar, Surface* rightEdge, int padding)
 	:
-	frame(frame), leftEdge(leftEdge), mainBar(mainBar), rightEdge(rightEdge), dimensions({ frame->GetWidth(), frame->GetHeight() }), padding(padding)
-{}
+	frame(frame), leftEdge(leftEdge), mainBar(mainBar), rightEdge(rightEdge), padding(padding)
+{
+	dimensions = { frame->GetWidth(), frame->GetHeight() };
+}
 
 ProgressBar::~ProgressBar()
 {
@@ -17,18 +19,20 @@ ProgressBar::~ProgressBar()
 	delete rightEdge;
 }
 
-intvec2 ProgressBar::getDimensions()
+void ProgressBar::setProgress(float progress)
 {
-	return dimensions;
+	this->progress = progress;
+	if (progress > 1.0f) progress = 1.0f;
+	if (progress < 0.0f) progress = 0.0f;
 }
 
-void ProgressBar::draw(Surface* screen, intvec2 position, float progress)
+void ProgressBar::draw(Surface* screen)
 {
-	if (progress > 1.0f) progress = 1.0f;
-	frame->CopyTo(screen, position.x, position.y);
-	leftEdge->CopyTo(   screen, position.x + relativeLeftEdgePosition.x, position.y + relativeLeftEdgePosition.y);
-	mainBar->DrawScaled(screen, position.x + relativeMainBarPosition.x,  position.y + relativeMainBarPosition.y , mainBar->GetWidth() * progress, mainBar->GetHeight());
+	intvec2 topLeftPosition = getTopLeftPosition();
+	frame->CopyTo(screen, topLeftPosition.x, topLeftPosition.y);
+	leftEdge->CopyTo(screen, topLeftPosition.x + relativeLeftEdgePosition.x, topLeftPosition.y + relativeLeftEdgePosition.y);
+	mainBar->DrawScaled(screen, topLeftPosition.x + relativeMainBarPosition.x, topLeftPosition.y + relativeMainBarPosition.y , mainBar->GetWidth() * progress, mainBar->GetHeight());
 	intvec2 relativeRightEdgePosition = { relativeMainBarPosition.x + (int) (mainBar->GetWidth() * progress), relativeMainBarPosition.y };
-	rightEdge->CopyTo(screen, position.x + relativeRightEdgePosition.x, position.y + relativeRightEdgePosition.y);
+	rightEdge->CopyTo(screen, topLeftPosition.x + relativeRightEdgePosition.x, topLeftPosition.y + relativeRightEdgePosition.y);
 }
 }

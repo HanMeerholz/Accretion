@@ -11,6 +11,7 @@ namespace Accretion
 class Asteroid;
 
 // in earth masses
+static constexpr float BLACK_HOLE_MAX_MASS = 25000.0f;
 static constexpr float BLACK_HOLE_START_MASS = 10000.0f;
 static constexpr float METERS_PER_EARTH_MASS = 0.008868f;
 static Tmpl8::vec2 const BLACK_HOLE_START_POSITION = { ScreenWidth / 2, ScreenHeight / 2 };
@@ -30,7 +31,7 @@ public:
 
 	// physics
 	void update();
-	void consumeAsteroid(Asteroid& asteroid, int& score);
+	void consumeAsteroid(Asteroid& asteroid);
 
 	// sprite
 	void draw(Tmpl8::Surface* const screen, float currentTime);

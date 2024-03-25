@@ -35,7 +35,12 @@ private:
 	
 	float currentTime = 0;
 
+	void initGameObjects();
+	void initUI();
+
 	void handleInput();
+	void drawGameObjects();
+	void drawUI();
 };
 
 }; // namespace Tmpl8

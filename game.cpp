@@ -21,17 +21,15 @@ namespace Tmpl8
 	// -----------------------------------------------------------
 	void Game::Init()
 	{
+		initGameObjects();
+		initUI();
+	}
+
+	void Game::initGameObjects()
+	{
 		blackHoleSprite = new Sprite(new Surface("assets/blackhole.png"), 30);
 		blackHole = new BlackHole(blackHoleSprite);
 		asteroidSprite = new Sprite(new Surface("assets/asteroid.png"), 24);
-		
-		massBar = new ProgressBar(new Surface("assets/empty_bar.png"), new Surface("assets/mass_bar_1.png"), new Surface("assets/mass_bar_2.png"), new Surface("assets/mass_bar_3.png"), 3);
-		int barBotPadding = 25;
-		massBar->setPosition({ (ScreenWidth / 2), ScreenHeight - massBar->getHeight() / 2 - barBotPadding });
-
-		int scoreTopPadding = 20;
-		score = new Score(5, YELLOW);
-		score->setPosition({ ScreenWidth / 2,  score->getHeight() / 2 + scoreTopPadding });
 
 		int const nrAsteroids = 200;
 
@@ -43,8 +41,19 @@ namespace Tmpl8
 			float velocityX = Rand(-1.0f, 1.0f);
 			float velocityY = Rand(-1.0f, 1.0f);
 
-			asteroids.push_back(new Asteroid(asteroidSprite, {x, y}, mass, {velocityX, velocityY}));
+			asteroids.push_back(new Asteroid(asteroidSprite, { x, y }, mass, { velocityX, velocityY }));
 		}
+	}
+
+	void Game::initUI()
+	{
+		massBar = new ProgressBar(new Surface("assets/empty_bar.png"), new Surface("assets/mass_bar_1.png"), new Surface("assets/mass_bar_2.png"), new Surface("assets/mass_bar_3.png"), 3);
+		int barBotPadding = 25;
+		massBar->setPosition({ (ScreenWidth / 2), ScreenHeight - massBar->getHeight() / 2 - barBotPadding });
+
+		int scoreTopPadding = 20;
+		score = new Score(5, YELLOW);
+		score->setPosition({ ScreenWidth / 2,  score->getHeight() / 2 + scoreTopPadding });
 	}
 	
 	// -----------------------------------------------------------
@@ -68,10 +77,17 @@ namespace Tmpl8
 	{
 		// get time in seconds
 		deltaTime /= 1000;
-
 		// clear the graphics window
 		screen->Clear(BLACK);
 
+		drawGameObjects();
+		drawUI();
+		
+		currentTime += deltaTime;
+	}
+
+	void Game::drawGameObjects()
+	{
 		handleInput();
 		if (!blackHole->isDestroyed())
 		{
@@ -82,7 +98,7 @@ namespace Tmpl8
 				if (!asteroid->isDestroyed())
 					if (asteroid->isConsumedBy(*blackHole))
 					{
-						score->increaseScore((int) asteroid->getMass());
+						score->increaseScore((int)asteroid->getMass());
 						blackHole->consumeAsteroid(*asteroid);
 					}
 		}
@@ -92,22 +108,6 @@ namespace Tmpl8
 				asteroid->update(*blackHole);
 				asteroid->draw(screen, currentTime);
 			}
-
-		massBar->setProgress(blackHole->getMass() / BLACK_HOLE_MAX_MASS);
-		massBar->draw(screen);
-		
-		stringstream stream;
-		stream << fixed << setprecision(1) << blackHole->getMass();
-		string nrEarthMasses = stream.str();
-		string info = nrEarthMasses + " earth masses";
-		int infoWidth = (int) info.length() * (CHAR_WIDTH + CHAR_PADDING);
-		int barBotPadding = 25;
-		int infoBotPadding = barBotPadding + massBar->getHeight() + CHAR_HEIGHT + 2;
-		screen->Print(info.c_str(), ScreenWidth / 2 - infoWidth / 2, ScreenHeight - infoBotPadding, WHITE);
-
-		score->draw(screen);
-		
-		currentTime += deltaTime;
 	}
 
 	void Game::handleInput()
@@ -128,5 +128,22 @@ namespace Tmpl8
 		{
 			blackHole->moveRight();
 		}
+	}
+
+	void Game::drawUI()
+	{
+		massBar->setProgress(blackHole->getMass() / BLACK_HOLE_MAX_MASS);
+		massBar->draw(screen);
+
+		stringstream stream;
+		stream << fixed << setprecision(1) << blackHole->getMass();
+		string nrEarthMasses = stream.str();
+		string info = nrEarthMasses + " earth masses";
+		int infoWidth = (int)info.length() * (CHAR_WIDTH + CHAR_PADDING);
+		int barBotPadding = 25;
+		int infoBotPadding = barBotPadding + massBar->getHeight() + CHAR_HEIGHT + 2;
+		screen->Print(info.c_str(), ScreenWidth / 2 - infoWidth / 2, ScreenHeight - infoBotPadding, WHITE);
+
+		score->draw(screen);
 	}
 };

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 #include "template.h"
 #include "blackhole.h"
 #include "asteroid.h"
@@ -28,7 +29,7 @@ private:
 	Sprite* blackHoleSprite;
 	Accretion::BlackHole* blackHole;
 	Sprite* asteroidSprite;
-	std::vector<Accretion::Asteroid*> asteroids;
+	std::vector<std::unique_ptr<Accretion::Asteroid>> asteroids;
 
 	Accretion::ProgressBar* massBar;
 	Accretion::Score* score;
@@ -36,9 +37,11 @@ private:
 	float currentTime = 0;
 
 	void initGameObjects();
+	std::unique_ptr<Accretion::Asteroid> makeRandomAsteroid();
 	void initUI();
 
 	void handleInput();
+	void updateGameObjects();
 	void drawGameObjects();
 	void drawUI();
 };

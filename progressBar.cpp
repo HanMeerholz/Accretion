@@ -21,9 +21,9 @@ ProgressBar::~ProgressBar()
 
 void ProgressBar::setProgress(float progress)
 {
-	this->progress = progress;
 	if (progress > 1.0f) progress = 1.0f;
 	if (progress < 0.0f) progress = 0.0f;
+	this->progress = progress;
 }
 
 void ProgressBar::draw(Surface* screen)

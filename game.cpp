@@ -31,18 +31,29 @@ namespace Tmpl8
 		blackHole = new BlackHole(blackHoleSprite);
 		asteroidSprite = new Sprite(new Surface("assets/asteroid.png"), 24);
 
-		int const nrAsteroids = 200;
+		int const nrAsteroids = 120;
 
 		for (int i = 0; i < nrAsteroids; i++)
 		{
 			float x = Rand(ScreenWidth);
 			float y = Rand(ScreenHeight);
-			float mass = Rand(BLACK_HOLE_START_MASS / 1000, BLACK_HOLE_START_MASS / 50);
+			float mass = Rand(BLACK_HOLE_START_MASS / 1000, BLACK_HOLE_START_MASS / 20);
 			float velocityX = Rand(-1.0f, 1.0f);
 			float velocityY = Rand(-1.0f, 1.0f);
 
-			asteroids.push_back(new Asteroid(asteroidSprite, { x, y }, mass, { velocityX, velocityY }));
+			asteroids.push_back(move(makeRandomAsteroid()));
 		}
+	}
+
+	unique_ptr<Asteroid> Game::makeRandomAsteroid() {
+		float x = Rand(ScreenWidth);
+		float y = Rand(ScreenHeight);
+		float mass = Rand(BLACK_HOLE_START_MASS / 1000, BLACK_HOLE_START_MASS / 20);
+		float velocityX = Rand(-1.0f, 1.0f);
+		float velocityY = Rand(-1.0f, 1.0f);
+
+		unique_ptr<Asteroid> asteroid(new Asteroid(asteroidSprite, { x, y }, mass, { velocityX, velocityY }));
+		return asteroid;
 	}
 
 	void Game::initUI()
@@ -63,8 +74,8 @@ namespace Tmpl8
 	{
 		delete blackHole;
 		delete blackHoleSprite;
-		for (Asteroid* asteroid : asteroids)
-			delete asteroid;
+		for (auto& asteroid : asteroids)
+			asteroid.reset();
 		delete asteroidSprite;
 		delete massBar;
 		delete score;
@@ -80,21 +91,20 @@ namespace Tmpl8
 		// clear the graphics window
 		screen->Clear(BLACK);
 
+		handleInput();
+		updateGameObjects();
 		drawGameObjects();
 		drawUI();
 		
 		currentTime += deltaTime;
 	}
 
-	void Game::drawGameObjects()
-	{
-		handleInput();
+	void Game::updateGameObjects() {
 		if (!blackHole->isDestroyed())
 		{
 			blackHole->update();
-			blackHole->draw(screen, currentTime);
 
-			for (Asteroid* asteroid : asteroids)
+			for (auto& asteroid : asteroids)
 				if (!asteroid->isDestroyed())
 					if (asteroid->isConsumedBy(*blackHole))
 					{
@@ -103,11 +113,30 @@ namespace Tmpl8
 					}
 		}
 
-		for (Asteroid* asteroid : asteroids)
-			if (!asteroid->isDestroyed()) {
-				asteroid->update(*blackHole);
-				asteroid->draw(screen, currentTime);
+		for (auto& asteroid : asteroids)
+		{
+			if (asteroid->isDestroyed())
+			{
+				asteroid.reset(nullptr);
+				asteroid = nullptr;
+				asteroids.push_back(move(makeRandomAsteroid()));
 			}
+			else
+				asteroid->update(*blackHole);
+		}
+		asteroids.erase(remove(asteroids.begin(), asteroids.end(), nullptr), asteroids.end());
+
+		cout << asteroids.size() << endl;
+	}
+
+	void Game::drawGameObjects()
+	{
+		if (!blackHole->isDestroyed())
+			blackHole->draw(screen, currentTime);
+
+		for (auto& asteroid : asteroids)
+			if (!asteroid->isDestroyed())
+				asteroid->draw(screen, currentTime);
 	}
 
 	void Game::handleInput()

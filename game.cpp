@@ -35,25 +35,8 @@ namespace Tmpl8
 
 		for (int i = 0; i < nrAsteroids; i++)
 		{
-			float x = Rand(ScreenWidth);
-			float y = Rand(ScreenHeight);
-			float mass = Rand(BLACK_HOLE_START_MASS / 1000, BLACK_HOLE_START_MASS / 20);
-			float velocityX = Rand(-1.0f, 1.0f);
-			float velocityY = Rand(-1.0f, 1.0f);
-
 			asteroids.push_back(move(makeRandomAsteroid()));
 		}
-	}
-
-	unique_ptr<Asteroid> Game::makeRandomAsteroid() {
-		float x = Rand(ScreenWidth);
-		float y = Rand(ScreenHeight);
-		float mass = Rand(BLACK_HOLE_START_MASS / 1000, BLACK_HOLE_START_MASS / 20);
-		float velocityX = Rand(-1.0f, 1.0f);
-		float velocityY = Rand(-1.0f, 1.0f);
-
-		unique_ptr<Asteroid> asteroid(new Asteroid(asteroidSprite, { x, y }, mass, { velocityX, velocityY }));
-		return asteroid;
 	}
 
 	void Game::initUI()
@@ -119,7 +102,7 @@ namespace Tmpl8
 			{
 				asteroid.reset(nullptr);
 				asteroid = nullptr;
-				asteroids.push_back(move(makeRandomAsteroid()));
+				asteroids.push_back(move(makeRandomAsteroidOffScreen()));
 			}
 			else
 				asteroid->update(*blackHole);
@@ -127,6 +110,29 @@ namespace Tmpl8
 		asteroids.erase(remove(asteroids.begin(), asteroids.end(), nullptr), asteroids.end());
 
 		cout << asteroids.size() << endl;
+	}
+
+	unique_ptr<Asteroid> Game::makeRandomAsteroid() {
+		float x = Rand(ScreenWidth);
+		float y = Rand(ScreenHeight);
+		float mass = BLACK_HOLE_START_MASS * powf(IRand Rand(BLACK_HOLE_START_MASS / 1000, BLACK_HOLE_START_MASS / 20);
+		float velocityX = Rand(-1.0f, 1.0f);
+		float velocityY = Rand(-1.0f, 1.0f);
+
+		unique_ptr<Asteroid> asteroid(new Asteroid(asteroidSprite, { x, y }, mass, { velocityX, velocityY }));
+		return asteroid;
+	}
+
+	unique_ptr<Asteroid> Game::makeRandomAsteroidOffScreen() {
+		
+		float x = BRand() ? Rand(-ScreenWidth, 0) : Rand(ScreenWidth, 2 * ScreenWidth);
+		float y = BRand() ? Rand(-ScreenHeight, 0) : Rand(ScreenHeight, 2 * ScreenHeight);
+		float mass = Rand(BLACK_HOLE_START_MASS / 1000, BLACK_HOLE_START_MASS / 20);
+		float velocityX = x < 0 ? Rand(0.0f, 1.0f) : Rand(-1.0f, 0.0f);
+		float velocityY = y < 0 ? Rand(0.0f, 1.0f) : Rand(-1.0f, 0.0f);
+
+		unique_ptr<Asteroid> asteroid(new Asteroid(asteroidSprite, { x, y }, mass, { velocityX, velocityY }));
+		return asteroid;
 	}
 
 	void Game::drawGameObjects()

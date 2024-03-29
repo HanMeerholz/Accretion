@@ -38,6 +38,7 @@ private:
 
 	void initGameObjects();
 	std::unique_ptr<Accretion::Asteroid> makeRandomAsteroid();
+	std::unique_ptr<Accretion::Asteroid> makeRandomAsteroidOffScreen();
 	void initUI();
 
 	void handleInput();

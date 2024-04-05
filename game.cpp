@@ -6,6 +6,7 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <numeric>
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -83,6 +84,9 @@ namespace Tmpl8
 	}
 
 	void Game::updateGameObjects() {
+
+		cout << "Nr asteroids: " << asteroids.size() << endl;
+
 		if (!blackHole->isDestroyed())
 		{
 			blackHole->update();
@@ -97,24 +101,31 @@ namespace Tmpl8
 		}
 
 		for (auto& asteroid : asteroids)
-		{
 			if (!asteroid->isDestroyed())
 				asteroid->update(*blackHole);
 
-			// updating may destroy the asteroid, so a second if is needed
+		for (auto& asteroid : asteroids)
 			if (asteroid->isDestroyed())
-			{
 				asteroid.reset(nullptr);
-				asteroids.erase(remove(asteroids.begin(), asteroids.end(), nullptr), asteroids.end());
-				asteroids.push_back(move(makeRandomAsteroidOffScreen()));
-			}
+		asteroids.erase(remove(asteroids.begin(), asteroids.end(), nullptr), asteroids.end());
+
+		float totalMass = 0.0f;
+		totalMass += blackHole->getMass();
+		for (auto const& asteroid : asteroids)
+		{
+			totalMass += asteroid->getMass();
 		}
+
+		float remainingMass = BLACK_HOLE_MAX_MASS - totalMass;
+		float maxAsteroidMass = blackHole->getMass() / 10;
+		if (remainingMass > maxAsteroidMass)
+			asteroids.push_back(move(makeRandomAsteroidOffScreen(blackHole->getMass() / 1000, maxAsteroidMass)));
 	}
 
 	unique_ptr<Asteroid> Game::makeRandomAsteroidOnScreen() {
 		float x = Rand(ScreenWidth);
 		float y = Rand(ScreenHeight);
-		float mass = Rand(BLACK_HOLE_START_MASS / 1000, BLACK_HOLE_START_MASS / 20);
+		float mass = getRandomMass(BLACK_HOLE_START_MASS / 1000, BLACK_HOLE_START_MASS / 20);
 		float velocityX = Rand(-1.0f, 1.0f);
 		float velocityY = Rand(-1.0f, 1.0f);
 
@@ -122,17 +133,24 @@ namespace Tmpl8
 		return asteroid;
 	}
 
-	unique_ptr<Asteroid> Game::makeRandomAsteroidOffScreen() {
+	unique_ptr<Asteroid> Game::makeRandomAsteroidOffScreen(float minMass, float maxMass) {
 		
 		float x = BRand() ? Rand(-ScreenWidth, 0) : Rand(ScreenWidth, 2 * ScreenWidth);
 		float y = BRand() ? Rand(-ScreenHeight, 0) : Rand(ScreenHeight, 2 * ScreenHeight);
-		float mass = Rand(BLACK_HOLE_START_MASS / 1000, BLACK_HOLE_START_MASS / 20);
+		float mass = getRandomMass(minMass, maxMass);
 		// asteroid always initially floats towards the center
 		float velocityX = x < 0 ? Rand(0.0f, 1.0f) : Rand(-1.0f, 0.0f);
 		float velocityY = y < 0 ? Rand(0.0f, 1.0f) : Rand(-1.0f, 0.0f);
 
 		unique_ptr<Asteroid> asteroid(new Asteroid(asteroidSprite, { x, y }, mass, { velocityX, velocityY }));
 		return asteroid;
+	}
+
+	float Game::getRandomMass(float min, float max) {
+		float minExp = log2(min);
+		float maxExp = log2(max);
+		float massExp = Rand(minExp, maxExp);
+		return powf(2.0f, massExp);
 	}
 
 	void Game::drawGameObjects()

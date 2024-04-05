@@ -38,7 +38,8 @@ private:
 
 	void initGameObjects();
 	std::unique_ptr<Accretion::Asteroid> makeRandomAsteroidOnScreen();
-	std::unique_ptr<Accretion::Asteroid> makeRandomAsteroidOffScreen();
+	std::unique_ptr<Accretion::Asteroid> makeRandomAsteroidOffScreen(float minMass, float maxMass);
+	float getRandomMass(float min, float max);
 	void initUI();
 
 	void handleInput();

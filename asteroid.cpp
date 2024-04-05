@@ -7,7 +7,7 @@ using namespace Tmpl8;
 namespace Accretion
 {
 	Asteroid::Asteroid(Tmpl8::Sprite* const sprite, Tmpl8::vec2 position, float mass)
-		: Asteroid(sprite, position, mass, {0.0f, 0.0f})
+		: Asteroid(sprite, position, mass, { 0.0f, 0.0f })
 	{}
 
 	Asteroid::Asteroid(Tmpl8::Sprite* const sprite, Tmpl8::vec2 position, float mass, Tmpl8::vec2 velocity)
@@ -37,13 +37,18 @@ namespace Accretion
 	{
 		GameObject::update();
 
-		float force = mass * blackHole.getMass() / powf(distance(blackHole), 2.0f) * GRAVITATIONAL_CONSTANT;
-		float acceleration = force / mass;
-		vec2 direction = (blackHole.getPosition() - getPosition()).normalized();
-
-		velocity += {acceleration * direction.x, acceleration * direction.y};
+		if (!blackHole.isDestroyed()) {
+			float force = mass * blackHole.getMass() / powf(distance(blackHole), 2.0f) * GRAVITATIONAL_CONSTANT;
+			float acceleration = force / mass;
+			vec2 direction = (blackHole.getPosition() - getPosition()).normalized();
+			velocity += {acceleration* direction.x, acceleration* direction.y};
+		}
 
 		position += velocity;
+
+		if (position.x < -2 * ScreenWidth || position.x > 3 * ScreenWidth || position.y < -2 * ScreenHeight || position.y > 3 * ScreenWidth) {
+			setDestroyed();
+		}
 	}
 
 	float Asteroid::calculateRadius(float mass)

@@ -98,16 +98,17 @@ namespace Tmpl8
 
 		for (auto& asteroid : asteroids)
 		{
+			if (!asteroid->isDestroyed())
+				asteroid->update(*blackHole);
+
+			// updating may destroy the asteroid, so a second if is needed
 			if (asteroid->isDestroyed())
 			{
 				asteroid.reset(nullptr);
-				asteroid = nullptr;
+				asteroids.erase(remove(asteroids.begin(), asteroids.end(), nullptr), asteroids.end());
 				asteroids.push_back(move(makeRandomAsteroidOffScreen()));
 			}
-			else
-				asteroid->update(*blackHole);
 		}
-		asteroids.erase(remove(asteroids.begin(), asteroids.end(), nullptr), asteroids.end());
 	}
 
 	unique_ptr<Asteroid> Game::makeRandomAsteroidOnScreen() {
@@ -129,8 +130,6 @@ namespace Tmpl8
 		// asteroid always initially floats towards the center
 		float velocityX = x < 0 ? Rand(0.0f, 1.0f) : Rand(-1.0f, 0.0f);
 		float velocityY = y < 0 ? Rand(0.0f, 1.0f) : Rand(-1.0f, 0.0f);
-
-		cout << "coords: (" << x << ", " << y << "); mass: " << mass << "; velocity: (" << velocityX << ", " << velocityY << ")" << endl;
 
 		unique_ptr<Asteroid> asteroid(new Asteroid(asteroidSprite, { x, y }, mass, { velocityX, velocityY }));
 		return asteroid;

@@ -26,7 +26,10 @@ inline float Rand( float range ) { return ((float)rand() / RAND_MAX) * range; }
 inline float Rand( float min, float max ) { return min + ((float)rand() / RAND_MAX) * (max - min); }
 inline int IRand( int range ) { return rand() % range; }
 inline int IRand( int min, int max ) { return rand() % max + (max - min); }
-inline bool BRand() { return (bool)rand() % 2; }
+inline bool BRand() {
+	int randInt = rand() % 2;
+	return (bool)randInt;
+}
 int filesize( FILE* f );
 #define MALLOC64(x) _aligned_malloc(x,64)
 #define FREE64(x) _aligned_free(x)

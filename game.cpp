@@ -35,7 +35,7 @@ namespace Tmpl8
 
 		for (int i = 0; i < nrAsteroids; i++)
 		{
-			asteroids.push_back(move(makeRandomAsteroid()));
+			asteroids.push_back(move(makeRandomAsteroidOnScreen()));
 		}
 	}
 
@@ -108,14 +108,12 @@ namespace Tmpl8
 				asteroid->update(*blackHole);
 		}
 		asteroids.erase(remove(asteroids.begin(), asteroids.end(), nullptr), asteroids.end());
-
-		cout << asteroids.size() << endl;
 	}
 
-	unique_ptr<Asteroid> Game::makeRandomAsteroid() {
+	unique_ptr<Asteroid> Game::makeRandomAsteroidOnScreen() {
 		float x = Rand(ScreenWidth);
 		float y = Rand(ScreenHeight);
-		float mass = BLACK_HOLE_START_MASS * powf(IRand Rand(BLACK_HOLE_START_MASS / 1000, BLACK_HOLE_START_MASS / 20);
+		float mass = Rand(BLACK_HOLE_START_MASS / 1000, BLACK_HOLE_START_MASS / 20);
 		float velocityX = Rand(-1.0f, 1.0f);
 		float velocityY = Rand(-1.0f, 1.0f);
 
@@ -128,8 +126,11 @@ namespace Tmpl8
 		float x = BRand() ? Rand(-ScreenWidth, 0) : Rand(ScreenWidth, 2 * ScreenWidth);
 		float y = BRand() ? Rand(-ScreenHeight, 0) : Rand(ScreenHeight, 2 * ScreenHeight);
 		float mass = Rand(BLACK_HOLE_START_MASS / 1000, BLACK_HOLE_START_MASS / 20);
+		// asteroid always initially floats towards the center
 		float velocityX = x < 0 ? Rand(0.0f, 1.0f) : Rand(-1.0f, 0.0f);
 		float velocityY = y < 0 ? Rand(0.0f, 1.0f) : Rand(-1.0f, 0.0f);
+
+		cout << "coords: (" << x << ", " << y << "); mass: " << mass << "; velocity: (" << velocityX << ", " << velocityY << ")" << endl;
 
 		unique_ptr<Asteroid> asteroid(new Asteroid(asteroidSprite, { x, y }, mass, { velocityX, velocityY }));
 		return asteroid;

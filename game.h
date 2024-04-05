@@ -37,7 +37,7 @@ private:
 	float currentTime = 0;
 
 	void initGameObjects();
-	std::unique_ptr<Accretion::Asteroid> makeRandomAsteroid();
+	std::unique_ptr<Accretion::Asteroid> makeRandomAsteroidOnScreen();
 	std::unique_ptr<Accretion::Asteroid> makeRandomAsteroidOffScreen();
 	void initUI();
 

@@ -23,6 +23,18 @@
     <ClCompile Include="progressBar.cpp">
       <Filter>ui</Filter>
     </ClCompile>
+    <ClCompile Include="gamemode.h">
+      <Filter>game modes</Filter>
+    </ClCompile>
+    <ClCompile Include="score.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="uiElement.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="button.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -47,6 +59,15 @@
     <ClInclude Include="progressBar.h">
       <Filter>ui</Filter>
     </ClInclude>
+    <ClInclude Include="score.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="uiElement.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="button.h">
+      <Filter>ui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="template code">
@@ -57,6 +78,9 @@
     </Filter>
     <Filter Include="ui">
       <UniqueIdentifier>{140f3f47-c54d-42d5-9880-1307e0c5fb7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game modes">
+      <UniqueIdentifier>{737c7ec5-a960-4716-99f6-1598f02043b6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -49,6 +49,9 @@ namespace Tmpl8
 		int scoreTopPadding = 20;
 		score = new Score(5, YELLOW);
 		score->setPosition({ ScreenWidth / 2,  score->getHeight() / 2 + scoreTopPadding });
+		
+		startButton = new Button(new Surface("assets/start_button.png"), new Surface("assets/start_button.png"), new Surface("assets/start_button.png"));
+		startButton->setPosition({ ScreenWidth / 2, ScreenHeight / 2 });
 	}
 	
 	// -----------------------------------------------------------
@@ -63,6 +66,7 @@ namespace Tmpl8
 		delete asteroidSprite;
 		delete massBar;
 		delete score;
+		delete startButton;
 	}
 
 	// -----------------------------------------------------------
@@ -75,10 +79,19 @@ namespace Tmpl8
 		// clear the graphics window
 		screen->Clear(BLACK);
 
-		handleInput();
-		updateGameObjects();
-		drawGameObjects();
-		drawUI();
+
+		switch (gameMode) {
+		case GameMode::GAMEPLAY:
+			handleInput();
+			updateGameObjects();
+			drawGameObjects();
+			drawUI();
+			break;
+		case GameMode::MENU:
+			startButton->draw(screen);
+			if (currentTime > 3) gameMode = GameMode::GAMEPLAY;
+			break;
+		}
 		
 		currentTime += deltaTime;
 	}

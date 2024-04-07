@@ -7,6 +7,8 @@
 #include "asteroid.h"
 #include "progressBar.h"
 #include "score.h"
+#include "button.h"
+#include "gamemode.h"
 
 namespace Tmpl8 {
 
@@ -31,8 +33,10 @@ private:
 	Sprite* asteroidSprite;
 	std::vector<std::unique_ptr<Accretion::Asteroid>> asteroids;
 
+	Accretion::GameMode gameMode = Accretion::GameMode::MENU;
 	Accretion::ProgressBar* massBar;
 	Accretion::Score* score;
+	Accretion::Button* startButton;
 	
 	float currentTime = 0;
 

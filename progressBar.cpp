@@ -6,10 +6,9 @@ namespace Accretion {
 
 ProgressBar::ProgressBar(Surface* frame, Surface* leftEdge, Surface* mainBar, Surface* rightEdge, int padding)
 	:
+	UIElement({ frame->GetWidth(), frame->GetHeight() }), 
 	frame(frame), leftEdge(leftEdge), mainBar(mainBar), rightEdge(rightEdge), padding(padding)
-{
-	dimensions = { frame->GetWidth(), frame->GetHeight() };
-}
+{ }
 
 ProgressBar::~ProgressBar()
 {

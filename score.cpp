@@ -8,10 +8,9 @@ using namespace std;
 namespace Accretion {
 	Score::Score(int size, Pixel color)
 		:
+	    UIElement({ 10 * size* (CHAR_WIDTH + CHAR_PADDING), size* CHAR_HEIGHT }),
 		size(size), color(color)
-	{
-		dimensions = { (int)getString().length() * size * (CHAR_WIDTH + CHAR_PADDING), size * CHAR_HEIGHT };
-	}
+	{}
 
 	void Score::increaseScore(int value)
 	{

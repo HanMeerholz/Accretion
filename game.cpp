@@ -50,7 +50,7 @@ namespace Tmpl8
 		score = new Score(5, YELLOW);
 		score->setPosition({ ScreenWidth / 2,  score->getHeight() / 2 + scoreTopPadding });
 		
-		startButton = new Button(new Surface("assets/start_button.png"), new Surface("assets/start_button.png"), new Surface("assets/start_button.png"));
+		startButton = new Button(new Surface("assets/start_button.png"), new Surface("assets/start_button_hover.png"), new Surface("assets/start_button_pressed.png"));
 		startButton->setPosition({ ScreenWidth / 2, ScreenHeight / 2 });
 	}
 	
@@ -88,8 +88,9 @@ namespace Tmpl8
 			drawUI();
 			break;
 		case GameMode::MENU:
+			startButton->update(mousePos, GetAsyncKeyState(VK_LBUTTON));
 			startButton->draw(screen);
-			if (currentTime > 3) gameMode = GameMode::GAMEPLAY;
+			if (startButton->isPressed()) gameMode = GameMode::GAMEPLAY;
 			break;
 		}
 		

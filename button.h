@@ -14,10 +14,14 @@ public:
 	~Button();
 
 	void draw(Tmpl8::Surface* screen);
+	void update(Tmpl8::intvec2 mousePos, bool mousePressed);
+	bool isPressed();
 
 private:
 	Tmpl8::Surface* buttonUnpressed;
 	Tmpl8::Surface* buttonHover;
 	Tmpl8::Surface* buttonPressed;
+
+	Tmpl8::Surface* currentImage;
 };
 }

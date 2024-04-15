@@ -10,7 +10,8 @@ namespace Accretion
 		UIElement({buttonUnpressed->GetWidth(), buttonUnpressed->GetHeight()}),
 		buttonUnpressed(buttonUnpressed),
 		buttonHover(buttonHover),
-		buttonPressed(buttonPressed)
+		buttonPressed(buttonPressed),
+		currentImage(buttonUnpressed)
 	{ }
 
 	Button::~Button()
@@ -20,10 +21,26 @@ namespace Accretion
 		delete buttonPressed;
 	}
 
-	void Button::draw(Tmpl8::Surface* screen)
+	void Button::draw(Surface* screen)
 	{
 		intvec2 topLeftPosition = getTopLeftPosition();
-		buttonUnpressed->CopyTo(screen, topLeftPosition.x, topLeftPosition.y);
+		currentImage->CopyTo(screen, topLeftPosition.x, topLeftPosition.y);
+	}
+
+	void Button::update(intvec2 mousePos, bool mousePressed)
+	{
+		intvec2 topLeftPosition = getTopLeftPosition();
+		intvec2 bottomRightPosition = topLeftPosition + getDimensions() - intvec2{1, 1};
+
+		bool mouseIsInButton = mousePos.x >= topLeftPosition.x && mousePos.x <= bottomRightPosition.x
+			&& mousePos.y >= topLeftPosition.y && mousePos.y <= bottomRightPosition.y;
+
+		currentImage = mouseIsInButton ? (mousePressed ? buttonPressed : buttonHover) : buttonUnpressed;
+	}
+
+	bool Button::isPressed()
+	{
+		return currentImage == buttonPressed;
 	}
 
 }

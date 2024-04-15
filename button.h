@@ -18,10 +18,18 @@ public:
 	bool isPressed();
 
 private:
+	enum ButtonState {
+		UNPRESSED, HOVER, PRESSING, PRESSED
+	};
+
+	ButtonState buttonState = UNPRESSED;
+
 	Tmpl8::Surface* buttonUnpressed;
 	Tmpl8::Surface* buttonHover;
 	Tmpl8::Surface* buttonPressed;
 
 	Tmpl8::Surface* currentImage;
+
+	void updateImage();
 };
 }

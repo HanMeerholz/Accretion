@@ -35,12 +35,51 @@ namespace Accretion
 		bool mouseIsInButton = mousePos.x >= topLeftPosition.x && mousePos.x <= bottomRightPosition.x
 			&& mousePos.y >= topLeftPosition.y && mousePos.y <= bottomRightPosition.y;
 
-		currentImage = mouseIsInButton ? (mousePressed ? buttonPressed : buttonHover) : buttonUnpressed;
+		ButtonState newButtonState = UNPRESSED;
+
+		switch (buttonState)
+		{
+		case UNPRESSED:
+			if (mouseIsInButton) newButtonState = HOVER;
+			break;
+		case HOVER:
+			if (mouseIsInButton && mousePressed) newButtonState = PRESSING;
+			else if (!mouseIsInButton) newButtonState = UNPRESSED;
+			break;
+		case PRESSING:
+			if (!mousePressed) newButtonState = PRESSED;
+			break;
+		}
+
+		if (buttonState != newButtonState)
+		{
+			buttonState = newButtonState;
+			updateImage();
+		}
+
+		std::cout << buttonState << std::endl;
+	}
+
+	void Button::updateImage()
+	{
+		switch (buttonState)
+		{
+		case UNPRESSED:
+		case PRESSED:
+			currentImage = buttonUnpressed;
+			break;
+		case HOVER:
+			currentImage = buttonHover;
+			break;
+		case PRESSING:
+			currentImage = buttonPressed;
+			break;
+		}
 	}
 
 	bool Button::isPressed()
 	{
-		return currentImage == buttonPressed;
+		return buttonState == PRESSED;
 	}
 
 }

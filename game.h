@@ -37,6 +37,7 @@ private:
 	Accretion::ProgressBar* massBar;
 	Accretion::Score* score;
 	Accretion::Button* startButton;
+	Accretion::Button* exitButton;
 
 	Tmpl8::intvec2 mousePos = { 0, 0 };
 	

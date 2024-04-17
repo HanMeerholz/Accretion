@@ -10,6 +10,7 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <SDL.h>
 
 
 using namespace std;
@@ -51,7 +52,10 @@ namespace Tmpl8
 		score->setPosition({ ScreenWidth / 2,  score->getHeight() / 2 + scoreTopPadding });
 		
 		startButton = new Button(new Surface("assets/start_button.png"), new Surface("assets/start_button_hover.png"), new Surface("assets/start_button_pressed.png"));
-		startButton->setPosition({ ScreenWidth / 2, ScreenHeight / 2 });
+		startButton->setPosition({ ScreenWidth / 2, ScreenHeight / 3 });
+
+		exitButton = new Button(new Surface("assets/exit_button.png"), new Surface("assets/exit_button_hover.png"), new Surface("assets/exit_button_pressed.png"));
+		exitButton->setPosition({ ScreenWidth / 2, 2 * ScreenHeight / 3 });
 	}
 	
 	// -----------------------------------------------------------
@@ -90,7 +94,16 @@ namespace Tmpl8
 		case GameMode::MENU:
 			startButton->update(mousePos, GetAsyncKeyState(VK_LBUTTON));
 			startButton->draw(screen);
+			exitButton->update(mousePos, GetAsyncKeyState(VK_LBUTTON));
+			exitButton->draw(screen);
 			if (startButton->isPressed()) gameMode = GameMode::GAMEPLAY;
+			if (exitButton->isPressed())
+			{
+				SDL_Event sdlevent = {};
+				sdlevent.type = SDL_KEYDOWN;
+				sdlevent.key.keysym.sym = SDLK_ESCAPE;
+				SDL_PushEvent(&sdlevent);
+			}
 			break;
 		}
 		

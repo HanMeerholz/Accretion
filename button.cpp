@@ -35,7 +35,7 @@ namespace Accretion
 		bool mouseIsInButton = mousePos.x >= topLeftPosition.x && mousePos.x <= bottomRightPosition.x
 			&& mousePos.y >= topLeftPosition.y && mousePos.y <= bottomRightPosition.y;
 
-		ButtonState newButtonState = UNPRESSED;
+		ButtonState newButtonState = buttonState;
 
 		switch (buttonState)
 		{
@@ -56,8 +56,6 @@ namespace Accretion
 			buttonState = newButtonState;
 			updateImage();
 		}
-
-		std::cout << buttonState << std::endl;
 	}
 
 	void Button::updateImage()

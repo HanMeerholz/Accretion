@@ -86,7 +86,6 @@ namespace Tmpl8
 
 		switch (gameMode) {
 		case GameMode::GAMEPLAY:
-			handleInput();
 			updateGameObjects();
 			drawGameObjects();
 			drawUI();
@@ -190,23 +189,87 @@ namespace Tmpl8
 				asteroid->draw(screen, currentTime);
 	}
 
-	void Game::handleInput()
+	void Game::KeyDown(int key)
 	{
-		if (GetAsyncKeyState(VK_UP))
-		{
-			blackHole->moveUp();
+		switch (key) {
+		case SDL_SCANCODE_UP:
+			switch (blackHole->getDirection()) {
+				case BlackHole::STILL: blackHole->setDirection(BlackHole::UP); break;
+				case BlackHole::DOWN: blackHole->setDirection(BlackHole::STILL); break;
+				case BlackHole::LEFT: blackHole->setDirection(BlackHole::LEFTUP); break;
+				case BlackHole::RIGHT: blackHole->setDirection(BlackHole::RIGHTUP); break;
+				case BlackHole::LEFTDOWN: blackHole->setDirection(BlackHole::LEFT); break;
+				case BlackHole::RIGHTDOWN: blackHole->setDirection(BlackHole::RIGHT); break;
+			}
+			break;
+		case SDL_SCANCODE_DOWN:
+			switch (blackHole->getDirection()) {
+				case BlackHole::STILL: blackHole->setDirection(BlackHole::DOWN); break;
+				case BlackHole::UP: blackHole->setDirection(BlackHole::STILL); break;
+				case BlackHole::LEFT: blackHole->setDirection(BlackHole::LEFTDOWN); break;
+				case BlackHole::RIGHT: blackHole->setDirection(BlackHole::RIGHTDOWN); break;
+				case BlackHole::LEFTUP: blackHole->setDirection(BlackHole::LEFT); break;
+				case BlackHole::RIGHTDOWN: blackHole->setDirection(BlackHole::RIGHT); break;
+			}
+			break;
+		case SDL_SCANCODE_LEFT:
+			switch (blackHole->getDirection()) {
+				case BlackHole::STILL: blackHole->setDirection(BlackHole::LEFT); break;
+				case BlackHole::UP: blackHole->setDirection(BlackHole::LEFTUP); break;
+				case BlackHole::DOWN: blackHole->setDirection(BlackHole::LEFTDOWN); break;
+				case BlackHole::RIGHT: blackHole->setDirection(BlackHole::STILL); break;
+				case BlackHole::RIGHTUP: blackHole->setDirection(BlackHole::UP); break;
+				case BlackHole::RIGHTDOWN: blackHole->setDirection(BlackHole::DOWN); break;
+			}
+			break;
+		case SDL_SCANCODE_RIGHT:
+			switch (blackHole->getDirection()) {
+				case BlackHole::STILL: blackHole->setDirection(BlackHole::RIGHT); break;
+				case BlackHole::UP: blackHole->setDirection(BlackHole::RIGHTUP); break;
+				case BlackHole::DOWN: blackHole->setDirection(BlackHole::RIGHTDOWN); break;
+				case BlackHole::LEFT: blackHole->setDirection(BlackHole::STILL); break;
+				case BlackHole::LEFTUP: blackHole->setDirection(BlackHole::UP); break;
+				case BlackHole::LEFTDOWN: blackHole->setDirection(BlackHole::DOWN); break;
+			}
+			break;
 		}
-		if (GetAsyncKeyState(VK_DOWN))
-		{
-			blackHole->moveDown();
-		}
-		if (GetAsyncKeyState(VK_LEFT))
-		{
-			blackHole->moveLeft();
-		}
-		if (GetAsyncKeyState(VK_RIGHT))
-		{
-			blackHole->moveRight();
+	}
+
+	void Game::KeyUp(int key)
+	{
+		switch (key) {
+		case SDL_SCANCODE_UP:
+			switch (blackHole->getDirection()) {
+				case BlackHole::UP: blackHole->setDirection(BlackHole::STILL); break;
+				case BlackHole::LEFTUP: blackHole->setDirection(BlackHole::LEFT); break;
+				case BlackHole::RIGHTUP: blackHole->setDirection(BlackHole::RIGHT); break;
+				default: cout << "what the heck you're not even going up" << endl; break;
+			}
+			break;
+		case SDL_SCANCODE_DOWN:
+			switch (blackHole->getDirection()) {
+				case BlackHole::DOWN: blackHole->setDirection(BlackHole::STILL); break;
+				case BlackHole::LEFTDOWN: blackHole->setDirection(BlackHole::LEFT); break;
+				case BlackHole::RIGHTDOWN: blackHole->setDirection(BlackHole::RIGHT); break;
+				default: cout << "what the heck you're not even going down" << endl; break;
+			}
+			break;
+		case SDL_SCANCODE_LEFT:
+			switch (blackHole->getDirection()) {
+				case BlackHole::LEFT: blackHole->setDirection(BlackHole::STILL); break;
+				case BlackHole::LEFTUP: blackHole->setDirection(BlackHole::UP); break;
+				case BlackHole::LEFTDOWN: blackHole->setDirection(BlackHole::DOWN); break;
+				default: cout << "what the heck you're not even going left" << endl; break;
+			}
+			break;
+		case SDL_SCANCODE_RIGHT:
+			switch (blackHole->getDirection()) {
+				case BlackHole::RIGHT: blackHole->setDirection(BlackHole::STILL); break;
+				case BlackHole::RIGHTUP: blackHole->setDirection(BlackHole::UP); break;
+				case BlackHole::RIGHTDOWN: blackHole->setDirection(BlackHole::DOWN); break;
+				default: cout << "what the heck you're not even going right" << endl; break;
+			}
+			break;
 		}
 	}
 

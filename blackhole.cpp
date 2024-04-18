@@ -11,35 +11,43 @@ namespace Accretion
 		radius = calculateRadius(mass);
 	}
 
+	BlackHole::Direction BlackHole::getDirection()
+	{
+		return direction;
+	}
+
+	void BlackHole::setDirection(Direction direction)
+	{
+		this->direction = direction;
+	}
+
+
 	void BlackHole::addMass(float mass)
 	{
 		this->mass += mass;
-	}
-
-	void BlackHole::moveUp()
-	{
-		position.y = Modulo(position.y - speed, ScreenHeight);
-	}
-
-	void BlackHole::moveDown()
-	{
-		position.y = Modulo(position.y + speed, ScreenHeight);
-	}
-
-	void BlackHole::moveLeft()
-	{
-		position.x = Modulo(position.x - speed, ScreenWidth);
-	}
-
-	void BlackHole::moveRight()
-	{
-		position.x = Modulo(position.x + speed, ScreenWidth);
 	}
 
 	void BlackHole::update()
 	{
 		GameObject::update();
 		if (destroyed) return;
+
+		vec2 directionVector;
+		switch (direction) {
+			case STILL: directionVector = { 0, 0 }; break;
+			case LEFT: directionVector = { -1, 0 }; break;
+			case LEFTUP: directionVector = vec2{ -1, -1 }.normalized(); break;
+			case UP: directionVector = { 0, -1 }; break;
+			case RIGHTUP: directionVector = vec2{ 1, -1 }.normalized(); break;
+			case RIGHT: directionVector = { 1, 0 }; break;
+			case RIGHTDOWN: directionVector = vec2{ 1, 1 }.normalized(); break;
+			case DOWN: directionVector = { 0, 1 }; break;
+			case LEFTDOWN: directionVector = vec2{ -1, 1 }.normalized(); break;
+		}
+		position += directionVector * speed;
+		position.x = Modulo(position.x, ScreenWidth);
+		position.y = Modulo(position.y, ScreenHeight);
+
 		mass *= 1 - massLossRate;
 		if (mass < criticalMass) setDestroyed();
 	}

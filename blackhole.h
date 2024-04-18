@@ -16,18 +16,22 @@ static constexpr float BLACK_HOLE_START_MASS = 4000.0f;
 static constexpr float METERS_PER_EARTH_MASS = 0.008868f;
 static Tmpl8::vec2 const BLACK_HOLE_START_POSITION = { ScreenWidth / 2, ScreenHeight / 2 };
 
+
+
 class BlackHole : public SpritedGameObject
 {
 public:
+	enum Direction {
+		STILL, LEFT, LEFTUP, UP, RIGHTUP, RIGHT, RIGHTDOWN, DOWN, LEFTDOWN
+	};
+
 	// structors
 	BlackHole() = delete;
 	BlackHole(Tmpl8::Sprite* const sprite);
 
-	// movement
-	void moveUp();
-	void moveDown();
-	void moveLeft();
-	void moveRight();
+	// getters/setters
+	Direction getDirection();
+	void setDirection(Direction direction);
 
 	// physics
 	void update();
@@ -41,6 +45,8 @@ private:
 	float const speed = 1.8f;
 	float const criticalMass = 1000.0f;
 	float const massLossRate = 0.0003f;
+
+	Direction direction = STILL;
 
 	void addMass(float mass);
 	float calculateRadius(float mass);

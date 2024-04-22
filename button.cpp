@@ -1,17 +1,20 @@
 #include "button.h"
 #include "surface.h"
 #include <iostream>
+#include <functional>
 
 using namespace Tmpl8;
+using namespace std;
 
 namespace Accretion
 {
-	Button::Button(Surface* buttonUnpressed, Surface* buttonHover, Surface* buttonPressed) :
+	Button::Button(Surface* buttonUnpressed, Surface* buttonHover, Surface* buttonPressed, function<void()> onPress) :
 		UIElement({buttonUnpressed->GetWidth(), buttonUnpressed->GetHeight()}),
 		buttonUnpressed(buttonUnpressed),
 		buttonHover(buttonHover),
 		buttonPressed(buttonPressed),
-		currentImage(buttonUnpressed)
+		currentImage(buttonUnpressed),
+		onPress(onPress)
 	{ }
 
 	Button::~Button()
@@ -56,6 +59,10 @@ namespace Accretion
 			buttonState = newButtonState;
 			updateImage();
 		}
+
+		if (buttonState == PRESSED) {
+			onPress();
+		}
 	}
 
 	void Button::updateImage()
@@ -73,11 +80,6 @@ namespace Accretion
 			currentImage = buttonPressed;
 			break;
 		}
-	}
-
-	bool Button::isPressed()
-	{
-		return buttonState == PRESSED;
 	}
 
 }

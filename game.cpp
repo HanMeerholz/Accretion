@@ -51,10 +51,19 @@ namespace Tmpl8
 		score = new Score(5, YELLOW);
 		score->setPosition({ ScreenWidth / 2,  score->getHeight() / 2 + scoreTopPadding });
 		
-		startButton = new Button(new Surface("assets/start_button.png"), new Surface("assets/start_button_hover.png"), new Surface("assets/start_button_pressed.png"));
+		startButton = new Button(new Surface("assets/start_button.png"), new Surface("assets/start_button_hover.png"), new Surface("assets/start_button_pressed.png"),
+			[&] {
+				gameMode = GameMode::GAMEPLAY;
+			});
 		startButton->setPosition({ ScreenWidth / 2, ScreenHeight / 3 });
 
-		exitButton = new Button(new Surface("assets/exit_button.png"), new Surface("assets/exit_button_hover.png"), new Surface("assets/exit_button_pressed.png"));
+		exitButton = new Button(new Surface("assets/exit_button.png"), new Surface("assets/exit_button_hover.png"), new Surface("assets/exit_button_pressed.png"),
+			[&] {
+					SDL_Event sdlevent = {};
+					sdlevent.type = SDL_KEYDOWN;
+					sdlevent.key.keysym.sym = SDLK_ESCAPE;
+					SDL_PushEvent(&sdlevent);
+			});
 		exitButton->setPosition({ ScreenWidth / 2, 2 * ScreenHeight / 3 });
 	}
 	
@@ -96,14 +105,6 @@ namespace Tmpl8
 			startButton->draw(screen);
 			exitButton->update(mousePos, GetAsyncKeyState(VK_LBUTTON));
 			exitButton->draw(screen);
-			if (startButton->isPressed()) gameMode = GameMode::GAMEPLAY;
-			if (exitButton->isPressed())
-			{
-				SDL_Event sdlevent = {};
-				sdlevent.type = SDL_KEYDOWN;
-				sdlevent.key.keysym.sym = SDLK_ESCAPE;
-				SDL_PushEvent(&sdlevent);
-			}
 			break;
 		}
 		

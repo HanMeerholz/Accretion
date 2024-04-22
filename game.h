@@ -39,6 +39,8 @@ private:
 	Accretion::Button* startButton;
 	Accretion::Button* exitButton;
 
+	bool upPressed = false, downPressed = false, leftPressed = false, rightPressed = false;
+
 	Tmpl8::intvec2 mousePos = { 0, 0 };
 	
 	float currentTime = 0;
@@ -49,6 +51,7 @@ private:
 	float getRandomMass(float min, float max);
 	void initUI();
 
+	void handleInput();
 	void updateGameObjects();
 	void drawGameObjects();
 	void drawUI();

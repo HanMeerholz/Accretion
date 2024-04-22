@@ -21,17 +21,12 @@ static Tmpl8::vec2 const BLACK_HOLE_START_POSITION = { ScreenWidth / 2, ScreenHe
 class BlackHole : public SpritedGameObject
 {
 public:
-	enum Direction {
-		STILL, LEFT, LEFTUP, UP, RIGHTUP, RIGHT, RIGHTDOWN, DOWN, LEFTDOWN
-	};
-
 	// structors
 	BlackHole() = delete;
 	BlackHole(Tmpl8::Sprite* const sprite);
 
 	// getters/setters
-	Direction getDirection();
-	void setDirection(Direction direction);
+	void setDirection(Tmpl8::vec2 direction);
 
 	// physics
 	void update();
@@ -46,7 +41,7 @@ private:
 	float const criticalMass = 1000.0f;
 	float const massLossRate = 0.0003f;
 
-	Direction direction = STILL;
+	Tmpl8::vec2 direction = { 0.0f, 0.0f };
 
 	void addMass(float mass);
 	float calculateRadius(float mass);

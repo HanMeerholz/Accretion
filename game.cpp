@@ -86,6 +86,7 @@ namespace Tmpl8
 
 		switch (gameMode) {
 		case GameMode::GAMEPLAY:
+			handleInput();
 			updateGameObjects();
 			drawGameObjects();
 			drawUI();
@@ -107,6 +108,18 @@ namespace Tmpl8
 		}
 		
 		currentTime += deltaTime;
+	}
+
+	void Game::handleInput()
+	{
+		vec2 direction = { 0.0f, 0.0f };
+		if (upPressed) direction.y -= 1;
+		if (downPressed) direction.y += 1;
+		if (leftPressed) direction.x -= 1;
+		if (rightPressed) direction.x += 1;
+
+		if (direction.length() >= 0.1f) direction.normalize();
+		blackHole->setDirection(direction);
 	}
 
 	void Game::updateGameObjects() {
@@ -193,44 +206,16 @@ namespace Tmpl8
 	{
 		switch (key) {
 		case SDL_SCANCODE_UP:
-			switch (blackHole->getDirection()) {
-				case BlackHole::STILL: blackHole->setDirection(BlackHole::UP); break;
-				case BlackHole::DOWN: blackHole->setDirection(BlackHole::STILL); break;
-				case BlackHole::LEFT: blackHole->setDirection(BlackHole::LEFTUP); break;
-				case BlackHole::RIGHT: blackHole->setDirection(BlackHole::RIGHTUP); break;
-				case BlackHole::LEFTDOWN: blackHole->setDirection(BlackHole::LEFT); break;
-				case BlackHole::RIGHTDOWN: blackHole->setDirection(BlackHole::RIGHT); break;
-			}
+			if (!upPressed) upPressed = true;
 			break;
 		case SDL_SCANCODE_DOWN:
-			switch (blackHole->getDirection()) {
-				case BlackHole::STILL: blackHole->setDirection(BlackHole::DOWN); break;
-				case BlackHole::UP: blackHole->setDirection(BlackHole::STILL); break;
-				case BlackHole::LEFT: blackHole->setDirection(BlackHole::LEFTDOWN); break;
-				case BlackHole::RIGHT: blackHole->setDirection(BlackHole::RIGHTDOWN); break;
-				case BlackHole::LEFTUP: blackHole->setDirection(BlackHole::LEFT); break;
-				case BlackHole::RIGHTDOWN: blackHole->setDirection(BlackHole::RIGHT); break;
-			}
+			if (!downPressed) downPressed = true;
 			break;
 		case SDL_SCANCODE_LEFT:
-			switch (blackHole->getDirection()) {
-				case BlackHole::STILL: blackHole->setDirection(BlackHole::LEFT); break;
-				case BlackHole::UP: blackHole->setDirection(BlackHole::LEFTUP); break;
-				case BlackHole::DOWN: blackHole->setDirection(BlackHole::LEFTDOWN); break;
-				case BlackHole::RIGHT: blackHole->setDirection(BlackHole::STILL); break;
-				case BlackHole::RIGHTUP: blackHole->setDirection(BlackHole::UP); break;
-				case BlackHole::RIGHTDOWN: blackHole->setDirection(BlackHole::DOWN); break;
-			}
+			if (!leftPressed) leftPressed = true;
 			break;
 		case SDL_SCANCODE_RIGHT:
-			switch (blackHole->getDirection()) {
-				case BlackHole::STILL: blackHole->setDirection(BlackHole::RIGHT); break;
-				case BlackHole::UP: blackHole->setDirection(BlackHole::RIGHTUP); break;
-				case BlackHole::DOWN: blackHole->setDirection(BlackHole::RIGHTDOWN); break;
-				case BlackHole::LEFT: blackHole->setDirection(BlackHole::STILL); break;
-				case BlackHole::LEFTUP: blackHole->setDirection(BlackHole::UP); break;
-				case BlackHole::LEFTDOWN: blackHole->setDirection(BlackHole::DOWN); break;
-			}
+			if (!rightPressed) rightPressed = true;
 			break;
 		}
 	}
@@ -239,36 +224,16 @@ namespace Tmpl8
 	{
 		switch (key) {
 		case SDL_SCANCODE_UP:
-			switch (blackHole->getDirection()) {
-				case BlackHole::UP: blackHole->setDirection(BlackHole::STILL); break;
-				case BlackHole::LEFTUP: blackHole->setDirection(BlackHole::LEFT); break;
-				case BlackHole::RIGHTUP: blackHole->setDirection(BlackHole::RIGHT); break;
-				default: cout << "what the heck you're not even going up" << endl; break;
-			}
+			if (upPressed) upPressed = false;
 			break;
 		case SDL_SCANCODE_DOWN:
-			switch (blackHole->getDirection()) {
-				case BlackHole::DOWN: blackHole->setDirection(BlackHole::STILL); break;
-				case BlackHole::LEFTDOWN: blackHole->setDirection(BlackHole::LEFT); break;
-				case BlackHole::RIGHTDOWN: blackHole->setDirection(BlackHole::RIGHT); break;
-				default: cout << "what the heck you're not even going down" << endl; break;
-			}
+			if (downPressed) downPressed = false;
 			break;
 		case SDL_SCANCODE_LEFT:
-			switch (blackHole->getDirection()) {
-				case BlackHole::LEFT: blackHole->setDirection(BlackHole::STILL); break;
-				case BlackHole::LEFTUP: blackHole->setDirection(BlackHole::UP); break;
-				case BlackHole::LEFTDOWN: blackHole->setDirection(BlackHole::DOWN); break;
-				default: cout << "what the heck you're not even going left" << endl; break;
-			}
+			if (leftPressed) leftPressed = false;
 			break;
 		case SDL_SCANCODE_RIGHT:
-			switch (blackHole->getDirection()) {
-				case BlackHole::RIGHT: blackHole->setDirection(BlackHole::STILL); break;
-				case BlackHole::RIGHTUP: blackHole->setDirection(BlackHole::UP); break;
-				case BlackHole::RIGHTDOWN: blackHole->setDirection(BlackHole::DOWN); break;
-				default: cout << "what the heck you're not even going right" << endl; break;
-			}
+			if (rightPressed) rightPressed = false;
 			break;
 		}
 	}

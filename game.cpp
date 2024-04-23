@@ -50,21 +50,24 @@ namespace Tmpl8
 		int scoreTopPadding = 20;
 		score = new Score(5, YELLOW);
 		score->setPosition({ ScreenWidth / 2,  score->getHeight() / 2 + scoreTopPadding });
-		
-		startButton = new Button(new Surface("assets/start_button.png"), new Surface("assets/start_button_hover.png"), new Surface("assets/start_button_pressed.png"),
+
+		vector<unique_ptr<Button>> buttons;
+
+		unique_ptr<Button> startButton(new Button(new Surface("assets/start_button.png"), new Surface("assets/start_button_hover.png"), new Surface("assets/start_button_pressed.png"),
 			[&] {
 				gameMode = GameMode::GAMEPLAY;
-			});
-		startButton->setPosition({ ScreenWidth / 2, ScreenHeight / 3 });
-
-		exitButton = new Button(new Surface("assets/exit_button.png"), new Surface("assets/exit_button_hover.png"), new Surface("assets/exit_button_pressed.png"),
+			}));
+		buttons.push_back(move(startButton));
+		unique_ptr<Button> exitButton(new Button(new Surface("assets/exit_button.png"), new Surface("assets/exit_button_hover.png"), new Surface("assets/exit_button_pressed.png"),
 			[&] {
-					SDL_Event sdlevent = {};
-					sdlevent.type = SDL_KEYDOWN;
-					sdlevent.key.keysym.sym = SDLK_ESCAPE;
-					SDL_PushEvent(&sdlevent);
-			});
-		exitButton->setPosition({ ScreenWidth / 2, 2 * ScreenHeight / 3 });
+				SDL_Event sdlevent = {};
+				sdlevent.type = SDL_KEYDOWN;
+				sdlevent.key.keysym.sym = SDLK_ESCAPE;
+				SDL_PushEvent(&sdlevent);
+			}));
+		buttons.push_back(move(exitButton));
+
+		mainMenu = new Menu(move(buttons));
 	}
 	
 	// -----------------------------------------------------------
@@ -79,7 +82,7 @@ namespace Tmpl8
 		delete asteroidSprite;
 		delete massBar;
 		delete score;
-		delete startButton;
+		delete mainMenu;
 	}
 
 	// -----------------------------------------------------------
@@ -101,10 +104,8 @@ namespace Tmpl8
 			drawUI();
 			break;
 		case GameMode::MENU:
-			startButton->update(mousePos, GetAsyncKeyState(VK_LBUTTON));
-			startButton->draw(screen);
-			exitButton->update(mousePos, GetAsyncKeyState(VK_LBUTTON));
-			exitButton->draw(screen);
+			mainMenu->update(mousePos, GetAsyncKeyState(VK_LBUTTON));
+			mainMenu->draw(screen);
 			break;
 		}
 		

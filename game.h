@@ -7,7 +7,7 @@
 #include "asteroid.h"
 #include "progressBar.h"
 #include "score.h"
-#include "button.h"
+#include "menu.h"
 #include "gamemode.h"
 
 namespace Tmpl8 {
@@ -36,8 +36,8 @@ private:
 	Accretion::GameMode gameMode = Accretion::GameMode::MENU;
 	Accretion::ProgressBar* massBar;
 	Accretion::Score* score;
-	Accretion::Button* startButton;
-	Accretion::Button* exitButton;
+
+	Accretion::Menu* mainMenu;
 
 	bool upPressed = false, downPressed = false, leftPressed = false, rightPressed = false;
 

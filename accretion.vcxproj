@@ -228,6 +228,7 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gamemode.h" />
     <ClCompile Include="gameobject.cpp" />
+    <ClCompile Include="menu.cpp" />
     <ClCompile Include="progressBar.cpp" />
     <ClCompile Include="score.cpp" />
     <ClCompile Include="spritedgameobject.cpp" />
@@ -241,6 +242,7 @@
     <ClInclude Include="button.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gameobject.h" />
+    <ClInclude Include="menu.h" />
     <ClInclude Include="progressBar.h" />
     <ClInclude Include="score.h" />
     <ClInclude Include="spritedgameobject.h" />

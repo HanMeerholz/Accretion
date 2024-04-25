@@ -6,16 +6,18 @@ using namespace Tmpl8;
 
 namespace Accretion {
 
-Menu::Menu(vector<unique_ptr<Button>>&& buttons) :
-	UIElement(determineDimensions(buttons)), buttons(move(buttons))
+Menu::Menu(vector<unique_ptr<Button>>& buttons, intvec2 position) :
+	UIElement(determineDimensions(buttons), position), buttons(move(buttons))
 { 
-	intvec2 curRelativePosition = { 0, 0 };
+	if (this->buttons.size() == 0) return;
+
+	intvec2 curRelativePosition = { 0, - (getHeight() - this->buttons[0]->getHeight()) / 2};
 
 	for (auto& button : this->buttons)
 	{
 		curRelativePosition.x = (getWidth() - button->getWidth()) / 2;
 
-		button->setPosition(getTopLeftPosition() + curRelativePosition);
+		button->setPosition(position + curRelativePosition);
 
 		curRelativePosition.y += button->getHeight() + padding;
 	}
@@ -51,7 +53,9 @@ intvec2 Menu::determineDimensions(vector<unique_ptr<Button>>& buttons)
 		int buttonWidth = button->getWidth();
 		if (buttonWidth > width) width = buttonWidth;
 	}
-	return { height, width };
+	// one padding too many, since padding is only *between* buttons
+	height -= padding;
+	return { width, height };
 }
 
 }

@@ -9,13 +9,13 @@ namespace Accretion {
 class Menu : public UIElement {
 public:
 	Menu() = delete;
-	Menu(std::vector<std::unique_ptr<Accretion::Button>>&& buttons);
+	Menu(std::vector<std::unique_ptr<Accretion::Button>>& buttons, Tmpl8::intvec2 position);
 	~Menu();
 
 	void draw(Tmpl8::Surface* screen);
 	void update(Tmpl8::intvec2 mousePos, bool mousePressed);
 private:
-	static int const padding = 5;
+	static int const padding = 50;
 
 	std::vector<std::unique_ptr<Accretion::Button>> buttons;
 

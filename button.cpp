@@ -9,7 +9,7 @@ using namespace std;
 namespace Accretion
 {
 	Button::Button(Surface* buttonUnpressed, Surface* buttonHover, Surface* buttonPressed, function<void()> onPress) :
-		UIElement({buttonUnpressed->GetWidth(), buttonUnpressed->GetHeight()}),
+		UIElement(intvec2{buttonUnpressed->GetWidth(), buttonUnpressed->GetHeight()}),
 		buttonUnpressed(buttonUnpressed),
 		buttonHover(buttonHover),
 		buttonPressed(buttonPressed),

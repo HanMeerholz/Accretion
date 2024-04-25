@@ -9,6 +9,7 @@ class UIElement {
 public:
 	UIElement() = delete;
 	UIElement(Tmpl8::intvec2 dimensions);
+	UIElement(Tmpl8::intvec2 dimensions, Tmpl8::intvec2 position);
 
 	Tmpl8::intvec2 getDimensions();
 	int getWidth();

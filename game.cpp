@@ -67,7 +67,7 @@ namespace Tmpl8
 			}));
 		buttons.push_back(move(exitButton));
 
-		mainMenu = new Menu(move(buttons));
+		mainMenu = new Menu(move(buttons), { ScreenWidth / 2, ScreenHeight / 2 });
 	}
 	
 	// -----------------------------------------------------------

@@ -3,8 +3,12 @@
 using namespace Tmpl8;
 
 namespace Accretion {
-UIElement::UIElement(Tmpl8::intvec2 dimensions):
-	dimensions(dimensions)
+UIElement::UIElement(intvec2 dimensions):
+	UIElement(dimensions, {0, 0})
+{}
+
+UIElement::UIElement(intvec2 dimensions, intvec2 position):
+	dimensions(dimensions), position(position)
 {}
 
 intvec2 UIElement::getDimensions()

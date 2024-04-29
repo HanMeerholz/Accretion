@@ -22,16 +22,17 @@ namespace Accretion
 		this->mass += mass;
 	}
 
-	void BlackHole::update()
+	void BlackHole::update(float deltaTime)
 	{
-		GameObject::update();
+		GameObject::update(deltaTime);
 		if (destroyed) return;
 
-		position += direction * speed;
+		position += direction * speed * deltaTime;
 		position.x = Modulo(position.x, ScreenWidth);
 		position.y = Modulo(position.y, ScreenHeight);
 
-		mass *= 1 - massLossRate;
+		// every second the mass shrinks by the massLossRate times the initial mass
+		mass *= powf(1 - massLossRate, deltaTime);
 		if (mass < criticalMass) setDestroyed();
 	}
 

@@ -52,7 +52,7 @@ private:
 	void initUI();
 
 	void handleInput();
-	void updateGameObjects();
+	void updateGameObjects(float deltaTime);
 	void drawGameObjects();
 	void drawUI();
 };

@@ -99,7 +99,7 @@ namespace Tmpl8
 		switch (gameMode) {
 		case GameMode::GAMEPLAY:
 			handleInput();
-			updateGameObjects();
+			updateGameObjects(deltaTime);
 			drawGameObjects();
 			drawUI();
 			break;
@@ -124,13 +124,13 @@ namespace Tmpl8
 		blackHole->setDirection(direction);
 	}
 
-	void Game::updateGameObjects() {
+	void Game::updateGameObjects(float deltaTime) {
 
-		cout << "Nr asteroids: " << asteroids.size() << endl;
+		// cout << "Nr asteroids: " << asteroids.size() << endl;
 
 		if (!blackHole->isDestroyed())
 		{
-			blackHole->update();
+			blackHole->update(deltaTime);
 
 			for (auto& asteroid : asteroids)
 				if (!asteroid->isDestroyed())
@@ -143,7 +143,7 @@ namespace Tmpl8
 
 		for (auto& asteroid : asteroids)
 			if (!asteroid->isDestroyed())
-				asteroid->update(*blackHole);
+				asteroid->update(*blackHole, deltaTime);
 
 		for (auto& asteroid : asteroids)
 			if (asteroid->isDestroyed())
@@ -167,8 +167,8 @@ namespace Tmpl8
 		float x = Rand(ScreenWidth);
 		float y = Rand(ScreenHeight);
 		float mass = getRandomMass(BLACK_HOLE_START_MASS / 1000, BLACK_HOLE_START_MASS / 20);
-		float velocityX = Rand(-1.0f, 1.0f);
-		float velocityY = Rand(-1.0f, 1.0f);
+		float velocityX = Rand(-100.0f, 100.0f);
+		float velocityY = Rand(-100.0f, 100.0f);
 
 		unique_ptr<Asteroid> asteroid(new Asteroid(asteroidSprite, { x, y }, mass, { velocityX, velocityY }));
 		return asteroid;
@@ -180,8 +180,8 @@ namespace Tmpl8
 		float y = BRand() ? Rand(-ScreenHeight, 0) : Rand(ScreenHeight, 2 * ScreenHeight);
 		float mass = getRandomMass(minMass, maxMass);
 		// asteroid always initially floats towards the center
-		float velocityX = x < 0 ? Rand(0.0f, 1.0f) : Rand(-1.0f, 0.0f);
-		float velocityY = y < 0 ? Rand(0.0f, 1.0f) : Rand(-1.0f, 0.0f);
+		float velocityX = x < 0 ? Rand(0.0f, 100.0f) : Rand(-100.0f, 0.0f);
+		float velocityY = y < 0 ? Rand(0.0f, 100.0f) : Rand(-100.0f, 0.0f);
 
 		unique_ptr<Asteroid> asteroid(new Asteroid(asteroidSprite, { x, y }, mass, { velocityX, velocityY }));
 		return asteroid;

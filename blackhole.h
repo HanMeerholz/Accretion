@@ -29,7 +29,7 @@ public:
 	void setDirection(Tmpl8::vec2 direction);
 
 	// physics
-	void update();
+	void update(float deltaTime);
 	void consumeAsteroid(Asteroid& asteroid);
 
 	// sprite
@@ -37,7 +37,7 @@ public:
 	void draw(Tmpl8::Surface* const screen);
 private:
 	// pixels per frame
-	float const speed = 1.8f;
+	float const speed = 180.0f;
 	float const criticalMass = 1000.0f;
 	float const massLossRate = 0.0003f;
 

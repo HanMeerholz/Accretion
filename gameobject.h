@@ -21,7 +21,7 @@ public:
 	float getRadius();
 
 	// physics
-	virtual void update();
+	virtual void update(float deltaTime);
 
 	// collision
 	bool isConsumedBy(GameObject& gameObject);

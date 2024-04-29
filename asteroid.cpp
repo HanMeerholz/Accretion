@@ -33,18 +33,18 @@ namespace Accretion
 		// screen->Circle(position.x, position.y, radius, YELLOW);
 	}
 
-	void Asteroid::update(BlackHole& blackHole)
+	void Asteroid::update(BlackHole& blackHole, float deltaTime)
 	{
-		GameObject::update();
+		GameObject::update(deltaTime);
 
 		if (!blackHole.isDestroyed()) {
 			float force = mass * blackHole.getMass() / powf(distance(blackHole), 2.0f) * GRAVITATIONAL_CONSTANT;
 			float acceleration = force / mass;
 			vec2 direction = (blackHole.getPosition() - getPosition()).normalized();
-			velocity += {acceleration* direction.x, acceleration* direction.y};
+			velocity += {acceleration * direction.x * deltaTime, acceleration * direction.y * deltaTime};
 		}
 
-		position += velocity;
+		position += velocity * deltaTime;
 
 		if (position.x < -2 * ScreenWidth || position.x > 3 * ScreenWidth || position.y < -2 * ScreenHeight || position.y > 3 * ScreenWidth) {
 			setDestroyed();

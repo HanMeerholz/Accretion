@@ -41,7 +41,7 @@ float GameObject::getRadius()
 	return radius;
 }
 
-void GameObject::update()
+void GameObject::update(float deltaTime)
 {
 	radius = calculateRadius(mass);
 }

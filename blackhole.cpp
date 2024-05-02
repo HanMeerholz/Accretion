@@ -1,12 +1,13 @@
 #include "blackhole.h"
 #include "surface.h"
+#include "particleEffect.h"
 
 using namespace Tmpl8;
 
 namespace Accretion
 {
-	BlackHole::BlackHole(Sprite* const sprite) :
-		SpritedGameObject(sprite, BLACK_HOLE_START_POSITION, BLACK_HOLE_START_MASS)
+	BlackHole::BlackHole(Sprite* const sprite, Sprite* const deathSprite) :
+		SpritedGameObject(sprite, BLACK_HOLE_START_POSITION, BLACK_HOLE_START_MASS), deathSprite(deathSprite)
 	{
 		radius = calculateRadius(mass);
 	}
@@ -27,13 +28,32 @@ namespace Accretion
 		GameObject::update(deltaTime);
 		if (destroyed) return;
 
-		position += direction * speed * deltaTime;
-		position.x = Modulo(position.x, ScreenWidth);
-		position.y = Modulo(position.y, ScreenHeight);
+		switch (phase) {
+			case ALIVE:
+				position += direction * speed * deltaTime;
+				position.x = Modulo(position.x, ScreenWidth);
+				position.y = Modulo(position.y, ScreenHeight);
 
-		// every second the mass shrinks by the massLossRate times the initial mass
-		mass *= powf(1 - massLossRate, deltaTime);
-		if (mass < criticalMass) setDestroyed();
+				// every second the mass shrinks by the massLossRate times the initial mass
+				mass *= powf(1 - massLossRate, deltaTime);
+				if (mass < criticalMass) phase = CRITICAL;
+				break;
+			case CRITICAL:
+				mass -= 1000.0f * deltaTime;
+				if (mass <= 0)
+				{
+					mass = 0;
+					deathEffect = new ParticleEffect(deathSprite, position);
+					phase = IMPLOSION;
+				}
+				break;
+			case IMPLOSION:
+				if (deathEffect->isFinished()) {
+					phase = DEATH;
+					setDestroyed();
+				}
+				break;
+		}
 	}
 
 	float BlackHole::calculateRadius(float mass)
@@ -47,9 +67,24 @@ namespace Accretion
 		addMass(asteroid.getMass());
 	}
 
+	void BlackHole::setPhase(BlackHole::Phase phase)
+	{
+		this->phase = phase;
+	}
+
 	void BlackHole::draw(Tmpl8::Surface* const screen, float currentTime)
 	{
-		SpritedGameObject::draw(screen, currentTime);
+		if (phase == IMPLOSION)
+		{
+			if (deathEffect->getStartTime() == 0.0f) {
+				deathEffect->setStartTime(currentTime);
+			}
+			deathEffect->draw(screen, currentTime);
+		}
+		else if (phase != DEATH)
+		{
+			SpritedGameObject::draw(screen, currentTime);
+		}
 	}
 
 	void BlackHole::draw(Tmpl8::Surface* const screen)

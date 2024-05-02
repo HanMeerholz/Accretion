@@ -9,6 +9,8 @@
 #include <numeric>
 
 #define WIN32_LEAN_AND_MEAN
+#define DEBUG_MODE (defined DEBUG || defined _DEBUG)
+
 #include <windows.h>
 #include <SDL.h>
 
@@ -30,15 +32,14 @@ namespace Tmpl8
 	void Game::initGameObjects()
 	{
 		blackHoleSprite = new Sprite(new Surface("assets/blackhole.png"), 30);
-		blackHole = new BlackHole(blackHoleSprite);
+		blackHoleDeathSprite = new Sprite(new Surface("assets/implosion.png"), 60);
+		blackHole = new BlackHole(blackHoleSprite, blackHoleDeathSprite);
 		asteroidSprite = new Sprite(new Surface("assets/asteroid.png"), 24);
 
 		int const nrAsteroids = 120;
 
 		for (int i = 0; i < nrAsteroids; i++)
-		{
 			asteroids.push_back(move(makeRandomAsteroidOnScreen()));
-		}
 	}
 
 	void Game::initUI()
@@ -77,6 +78,7 @@ namespace Tmpl8
 	{
 		delete blackHole;
 		delete blackHoleSprite;
+		delete blackHoleDeathSprite;
 		for (auto& asteroid : asteroids)
 			asteroid.reset();
 		delete asteroidSprite;
@@ -219,6 +221,11 @@ namespace Tmpl8
 		case SDL_SCANCODE_RIGHT:
 			if (!rightPressed) rightPressed = true;
 			break;
+#if DEBUG_MODE
+		case SDL_SCANCODE_K:
+			blackHole->setPhase(BlackHole::Phase::CRITICAL);
+			break;
+#endif
 		}
 	}
 

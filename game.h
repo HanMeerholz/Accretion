@@ -29,6 +29,7 @@ public:
 private:
 	Surface* screen;
 	Sprite* blackHoleSprite;
+	Sprite* blackHoleDeathSprite;
 	Accretion::BlackHole* blackHole;
 	Sprite* asteroidSprite;
 	std::vector<std::unique_ptr<Accretion::Asteroid>> asteroids;

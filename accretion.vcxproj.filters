@@ -14,10 +14,10 @@
     <ClCompile Include="blackhole.cpp">
       <Filter>game objects</Filter>
     </ClCompile>
-    <ClCompile Include="gameobject.cpp">
+    <ClCompile Include="gameObject.cpp">
       <Filter>game objects</Filter>
     </ClCompile>
-    <ClCompile Include="spritedgameobject.cpp">
+    <ClCompile Include="spritedGameObject.cpp">
       <Filter>game objects</Filter>
     </ClCompile>
     <ClCompile Include="progressBar.cpp">
@@ -36,6 +36,9 @@
       <Filter>ui</Filter>
     </ClCompile>
     <ClCompile Include="menu.cpp" />
+    <ClCompile Include="particleEffect.cpp">
+      <Filter>game objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -51,10 +54,10 @@
     <ClInclude Include="blackhole.h">
       <Filter>game objects</Filter>
     </ClInclude>
-    <ClInclude Include="gameobject.h">
+    <ClInclude Include="gameObject.h">
       <Filter>game objects</Filter>
     </ClInclude>
-    <ClInclude Include="spritedgameobject.h">
+    <ClInclude Include="spritedGameObject.h">
       <Filter>game objects</Filter>
     </ClInclude>
     <ClInclude Include="progressBar.h">
@@ -71,6 +74,9 @@
     </ClInclude>
     <ClInclude Include="menu.h">
       <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="particleEffect.h">
+      <Filter>game objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

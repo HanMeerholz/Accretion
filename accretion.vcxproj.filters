@@ -39,6 +39,9 @@
     <ClCompile Include="particleEffect.cpp">
       <Filter>game objects</Filter>
     </ClCompile>
+    <ClCompile Include="spaceObject.cpp">
+      <Filter>game objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -76,6 +79,9 @@
       <Filter>ui</Filter>
     </ClInclude>
     <ClInclude Include="particleEffect.h">
+      <Filter>game objects</Filter>
+    </ClInclude>
+    <ClInclude Include="spaceObject.h">
       <Filter>game objects</Filter>
     </ClInclude>
   </ItemGroup>

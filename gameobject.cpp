@@ -3,12 +3,16 @@
 using namespace Tmpl8;
 
 namespace Accretion {
-GameObject::GameObject(vec2 position)
-	: GameObject(position, 0.0f)
-{}
+GameObject::GameObject(Tmpl8::Sprite* sprite, Tmpl8::vec2 position)
+	: GameObject(sprite, position, vec2{sprite->GetWidth(), sprite->GetHeight()})
+{ }
 
-GameObject::GameObject(vec2 position, float mass)
-	: position(position), mass(mass)
+GameObject::GameObject(Tmpl8::Sprite* sprite, Tmpl8::vec2 position, Tmpl8::vec2 dimensions)
+	: GameObject(sprite, position, dimensions, 10.0f, 0, false)
+{ }
+
+GameObject::GameObject(Tmpl8::Sprite* sprite, Tmpl8::vec2 position, Tmpl8::vec2 dimensions, float animationSpeed, int initialFrame, bool drawReverse)
+	: sprite(sprite), position(position), dimensions(dimensions), animationSpeed(animationSpeed), animationProgress((float) initialFrame / (float) sprite->GetNumFrames()), drawReverse(drawReverse)
 { }
 
 vec2 GameObject::getPosition()
@@ -21,38 +25,35 @@ void GameObject::setPosition(vec2 position)
 	this->position = position;
 }
 
-float GameObject::getMass()
-{
-	return mass;
-}
-
 bool GameObject::isDestroyed()
 {
 	return destroyed;
 }
 
-void GameObject::setDestroyed()
+void GameObject::destroy()
 {
 	destroyed = true;
 }
 
-float GameObject::getRadius()
-{
-	return radius;
-}
-
 void GameObject::update(float deltaTime)
 {
-	radius = calculateRadius(mass);
+	float animationLength = sprite->GetNumFrames() / animationSpeed;
+	float currentAnimationTime = animationProgress * animationLength;
+	currentAnimationTime = fmodf(currentAnimationTime + deltaTime, animationLength);
+	animationProgress = currentAnimationTime / animationLength;
+
+	int curFrame = animationProgress * sprite->GetNumFrames();
+	sprite->SetFrame(curFrame);
 }
 
-bool GameObject::isConsumedBy(GameObject& gameObject)
+void GameObject::draw(Tmpl8::Surface* const screen)
 {
-	return distance(gameObject) + radius < gameObject.radius;
+	vec2 topLeftPosition = getTopLeftPosition();
+	sprite->Draw(screen, (int) topLeftPosition.x, (int) topLeftPosition.y);
 }
 
-float GameObject::distance(GameObject& gameObject)
+vec2 GameObject::getTopLeftPosition()
 {
-	return (position - gameObject.position).length();
+	return position - vec2{ dimensions.x / 2, dimensions.y / 2 };
 }
 }

@@ -30,11 +30,11 @@ public:
 
 	// getters/setters
 	void setDirection(Tmpl8::vec2 direction);
-
-	// physics
+	void setPhase(BlackHole::Phase phase);
+	
+		// physics
 	void update(float deltaTime);
 	void consumeAsteroid(Asteroid& asteroid);
-	void setPhase(BlackHole::Phase phase);
 
 	// sprite
 	void draw(Tmpl8::Surface* const screen, float currentTime);

@@ -15,7 +15,6 @@ public:
 	void setStartTime(float startTime);
 	bool isFinished();
 
-
 	// sprite
 	void draw(Tmpl8::Surface* const screen, float currentTime);
 	void draw(Tmpl8::Surface* const screen);

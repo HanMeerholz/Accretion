@@ -28,7 +28,6 @@ namespace Accretion
 		float const density = .003;
 
 		Tmpl8::vec2 velocity;
-		bool destroyed = false;
 
 		float calculateRadius(float mass);
 		Tmpl8::vec2 getLeftTopPosition();

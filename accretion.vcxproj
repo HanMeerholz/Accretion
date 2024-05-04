@@ -232,6 +232,7 @@
     <ClCompile Include="particleEffect.cpp" />
     <ClCompile Include="progressBar.cpp" />
     <ClCompile Include="score.cpp" />
+    <ClCompile Include="spaceObject.cpp" />
     <ClCompile Include="spritedGameObject.cpp" />
     <ClCompile Include="surface.cpp" />
     <ClCompile Include="template.cpp" />
@@ -247,6 +248,7 @@
     <ClInclude Include="particleEffect.h" />
     <ClInclude Include="progressBar.h" />
     <ClInclude Include="score.h" />
+    <ClInclude Include="spaceObject.h" />
     <ClInclude Include="spritedGameObject.h" />
     <ClInclude Include="surface.h" />
     <ClInclude Include="template.h" />

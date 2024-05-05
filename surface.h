@@ -125,6 +125,7 @@ public:
 	unsigned int GetNumFrames() { return m_NumFrames;  }
 	Pixel* GetBuffer() { return m_Surface->GetBuffer(); }	
 	unsigned int Frames() { return m_NumFrames; }
+	unsigned int GetCurrentFrame() { return m_CurrentFrame; }
 	Surface* GetSurface() { return m_Surface; }
 private:
 	// Methods

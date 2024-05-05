@@ -9,27 +9,28 @@ class SpaceObject: public GameObject
 public:
 	// constructors
 	SpaceObject() = delete;
-	SpaceObject(Tmpl8::Sprite *sprite, Tmpl8::vec2 position, float mass);
+	SpaceObject(Tmpl8::Sprite* const sprite, Tmpl8::vec2 position, float mass);
+	SpaceObject(Tmpl8::Sprite* const sprite, Tmpl8::vec2 position, float animationSpeed, int initialFrame, bool drawReverse, float mass);
+
+	// physics
+	virtual void update(float deltaTime);
 
 	// getters/setters
 	float getMass();
 	float getRadius();
 
-	// physics
-	virtual void update(float deltaTime);
-
 	// collision
-	bool isConsumedBy(GameObject& gameObject);
-	float distance(GameObject& gameObject);
-
-	// draw
-	virtual void draw(Tmpl8::Surface* const screen) = 0;
+	bool isConsumedBy(SpaceObject& object);
+	float distanceTo(SpaceObject& object);
 
 protected:
 	// in solar masses
 	float mass;
 	// in meters
 	float radius;
+
+	void setMass(float mass);
+	void setRadius(float radius);
 
 private:
 	virtual float calculateRadius(float mass) = 0;

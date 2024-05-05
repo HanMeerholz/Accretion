@@ -7,9 +7,10 @@ using namespace Tmpl8;
 namespace Accretion
 {
 	BlackHole::BlackHole(Sprite* const sprite, Sprite* const deathSprite) :
-		SpritedGameObject(sprite, BLACK_HOLE_START_POSITION, BLACK_HOLE_START_MASS), deathSprite(deathSprite)
+		SpaceObject(sprite, BLACK_HOLE_START_POSITION, START_MASS), deathSprite(deathSprite)
 	{
 		radius = calculateRadius(mass);
+		dimensions = { radius * 2, radius * 2 };
 	}
 
 	void BlackHole::setDirection(vec2 direction)
@@ -17,15 +18,19 @@ namespace Accretion
 		this->direction = direction;
 	}
 
+	void BlackHole::setPhase(BlackHole::Phase phase)
+	{
+		this->phase = phase;
+	}
 
 	void BlackHole::addMass(float mass)
 	{
-		this->mass += mass;
+		setMass(this->mass + mass);
 	}
 
 	void BlackHole::update(float deltaTime)
 	{
-		GameObject::update(deltaTime);
+		SpaceObject::update(deltaTime);
 		if (destroyed) return;
 
 		switch (phase) {
@@ -36,10 +41,10 @@ namespace Accretion
 
 				// every second the mass shrinks by the massLossRate times the initial mass
 				mass *= powf(1 - massLossRate, deltaTime);
-				if (mass < criticalMass) phase = CRITICAL;
+				if (mass < CRITICAL_MASS) phase = CRITICAL;
 				break;
 			case CRITICAL:
-				mass -= 1000.0f * deltaTime;
+				mass -= CRITICAL_MASS * deltaTime / COLLAPSE_TIME;
 				if (mass <= 0)
 				{
 					mass = 0;
@@ -50,53 +55,37 @@ namespace Accretion
 			case IMPLOSION:
 				if (deathEffect->isFinished()) {
 					phase = DEATH;
-					setDestroyed();
+					destroy();
 				}
 				break;
+		}
+	} 
+
+	void BlackHole::consumeAsteroid(Asteroid& asteroid)
+	{
+		asteroid.destroy();
+		addMass(asteroid.getMass());
+	}
+
+	void BlackHole::draw(Tmpl8::Surface* const screen)
+	{
+		vec2 topLeftPosition = getTopLeftPosition();
+		int curFrame = (int)(animationProgress * sprite->GetNumFrames());
+		sprite->SetFrame(curFrame);
+		switch (phase)
+		{
+		case ALIVE:
+		case CRITICAL:
+			sprite->DrawScaledWrapAround((int)topLeftPosition.x, (int)topLeftPosition.y, (int)dimensions.x, (int)dimensions.y, screen);
+			break;
+		case IMPLOSION:
+			deathEffect->draw(screen);
+			break;
 		}
 	}
 
 	float BlackHole::calculateRadius(float mass)
 	{
 		return mass * METERS_PER_EARTH_MASS;
-	}
-
-	void BlackHole::consumeAsteroid(Asteroid& asteroid)
-	{
-		asteroid.setDestroyed();
-		addMass(asteroid.getMass());
-	}
-
-	void BlackHole::setPhase(BlackHole::Phase phase)
-	{
-		this->phase = phase;
-	}
-
-	void BlackHole::draw(Tmpl8::Surface* const screen, float currentTime)
-	{
-		if (phase == IMPLOSION)
-		{
-			if (deathEffect->getStartTime() == 0.0f) {
-				deathEffect->setStartTime(currentTime);
-			}
-			deathEffect->draw(screen, currentTime);
-		}
-		else if (phase != DEATH)
-		{
-			SpritedGameObject::draw(screen, currentTime);
-		}
-	}
-
-	void BlackHole::draw(Tmpl8::Surface* const screen)
-	{
-		vec2 leftTopPosition = getLeftTopPosition();
-		sprite->DrawScaledWrapAround((int) leftTopPosition.x, (int) leftTopPosition.y, (int) (2 * radius), (int) (2 * radius), screen);
-
-		//screen->Circle(position.x, position.y, radius, YELLOW);
-	}
-
-	vec2 BlackHole::getLeftTopPosition()
-	{
-		return { position.x - radius , position.y - radius };
 	}
 }

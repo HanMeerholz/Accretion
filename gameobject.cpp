@@ -4,7 +4,7 @@ using namespace Tmpl8;
 
 namespace Accretion {
 GameObject::GameObject(Tmpl8::Sprite* sprite, Tmpl8::vec2 position)
-	: GameObject(sprite, position, vec2{sprite->GetWidth(), sprite->GetHeight()})
+	: GameObject(sprite, position, vec2{(float)sprite->GetWidth(), (float)sprite->GetHeight()})
 { }
 
 GameObject::GameObject(Tmpl8::Sprite* sprite, Tmpl8::vec2 position, Tmpl8::vec2 dimensions)
@@ -25,6 +25,11 @@ void GameObject::setPosition(vec2 position)
 	this->position = position;
 }
 
+void GameObject::setDimensions(Tmpl8::vec2 dimensions)
+{
+	this->dimensions = dimensions;
+}
+
 bool GameObject::isDestroyed()
 {
 	return destroyed;
@@ -39,16 +44,17 @@ void GameObject::update(float deltaTime)
 {
 	float animationLength = sprite->GetNumFrames() / animationSpeed;
 	float currentAnimationTime = animationProgress * animationLength;
-	currentAnimationTime = fmodf(currentAnimationTime + deltaTime, animationLength);
+	currentAnimationTime = Modulo(drawReverse ? currentAnimationTime - deltaTime : currentAnimationTime + deltaTime, animationLength);
 	animationProgress = currentAnimationTime / animationLength;
-
-	int curFrame = animationProgress * sprite->GetNumFrames();
-	sprite->SetFrame(curFrame);
 }
 
 void GameObject::draw(Tmpl8::Surface* const screen)
 {
 	vec2 topLeftPosition = getTopLeftPosition();
+
+	int curFrame = (int)(animationProgress * sprite->GetNumFrames());
+	sprite->SetFrame(curFrame);
+
 	sprite->Draw(screen, (int) topLeftPosition.x, (int) topLeftPosition.y);
 }
 

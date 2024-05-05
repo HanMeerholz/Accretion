@@ -233,7 +233,6 @@
     <ClCompile Include="progressBar.cpp" />
     <ClCompile Include="score.cpp" />
     <ClCompile Include="spaceObject.cpp" />
-    <ClCompile Include="spritedGameObject.cpp" />
     <ClCompile Include="surface.cpp" />
     <ClCompile Include="template.cpp" />
     <ClCompile Include="uiElement.cpp" />
@@ -249,7 +248,6 @@
     <ClInclude Include="progressBar.h" />
     <ClInclude Include="score.h" />
     <ClInclude Include="spaceObject.h" />
-    <ClInclude Include="spritedGameObject.h" />
     <ClInclude Include="surface.h" />
     <ClInclude Include="template.h" />
     <ClInclude Include="uiElement.h" />

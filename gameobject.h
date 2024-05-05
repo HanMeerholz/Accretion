@@ -9,13 +9,14 @@ class GameObject {
 public:
 	// constructors
 	GameObject() = delete;
-	GameObject(Tmpl8::Sprite* sprite, Tmpl8::vec2 position);
-	GameObject(Tmpl8::Sprite* sprite, Tmpl8::vec2 position, Tmpl8::vec2 dimensions);
-	GameObject(Tmpl8::Sprite* sprite, Tmpl8::vec2 position, Tmpl8::vec2 dimensions, float animationSpeed, int initialFrame, bool drawReverse);
+	GameObject(Tmpl8::Sprite* const sprite, Tmpl8::vec2 position);
+	GameObject(Tmpl8::Sprite* const sprite, Tmpl8::vec2 position, Tmpl8::vec2 dimensions);
+	GameObject(Tmpl8::Sprite* const sprite, Tmpl8::vec2 position, Tmpl8::vec2 dimensions, float animationSpeed, int initialFrame, bool drawReverse);
 
 	// getters/setters
 	Tmpl8::vec2 getPosition();
 	void setPosition(Tmpl8::vec2 position);
+	void setDimensions(Tmpl8::vec2 dimensions);
 	bool isDestroyed();
 	void destroy();
 
@@ -37,7 +38,6 @@ protected:
 	float animationProgress;
 	bool drawReverse;
 
-private:
 	Tmpl8::vec2 getTopLeftPosition();
 };
 }

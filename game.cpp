@@ -36,7 +36,7 @@ namespace Tmpl8
 		blackHole = new BlackHole(blackHoleSprite, blackHoleDeathSprite);
 		asteroidSprite = new Sprite(new Surface("assets/asteroid.png"), 24);
 
-		int const nrAsteroids = 120;
+		int const nrAsteroids = 10;
 
 		for (int i = 0; i < nrAsteroids; i++)
 			asteroids.push_back(move(makeRandomAsteroidOnScreen()));
@@ -97,7 +97,6 @@ namespace Tmpl8
 		// clear the graphics window
 		screen->Clear(BLACK);
 
-
 		switch (gameMode) {
 		case GameMode::GAMEPLAY:
 			handleInput();
@@ -128,7 +127,7 @@ namespace Tmpl8
 
 	void Game::updateGameObjects(float deltaTime) {
 
-		// cout << "Nr asteroids: " << asteroids.size() << endl;
+		cout << "Nr asteroids: " << asteroids.size() << endl;
 
 		if (!blackHole->isDestroyed())
 		{
@@ -144,8 +143,9 @@ namespace Tmpl8
 		}
 
 		for (auto& asteroid : asteroids)
-			if (!asteroid->isDestroyed())
+			if (!asteroid->isDestroyed()) {
 				asteroid->update(*blackHole, deltaTime);
+			}
 
 		for (auto& asteroid : asteroids)
 			if (asteroid->isDestroyed())
@@ -159,7 +159,7 @@ namespace Tmpl8
 			totalMass += asteroid->getMass();
 		}
 
-		float remainingMass = BLACK_HOLE_MAX_MASS - totalMass;
+		float remainingMass = BlackHole::MAX_MASS - totalMass;
 		float maxAsteroidMass = blackHole->getMass() / 10;
 		if (remainingMass > maxAsteroidMass)
 			asteroids.push_back(move(makeRandomAsteroidOffScreen(blackHole->getMass() / 1000, maxAsteroidMass)));
@@ -168,7 +168,7 @@ namespace Tmpl8
 	unique_ptr<Asteroid> Game::makeRandomAsteroidOnScreen() {
 		float x = Rand(ScreenWidth);
 		float y = Rand(ScreenHeight);
-		float mass = getRandomMass(BLACK_HOLE_START_MASS / 1000, BLACK_HOLE_START_MASS / 20);
+		float mass = getRandomMass(BlackHole::START_MASS / 1000, BlackHole::START_MASS / 20);
 		float velocityX = Rand(-100.0f, 100.0f);
 		float velocityY = Rand(-100.0f, 100.0f);
 
@@ -177,7 +177,6 @@ namespace Tmpl8
 	}
 
 	unique_ptr<Asteroid> Game::makeRandomAsteroidOffScreen(float minMass, float maxMass) {
-		
 		float x = BRand() ? Rand(-ScreenWidth, 0) : Rand(ScreenWidth, 2 * ScreenWidth);
 		float y = BRand() ? Rand(-ScreenHeight, 0) : Rand(ScreenHeight, 2 * ScreenHeight);
 		float mass = getRandomMass(minMass, maxMass);
@@ -199,11 +198,11 @@ namespace Tmpl8
 	void Game::drawGameObjects()
 	{
 		if (!blackHole->isDestroyed())
-			blackHole->draw(screen, currentTime);
+			blackHole->draw(screen);
 
 		for (auto& asteroid : asteroids)
 			if (!asteroid->isDestroyed())
-				asteroid->draw(screen, currentTime);
+				asteroid->draw(screen);
 	}
 
 	void Game::KeyDown(int key)
@@ -249,7 +248,7 @@ namespace Tmpl8
 
 	void Game::drawUI()
 	{
-		massBar->setProgress(blackHole->getMass() / BLACK_HOLE_MAX_MASS);
+		massBar->setProgress(blackHole->getMass() / BlackHole::MAX_MASS);
 		massBar->draw(screen);
 
 		stringstream stream;

@@ -23,9 +23,22 @@ namespace Accretion
 		this->direction = direction;
 	}
 
+	BlackHole::Phase BlackHole::getPhase()
+	{
+		return phase;
+	}
+
 	void BlackHole::setPhase(BlackHole::Phase phase)
 	{
 		this->phase = phase;
+	}
+
+	void BlackHole::reset()
+	{
+		position = BLACK_HOLE_START_POSITION;
+		setMass(BlackHole::START_MASS);
+		phase = BlackHole::ALIVE;
+		destroyed = false;
 	}
 
 	void BlackHole::addMass(float mass)
@@ -36,7 +49,6 @@ namespace Accretion
 	void BlackHole::update(float deltaTime)
 	{
 		SpaceObject::update(deltaTime);
-		if (destroyed) return;
 
 		switch (phase) {
 			case ALIVE:
@@ -46,22 +58,22 @@ namespace Accretion
 
 				// every second the mass shrinks by the massLossRate times the initial mass
 				mass *= powf(1 - massLossRate, deltaTime);
-				if (mass < CRITICAL_MASS) phase = CRITICAL;
+				if (mass < CRITICAL_MASS) phase = IMPLODING;
 				break;
-			case CRITICAL:
+			case IMPLODING:
 				mass -= CRITICAL_MASS * deltaTime / COLLAPSE_TIME;
-				if (mass <= 0)
+				if (mass <= 0.0f)
 				{
-					mass = 0;
+					setMass(0.0f);
 					deathEffect = new ParticleEffect(deathSprite, position);
-					phase = IMPLOSION;
+					destroy();
+					phase = EXPLODING;
 				}
 				break;
-			case IMPLOSION:
+			case EXPLODING:
 				deathEffect->update(deltaTime);
 				if (deathEffect->isFinished()) {
-					phase = DEATH;
-					destroy();
+					phase = EXPLODED;
 				}
 				break;
 		}
@@ -81,10 +93,10 @@ namespace Accretion
 		switch (phase)
 		{
 		case ALIVE:
-		case CRITICAL:
+		case IMPLODING:
 			sprite->DrawScaledWrapAround((int)topLeftPosition.x, (int)topLeftPosition.y, (int)dimensions.x, (int)dimensions.y, screen);
 			break;
-		case IMPLOSION:
+		case EXPLODING:
 			deathEffect->draw(screen);
 			break;
 		}

@@ -17,6 +17,7 @@ public:
 
 	// getters/setters
 	float getMass();
+	void setMass(float mass);
 	float getRadius();
 
 	// collision
@@ -29,7 +30,6 @@ protected:
 	// in meters
 	float radius;
 
-	void setMass(float mass);
 	void setRadius(float radius);
 
 private:

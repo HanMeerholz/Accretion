@@ -27,7 +27,7 @@ public:
 	static constexpr float METERS_PER_EARTH_MASS = 0.008868f;
 
 	enum Phase {
-		ALIVE, CRITICAL, IMPLOSION, DEATH
+		ALIVE, IMPLODING, EXPLODING, EXPLODED
 	};
 
 	// structors
@@ -37,7 +37,10 @@ public:
 
 	// getters/setters
 	void setDirection(Tmpl8::vec2 direction);
+	Phase getPhase();
 	void setPhase(BlackHole::Phase phase);
+
+	void reset();
 	
 	// physics
 	void update(float deltaTime) override;

@@ -3,6 +3,7 @@ namespace Accretion
 enum class GameMode
 {
 	MENU,
-	GAMEPLAY
+	GAMEPLAY,
+	DEATH
 };
 }

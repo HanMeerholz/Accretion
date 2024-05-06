@@ -39,6 +39,7 @@ private:
 	Accretion::Score* score;
 
 	Accretion::Menu* mainMenu;
+	Accretion::Menu* gameOverMenu;
 
 	bool upPressed = false, downPressed = false, leftPressed = false, rightPressed = false;
 
@@ -47,10 +48,16 @@ private:
 	float currentTime = 0;
 
 	void initGameObjects();
+	void initAsteroids();
+	void initUI();
+	void initMainMenu();
+	void initGameOverMenu();
+
 	std::unique_ptr<Accretion::Asteroid> makeRandomAsteroidOnScreen();
 	std::unique_ptr<Accretion::Asteroid> makeRandomAsteroidOffScreen(float minMass, float maxMass);
 	float getRandomMass(float min, float max);
-	void initUI();
+
+	void reset();
 
 	void handleInput();
 	void updateGameObjects(float deltaTime);

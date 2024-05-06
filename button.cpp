@@ -52,6 +52,8 @@ namespace Accretion
 		case PRESSING:
 			if (!mousePressed) newButtonState = PRESSED;
 			break;
+		case PRESSED:
+			newButtonState = UNPRESSED;
 		}
 
 		if (buttonState != newButtonState)

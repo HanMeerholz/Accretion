@@ -18,6 +18,11 @@ namespace Accretion {
 		dimensions = { (int) getString().length() * size * (CHAR_WIDTH + CHAR_PADDING), size * CHAR_HEIGHT };
 	}
 
+	void Score::reset()
+	{
+		this->value = 0.0f;
+	}
+
 	void Score::draw(Surface* screen)
 	{
 		intvec2 topLeftPosition = getTopLeftPosition();

@@ -28,7 +28,6 @@ bool ParticleEffect::isFinished()
 
 void ParticleEffect::draw(Surface* const screen)
 {
-	vec2 topLeftPosition = getTopLeftPosition();
-	sprite->Draw(screen, topLeftPosition.x, topLeftPosition.y);
+	GameObject::draw(screen);
 }
 }

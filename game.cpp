@@ -127,7 +127,7 @@ namespace Tmpl8
 
 	void Game::updateGameObjects(float deltaTime) {
 
-		cout << "Nr asteroids: " << asteroids.size() << endl;
+		//cout << "Nr asteroids: " << asteroids.size() << endl;
 
 		if (!blackHole->isDestroyed())
 		{

@@ -13,6 +13,11 @@ namespace Accretion
 		dimensions = { radius * 2, radius * 2 };
 	}
 
+	BlackHole::~BlackHole()
+	{
+		delete deathEffect;
+	}
+
 	void BlackHole::setDirection(vec2 direction)
 	{
 		this->direction = direction;
@@ -53,6 +58,7 @@ namespace Accretion
 				}
 				break;
 			case IMPLOSION:
+				deathEffect->update(deltaTime);
 				if (deathEffect->isFinished()) {
 					phase = DEATH;
 					destroy();

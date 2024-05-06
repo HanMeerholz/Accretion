@@ -33,6 +33,7 @@ public:
 	// structors
 	BlackHole() = delete;
 	BlackHole(Tmpl8::Sprite* const sprite, Tmpl8::Sprite* const deathSprite);
+	~BlackHole();
 
 	// getters/setters
 	void setDirection(Tmpl8::vec2 direction);

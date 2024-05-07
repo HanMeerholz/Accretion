@@ -8,7 +8,7 @@ namespace Accretion
 {
 class BlackHole;
 
-// gravitational constant in newton m^2 / (solar mass)^2
+// gravitational constant in newton m^2 / (earth mass)^2
 static constexpr float GRAVITATIONAL_CONSTANT = 200.0f;
 static constexpr float ASTEROID_SPRITE_RADIUS_FACTOR = 1.13f;
 

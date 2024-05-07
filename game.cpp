@@ -146,9 +146,8 @@ namespace Tmpl8
 	{
 		// get time in seconds
 		deltaTime /= 1000;
-		// clear the graphics window
-		screen->Clear(BLACK);
-		background->CopyTo(screen, ScreenWidth - background->GetWidth(), ScreenHeight - background->GetHeight());
+		// set the background
+		background->CopyTo(screen, (ScreenWidth - background->GetWidth()) / 2, (ScreenHeight - background->GetHeight()) / 2);
 
 		switch (gameMode) {
 		case GameMode::GAMEPLAY:
@@ -164,8 +163,8 @@ namespace Tmpl8
 		case GameMode::DEATH:
 			updateGameObjects(deltaTime);
 			gameOverMenu->update(mousePos, GetAsyncKeyState(VK_LBUTTON));
-
 			drawGameObjects();
+			drawUI();
 			gameOverMenu->draw(screen);
 			break;
 		}
@@ -211,9 +210,7 @@ namespace Tmpl8
 			float totalMass = 0.0f;
 			totalMass += blackHole->getMass();
 			for (auto const& asteroid : asteroids)
-			{
 				totalMass += asteroid->getMass();
-			}
 
 			float remainingMass = BlackHole::MAX_MASS - totalMass;
 			float maxAsteroidMass = blackHole->getMass() / 10;

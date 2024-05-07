@@ -1,6 +1,7 @@
 #include "blackhole.h"
 #include "surface.h"
 #include "particleEffect.h"
+#include <iostream>
 
 using namespace Tmpl8;
 
@@ -40,6 +41,7 @@ namespace Accretion
 		setMass(BlackHole::START_MASS);
 		phase = BlackHole::ALIVE;
 		deathEffect->reset();
+		massLossRate = MIN_MASS_LOSS_RATE;
 		destroyed = false;
 	}
 
@@ -54,13 +56,22 @@ namespace Accretion
 
 		switch (phase) {
 			case ALIVE:
+				std::cout << "mass loss rate: " << massLossRate << std::endl;
+
 				position += direction * speed * deltaTime;
 				position.x = Modulo(position.x, ScreenWidth);
 				position.y = Modulo(position.y, ScreenHeight);
 
-				// every second the mass shrinks by the massLossRate times the initial mass
+				// every second the mass shrinks by the massLossRate times the current mass
 				mass *= powf(1 - massLossRate, deltaTime);
 				if (mass < CRITICAL_MASS) phase = IMPLODING;
+
+				if (massLossRate <= MAX_MASS_LOSS_RATE) {
+					float massLossRateIncreasePerSecond = (MAX_MASS_LOSS_RATE - MIN_MASS_LOSS_RATE) / TIME_UNTIL_MAX_MASS_LOSS_RATE;
+					massLossRate += massLossRateIncreasePerSecond * deltaTime;
+					if (massLossRate > MAX_MASS_LOSS_RATE) massLossRate = MAX_MASS_LOSS_RATE;
+				}
+
 				break;
 			case IMPLODING:
 				mass -= CRITICAL_MASS * deltaTime / COLLAPSE_TIME;

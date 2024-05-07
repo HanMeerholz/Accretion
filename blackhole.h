@@ -21,7 +21,11 @@ public:
 	static constexpr float START_MASS = 4000.0f;
 	static constexpr float MAX_MASS = 25000.0f;
 
+	static constexpr float MIN_MASS_LOSS_RATE = 0.02f;
+	static constexpr float MAX_MASS_LOSS_RATE = 0.2f;
+
 	// time in seconds
+	static constexpr float TIME_UNTIL_MAX_MASS_LOSS_RATE = 300.0f;
 	static constexpr float COLLAPSE_TIME = 1.0f;
 
 	static constexpr float METERS_PER_EARTH_MASS = 0.008868f;
@@ -58,7 +62,7 @@ private:
 
 	Phase phase = ALIVE;
 
-	float massLossRate = 0.05f;
+	float massLossRate = MIN_MASS_LOSS_RATE;
 	Tmpl8::vec2 direction = { 0.0f, 0.0f };
 
 	void addMass(float mass);

@@ -28,6 +28,7 @@ public:
 	void KeyDown(int key);
 private:
 	Surface* screen;
+	Surface* background;
 	Sprite* blackHoleSprite;
 	Sprite* blackHoleDeathSprite;
 	Accretion::BlackHole* blackHole;
@@ -52,6 +53,7 @@ private:
 	void initUI();
 	void initMainMenu();
 	void initGameOverMenu();
+	std::unique_ptr<Accretion::Button> createExitButton();
 
 	std::unique_ptr<Accretion::Asteroid> makeRandomAsteroidOnScreen();
 	std::unique_ptr<Accretion::Asteroid> makeRandomAsteroidOffScreen(float minMass, float maxMass);

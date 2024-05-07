@@ -11,6 +11,7 @@ namespace Accretion
 	{
 		radius = calculateRadius(mass);
 		dimensions = { radius * 2, radius * 2 };
+		deathEffect = new ParticleEffect(deathSprite, position);
 	}
 
 	BlackHole::~BlackHole()
@@ -38,6 +39,7 @@ namespace Accretion
 		position = BLACK_HOLE_START_POSITION;
 		setMass(BlackHole::START_MASS);
 		phase = BlackHole::ALIVE;
+		deathEffect->reset();
 		destroyed = false;
 	}
 
@@ -65,7 +67,7 @@ namespace Accretion
 				if (mass <= 0.0f)
 				{
 					setMass(0.0f);
-					deathEffect = new ParticleEffect(deathSprite, position);
+					deathEffect->setPosition(position);
 					destroy();
 					phase = EXPLODING;
 				}

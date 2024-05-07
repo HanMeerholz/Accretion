@@ -25,6 +25,7 @@ namespace Tmpl8
 	// -----------------------------------------------------------
 	void Game::Init()
 	{
+		background = new Surface("assets/starry_background.png");
 		initGameObjects();
 		initUI();
 	}
@@ -35,16 +36,6 @@ namespace Tmpl8
 		blackHoleDeathSprite = new Sprite(new Surface("assets/implosion.png"), 60);
 		blackHole = new BlackHole(blackHoleSprite, blackHoleDeathSprite);
 		asteroidSprite = new Sprite(new Surface("assets/asteroid.png"), 24);
-
-		initAsteroids();
-	}
-
-	void Game::initAsteroids()
-	{
-		int const nrAsteroids = 120;
-
-		for (int i = 0; i < nrAsteroids; i++)
-			asteroids.push_back(move(makeRandomAsteroidOnScreen()));
 	}
 
 	void Game::initUI()
@@ -67,17 +58,11 @@ namespace Tmpl8
 
 		unique_ptr<Button> startButton(new Button(new Surface("assets/start_button.png"), new Surface("assets/start_button_hover.png"), new Surface("assets/start_button_pressed.png"),
 			[&] {
+				reset();
 				gameMode = GameMode::GAMEPLAY;
 			}));
 		mainMenuButtons.push_back(move(startButton));
-		unique_ptr<Button> exitButton(new Button(new Surface("assets/exit_button.png"), new Surface("assets/exit_button_hover.png"), new Surface("assets/exit_button_pressed.png"),
-			[&] {
-				SDL_Event sdlevent = {};
-				sdlevent.type = SDL_KEYDOWN;
-				sdlevent.key.keysym.sym = SDLK_ESCAPE;
-				SDL_PushEvent(&sdlevent);
-			}));
-		mainMenuButtons.push_back(move(exitButton));
+		mainMenuButtons.push_back(move(createExitButton()));
 
 		mainMenu = new Menu(move(mainMenuButtons), { ScreenWidth / 2, ScreenHeight / 2 });
 	}
@@ -92,16 +77,21 @@ namespace Tmpl8
 				gameMode = GameMode::GAMEPLAY;
 			}));
 		gameOverButtons.push_back(move(restartButton));
-		unique_ptr<Button> exitButton2(new Button(new Surface("assets/exit_button.png"), new Surface("assets/exit_button_hover.png"), new Surface("assets/exit_button_pressed.png"),
+		gameOverButtons.push_back(move(createExitButton()));
+
+		gameOverMenu = new Menu(move(gameOverButtons), { ScreenWidth / 2, ScreenHeight / 2 });
+	}
+
+	unique_ptr<Button> Game::createExitButton()
+	{
+		unique_ptr<Button> exitButton(new Button(new Surface("assets/exit_button.png"), new Surface("assets/exit_button_hover.png"), new Surface("assets/exit_button_pressed.png"),
 			[&] {
 				SDL_Event sdlevent = {};
 				sdlevent.type = SDL_KEYDOWN;
 				sdlevent.key.keysym.sym = SDLK_ESCAPE;
 				SDL_PushEvent(&sdlevent);
 			}));
-		gameOverButtons.push_back(move(exitButton2));
-
-		gameOverMenu = new Menu(move(gameOverButtons), { ScreenWidth / 2, ScreenHeight / 2 });
+		return exitButton;
 	}
 
 	void Game::reset()
@@ -116,21 +106,37 @@ namespace Tmpl8
 
 		score->reset();
 	}
+
+	void Game::initAsteroids()
+	{
+		int const nrAsteroids = 120;
+
+		for (int i = 0; i < nrAsteroids; i++)
+			asteroids.push_back(move(makeRandomAsteroidOnScreen()));
+	}
 	
 	// -----------------------------------------------------------
 	// Close down application
 	// -----------------------------------------------------------
 	void Game::Shutdown()
 	{
+		delete background;
+
+		// delete black hole
 		delete blackHole;
 		delete blackHoleSprite;
 		delete blackHoleDeathSprite;
+
+		// delete asteroids
 		for (auto& asteroid : asteroids)
 			asteroid.reset();
 		delete asteroidSprite;
+
+		// delete ui
 		delete massBar;
 		delete score;
 		delete mainMenu;
+		delete gameOverMenu;
 	}
 
 	// -----------------------------------------------------------
@@ -142,6 +148,7 @@ namespace Tmpl8
 		deltaTime /= 1000;
 		// clear the graphics window
 		screen->Clear(BLACK);
+		background->CopyTo(screen, ScreenWidth - background->GetWidth(), ScreenHeight - background->GetHeight());
 
 		switch (gameMode) {
 		case GameMode::GAMEPLAY:
@@ -250,11 +257,11 @@ namespace Tmpl8
 
 	void Game::drawGameObjects()
 	{
-		blackHole->draw(screen);
-
 		for (auto& asteroid : asteroids)
 			if (!asteroid->isDestroyed())
 				asteroid->draw(screen);
+
+		blackHole->draw(screen);
 	}
 
 	void Game::drawUI()

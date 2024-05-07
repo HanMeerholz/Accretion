@@ -153,7 +153,7 @@ mat4 mat4::rotatez( const float a )
 
 void NotifyUser( char* s )
 {
-	HWND hApp = FindWindow(nullptr, TemplateVersion);
+	HWND hApp = FindWindow(nullptr, WindowName);
 	MessageBox( hApp, s, "ERROR", MB_OK );
 	exit( 0 );
 }
@@ -326,7 +326,7 @@ int main( int argc, char **argv )
 #ifdef FULLSCREEN
 	window = SDL_CreateWindow(TemplateVersion, 100, 100, ScreenWidth, ScreenHeight, SDL_WINDOW_FULLSCREEN );
 #else
-	window = SDL_CreateWindow(TemplateVersion, 100, 100, ScreenWidth, ScreenHeight, SDL_WINDOW_SHOWN );
+	window = SDL_CreateWindow(WindowName, 100, 100, ScreenWidth, ScreenHeight, SDL_WINDOW_SHOWN );
 #endif
 	surface = new Surface( ScreenWidth, ScreenHeight );
 	surface->Clear( 0 );

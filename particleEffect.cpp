@@ -21,6 +21,12 @@ void ParticleEffect::update(float deltaTime)
 		finished = true;
 }
 
+void ParticleEffect::reset()
+{
+	finished = false;
+	animationProgress = 0.0f;
+}
+
 bool ParticleEffect::isFinished()
 {
 	return finished;

@@ -464,11 +464,11 @@ void Sprite::Draw( Surface* a_Target, int a_X, int a_Y )
 				for ( int x = xs; x < width; x++ )
 				{
 					Pixel c1 = *(src + x);
-					c1 = ApplyTransparency(c1);
 					if (c1 & 0xffffff) 
 					{
 						const Pixel c2 = *(dest + addr + x);
-						*(dest + addr + x) = AddBlend( c1, c2 );
+						c1 = ApplyTransparency(c1, c2);
+						*(dest + addr + x) = c1;
 					}
 				}
 			}
@@ -478,7 +478,7 @@ void Sprite::Draw( Surface* a_Target, int a_X, int a_Y )
 				for ( int x = xs; x < width; x++ )
 				{
 					Pixel c1 = *(src + x);
-					c1 = ApplyTransparency(c1);
+					c1 = ApplyTransparency(c1, 0);
 					if (c1 & 0xffffff) *(dest + addr + x) = c1;
 				}
 			}
@@ -513,8 +513,8 @@ void Sprite::DrawScaled( int a_X, int a_Y, int a_Width, int a_Height, Surface* a
 			Pixel existingColor = a_Target->GetBuffer()[destPixelIndex];
 
 			Pixel color = GetBuffer()[srcPixelIndex];
-			color = ApplyTransparency(color);
-			a_Target->GetBuffer()[destPixelIndex] = AddBlend(existingColor, color);
+			color = ApplyTransparency(color, existingColor);
+			a_Target->GetBuffer()[destPixelIndex] = color;
 		}
 	}
 }
@@ -544,8 +544,8 @@ void Sprite::DrawScaledWrapAround(int a_X, int a_Y, int a_Width, int a_Height, S
 			Pixel existingColor = a_Target->GetBuffer()[destPixelIndex];
 
 			Pixel color = GetBuffer()[srcPixelIndex];
-			color = ApplyTransparency(color);
-			a_Target->GetBuffer()[destPixelIndex] = AddBlend(existingColor, color);
+			color = ApplyTransparency(color, existingColor);
+			a_Target->GetBuffer()[destPixelIndex] = color;
 		}
 	}
 }
@@ -571,14 +571,17 @@ void Sprite::InitializeStartData()
 	}
 }
 
-Pixel Sprite::ApplyTransparency(Pixel p)
+Pixel Sprite::ApplyTransparency(Pixel p, Pixel source)
 {
 	int alpha = (p & AlphaMask) >> 24;
 	float scale = (float)alpha / 0xff;
 
-	int red = ((p & RedMask) >> 16) * scale;
-	int green = ((p & GreenMask) >> 8) * scale;
-	int blue = (p & BlueMask) * scale;
+	int red = ((p & RedMask) >> 16) * scale + ((source & RedMask) >> 16) * (1 - scale);
+	if (red >> 0xff) red = 0xff;
+	int green = ((p & GreenMask) >> 8) * scale + ((source & GreenMask) >> 8) * (1 - scale);
+	if (green >> 0xff) green = 0xff;
+	int blue = (p & BlueMask) * scale + ((source & BlueMask)) * (1 - scale);
+	if (blue >> 0xff) blue = 0xff;
 
 	return (red << 16) + (green << 8) + blue;
 }

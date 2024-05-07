@@ -23,6 +23,17 @@ constexpr Pixel WHITE = 0xffffff;
 constexpr Pixel RED = 0xff0000;
 constexpr Pixel YELLOW = 0xffff00;
 
+inline Pixel AddBlendWithAlpha(Pixel a_Color1, Pixel a_Color2)
+{
+	const unsigned int r = (a_Color1 & RedMask) + (a_Color2 & RedMask);
+	const unsigned int g = (a_Color1 & GreenMask) + (a_Color2 & GreenMask);
+	const unsigned int b = (a_Color1 & BlueMask) + (a_Color2 & BlueMask);
+	const unsigned r1 = (r & RedMask) | (RedMask * (r >> 24));
+	const unsigned g1 = (g & GreenMask) | (GreenMask * (g >> 16));
+	const unsigned b1 = (b & BlueMask) | (BlueMask * (b >> 8));
+	return (r1 + g1 + b1);
+}
+
 inline Pixel AddBlend( Pixel a_Color1, Pixel a_Color2 )
 {
 	const unsigned int r = (a_Color1 & RedMask) + (a_Color2 & RedMask);
@@ -130,7 +141,7 @@ public:
 private:
 	// Methods
 	void InitializeStartData();
-	Pixel ApplyTransparency(Pixel p);
+	Pixel ApplyTransparency(Pixel p, Pixel source);
 	// Attributes
 	int m_Width, m_Height, m_Pitch;
 	unsigned int m_NumFrames;          

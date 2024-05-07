@@ -1,7 +1,6 @@
 #include "blackhole.h"
 #include "surface.h"
 #include "particleEffect.h"
-#include <iostream>
 
 using namespace Tmpl8;
 
@@ -42,6 +41,7 @@ namespace Accretion
 		phase = BlackHole::ALIVE;
 		deathEffect->reset();
 		massLossRate = MIN_MASS_LOSS_RATE;
+		speed = MIN_SPEED;
 		destroyed = false;
 	}
 
@@ -56,8 +56,6 @@ namespace Accretion
 
 		switch (phase) {
 			case ALIVE:
-				std::cout << "mass loss rate: " << massLossRate << std::endl;
-
 				position += direction * speed * deltaTime;
 				position.x = Modulo(position.x, ScreenWidth);
 				position.y = Modulo(position.y, ScreenHeight);
@@ -66,8 +64,13 @@ namespace Accretion
 				mass *= powf(1 - massLossRate, deltaTime);
 				if (mass < CRITICAL_MASS) phase = IMPLODING;
 
+				if (speed <= MAX_SPEED) {
+					float acceleration = (MAX_SPEED - MIN_SPEED) / DIFFICULTY_RAMPUP_TIME;
+					speed += acceleration * deltaTime;
+					if (speed > MAX_SPEED) speed = MAX_SPEED;
+				}
 				if (massLossRate <= MAX_MASS_LOSS_RATE) {
-					float massLossRateIncreasePerSecond = (MAX_MASS_LOSS_RATE - MIN_MASS_LOSS_RATE) / TIME_UNTIL_MAX_MASS_LOSS_RATE;
+					float massLossRateIncreasePerSecond = (MAX_MASS_LOSS_RATE - MIN_MASS_LOSS_RATE) / DIFFICULTY_RAMPUP_TIME;
 					massLossRate += massLossRateIncreasePerSecond * deltaTime;
 					if (massLossRate > MAX_MASS_LOSS_RATE) massLossRate = MAX_MASS_LOSS_RATE;
 				}

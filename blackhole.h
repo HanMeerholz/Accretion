@@ -24,8 +24,12 @@ public:
 	static constexpr float MIN_MASS_LOSS_RATE = 0.02f;
 	static constexpr float MAX_MASS_LOSS_RATE = 0.2f;
 
+	// speed in frames per second;
+	static constexpr float MIN_SPEED = 180.0f;
+	static constexpr float MAX_SPEED = 900.0f;
+
 	// time in seconds
-	static constexpr float TIME_UNTIL_MAX_MASS_LOSS_RATE = 300.0f;
+	static constexpr float DIFFICULTY_RAMPUP_TIME = 300.0f;
 	static constexpr float COLLAPSE_TIME = 1.0f;
 
 	static constexpr float METERS_PER_EARTH_MASS = 0.008868f;
@@ -58,7 +62,7 @@ private:
 	ParticleEffect* deathEffect;
 
 	// pixels per frame
-	float const speed = 180.0f;
+	float speed = MIN_SPEED;
 
 	Phase phase = ALIVE;
 

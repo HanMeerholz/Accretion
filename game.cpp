@@ -284,16 +284,23 @@ namespace Tmpl8
 	{
 		switch (key) {
 		case SDL_SCANCODE_UP:
+		case SDL_SCANCODE_W:
 			if (!upPressed) upPressed = true;
 			break;
 		case SDL_SCANCODE_DOWN:
+		case SDL_SCANCODE_S:
 			if (!downPressed) downPressed = true;
 			break;
 		case SDL_SCANCODE_LEFT:
+		case SDL_SCANCODE_A:
 			if (!leftPressed) leftPressed = true;
 			break;
 		case SDL_SCANCODE_RIGHT:
+		case SDL_SCANCODE_D:
 			if (!rightPressed) rightPressed = true;
+			break;
+		case SDL_SCANCODE_BACKSPACE:
+			reset();
 			break;
 #if DEBUG_MODE
 		case SDL_SCANCODE_K:
@@ -307,15 +314,19 @@ namespace Tmpl8
 	{
 		switch (key) {
 		case SDL_SCANCODE_UP:
+		case SDL_SCANCODE_W:
 			if (upPressed) upPressed = false;
 			break;
 		case SDL_SCANCODE_DOWN:
+		case SDL_SCANCODE_S:
 			if (downPressed) downPressed = false;
 			break;
 		case SDL_SCANCODE_LEFT:
+		case SDL_SCANCODE_A:
 			if (leftPressed) leftPressed = false;
 			break;
 		case SDL_SCANCODE_RIGHT:
+		case SDL_SCANCODE_D:
 			if (rightPressed) rightPressed = false;
 			break;
 		}

@@ -12,10 +12,10 @@ public:
 	Menu(std::vector<std::unique_ptr<Accretion::Button>>& buttons, Tmpl8::intvec2 position);
 	~Menu();
 
-	void draw(Tmpl8::Surface* screen);
 	void update(Tmpl8::intvec2 mousePos, bool mousePressed);
+	void draw(Tmpl8::Surface* screen);
 private:
-	static int const padding = 50;
+	static int constexpr BUTTON_PADDING = 50;
 
 	std::vector<std::unique_ptr<Accretion::Button>> buttons;
 

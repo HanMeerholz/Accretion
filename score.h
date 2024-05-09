@@ -10,7 +10,7 @@ namespace Accretion {
 
 class Score : public UIElement {
 public:
-	Score(int scale, Tmpl8::Pixel color);
+	Score(int size, Tmpl8::Pixel color);
 
 	void increaseScore(int value);
 	void reset();

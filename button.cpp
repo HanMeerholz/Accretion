@@ -24,17 +24,10 @@ namespace Accretion
 		delete buttonPressed;
 	}
 
-	void Button::draw(Surface* screen)
-	{
-		intvec2 topLeftPosition = getTopLeftPosition();
-		currentImage->CopyTo(screen, topLeftPosition.x, topLeftPosition.y);
-	}
-
 	void Button::update(intvec2 mousePos, bool mousePressed)
 	{
 		intvec2 topLeftPosition = getTopLeftPosition();
-		intvec2 bottomRightPosition = topLeftPosition + getDimensions() - intvec2{1, 1};
-
+		intvec2 bottomRightPosition = topLeftPosition + getDimensions() - intvec2{ 1, 1 };
 		bool mouseIsInButton = mousePos.x >= topLeftPosition.x && mousePos.x <= bottomRightPosition.x
 			&& mousePos.y >= topLeftPosition.y && mousePos.y <= bottomRightPosition.y;
 
@@ -42,18 +35,18 @@ namespace Accretion
 
 		switch (buttonState)
 		{
-		case UNPRESSED:
-			if (mouseIsInButton) newButtonState = HOVER;
-			break;
-		case HOVER:
-			if (mouseIsInButton && mousePressed) newButtonState = PRESSING;
-			else if (!mouseIsInButton) newButtonState = UNPRESSED;
-			break;
-		case PRESSING:
-			if (!mousePressed) newButtonState = PRESSED;
-			break;
-		case PRESSED:
-			newButtonState = UNPRESSED;
+			case UNPRESSED:
+				if (mouseIsInButton) newButtonState = HOVER;
+				break;
+			case HOVER:
+				if (mouseIsInButton && mousePressed) newButtonState = PRESSING;
+				else if (!mouseIsInButton) newButtonState = UNPRESSED;
+				break;
+			case PRESSING:
+				if (!mousePressed) newButtonState = PRESSED;
+				break;
+			case PRESSED:
+				newButtonState = UNPRESSED;
 		}
 
 		if (buttonState != newButtonState)
@@ -62,26 +55,30 @@ namespace Accretion
 			updateImage();
 		}
 
-		if (buttonState == PRESSED) {
+		if (buttonState == PRESSED)
 			onPress();
-		}
 	}
 
 	void Button::updateImage()
 	{
 		switch (buttonState)
 		{
-		case UNPRESSED:
-		case PRESSED:
-			currentImage = buttonUnpressed;
-			break;
-		case HOVER:
-			currentImage = buttonHover;
-			break;
-		case PRESSING:
-			currentImage = buttonPressed;
-			break;
+			case UNPRESSED:
+			case PRESSED:
+				currentImage = buttonUnpressed;
+				break;
+			case HOVER:
+				currentImage = buttonHover;
+				break;
+			case PRESSING:
+				currentImage = buttonPressed;
+				break;
 		}
 	}
 
+	void Button::draw(Surface* screen)
+	{
+		intvec2 topLeftPosition = getTopLeftPosition();
+		currentImage->CopyTo(screen, topLeftPosition.x, topLeftPosition.y);
+	}
 }

@@ -27,6 +27,10 @@ public:
 	void KeyUp(int key);
 	void KeyDown(int key);
 private:
+	int const massBarBotPadding = 25;
+	int const scoreTopPadding = 20;
+	int const nrInitialAsteroids = 80;
+
 	Surface* screen;
 	Surface* background;
 	Sprite* blackHoleSprite;
@@ -35,19 +39,18 @@ private:
 	Sprite* asteroidSprite;
 	std::vector<std::unique_ptr<Accretion::Asteroid>> asteroids;
 
-	Accretion::GameMode gameMode = Accretion::GameMode::MENU;
 	Accretion::ProgressBar* massBar;
 	Accretion::Score* score;
 
 	Accretion::Menu* mainMenu;
 	Accretion::Menu* gameOverMenu;
 
+	Accretion::GameMode gameMode = Accretion::GameMode::MENU;
 	bool upPressed = false, downPressed = false, leftPressed = false, rightPressed = false;
-
 	Tmpl8::intvec2 mousePos = { 0, 0 };
-	
+	// in seconds
 	float currentTime = 0;
-
+	
 	void initGameObjects();
 	void initAsteroids();
 	void initUI();
@@ -56,7 +59,7 @@ private:
 	std::unique_ptr<Accretion::Button> createExitButton();
 
 	std::unique_ptr<Accretion::Asteroid> makeRandomAsteroidOnScreen();
-	std::unique_ptr<Accretion::Asteroid> makeRandomAsteroidOffScreen(float minMass, float maxMass);
+	std::unique_ptr<Accretion::Asteroid> makeRandomAsteroidOffScreen(float maxMass);
 	float getRandomMass(float min, float max);
 
 	void reset();
@@ -65,6 +68,7 @@ private:
 	void updateGameObjects(float deltaTime);
 	void drawGameObjects();
 	void drawUI();
+	void drawMassInfo();
 };
 
 }; // namespace Tmpl8

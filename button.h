@@ -14,8 +14,8 @@ public:
 	Button(Tmpl8::Surface* buttonUnpressed, Tmpl8::Surface* buttonHover, Tmpl8::Surface* buttonPressed, std::function<void()> onPress);
 	~Button();
 
-	void draw(Tmpl8::Surface* screen);
 	void update(Tmpl8::intvec2 mousePos, bool mousePressed);
+	void draw(Tmpl8::Surface* screen);
 
 private:
 	enum ButtonState {

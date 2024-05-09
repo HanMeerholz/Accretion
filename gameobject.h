@@ -31,10 +31,12 @@ protected:
 
 	bool destroyed = false;
 	Tmpl8::vec2 position;
+	// one pixel is one meter
 	Tmpl8::vec2 dimensions;
 
 	// animation speed in frames per second
 	float animationSpeed;
+	// number between 0 and 1 indication how far along the animation is
 	float animationProgress;
 	bool drawReverse;
 

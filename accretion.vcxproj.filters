@@ -32,12 +32,14 @@
     <ClCompile Include="button.cpp">
       <Filter>ui</Filter>
     </ClCompile>
-    <ClCompile Include="menu.cpp" />
     <ClCompile Include="particleEffect.cpp">
       <Filter>game objects</Filter>
     </ClCompile>
     <ClCompile Include="spaceObject.cpp">
       <Filter>game objects</Filter>
+    </ClCompile>
+    <ClCompile Include="menu.cpp">
+      <Filter>ui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -13,7 +13,7 @@ public:
 	ParticleEffect() = delete;
 	ParticleEffect(Tmpl8::Sprite* const sprite, Tmpl8::vec2 position);
 
-	virtual void update(float deltaTime);
+	void update(float deltaTime) override;
 	void reset();
 
 	bool isFinished();

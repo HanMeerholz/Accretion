@@ -57,6 +57,8 @@ namespace Accretion
 		switch (phase) {
 			case ALIVE:
 				position += direction * speed * deltaTime;
+
+				// this is how the wrap-around is implemented
 				position.x = Modulo(position.x, ScreenWidth);
 				position.y = Modulo(position.y, ScreenHeight);
 
@@ -64,6 +66,7 @@ namespace Accretion
 				mass *= powf(1 - massLossRate, deltaTime);
 				if (mass < CRITICAL_MASS) phase = IMPLODING;
 
+				// speed and mass loss slowly increases over time, making the game more challenging as time progresses
 				if (speed <= MAX_SPEED) {
 					float acceleration = (MAX_SPEED - MIN_SPEED) / DIFFICULTY_RAMPUP_TIME;
 					speed += acceleration * deltaTime;
@@ -74,9 +77,9 @@ namespace Accretion
 					massLossRate += massLossRateIncreasePerSecond * deltaTime;
 					if (massLossRate > MAX_MASS_LOSS_RATE) massLossRate = MAX_MASS_LOSS_RATE;
 				}
-
 				break;
 			case IMPLODING:
+				// make sure the black hole collapses in the collapse time
 				mass -= CRITICAL_MASS * deltaTime / COLLAPSE_TIME;
 				if (mass <= 0.0f)
 				{
@@ -88,9 +91,8 @@ namespace Accretion
 				break;
 			case EXPLODING:
 				deathEffect->update(deltaTime);
-				if (deathEffect->isFinished()) {
+				if (deathEffect->isFinished())
 					phase = EXPLODED;
-				}
 				break;
 		}
 	} 
@@ -108,18 +110,20 @@ namespace Accretion
 		sprite->SetFrame(curFrame);
 		switch (phase)
 		{
-		case ALIVE:
-		case IMPLODING:
-			sprite->DrawScaledWrapAround((int)topLeftPosition.x, (int)topLeftPosition.y, (int)dimensions.x, (int)dimensions.y, screen);
-			break;
-		case EXPLODING:
-			deathEffect->draw(screen);
-			break;
+			case ALIVE:
+			case IMPLODING:
+				// draw wrapped around so it properly handles part of the sprite being over the edge of the screen
+				sprite->DrawScaledWrapAround((int)topLeftPosition.x, (int)topLeftPosition.y, (int)dimensions.x, (int)dimensions.y, screen);
+				break;
+			case EXPLODING:
+				deathEffect->draw(screen);
+				break;
 		}
 	}
 
 	float BlackHole::calculateRadius(float mass)
 	{
-		return mass * METERS_PER_EARTH_MASS;
+		// black holes have this strange property where their density decreases the larger they get, so their mass and radius are proportional
+		return mass * RADIUS_TO_MASS_RATIO;
 	}
 }

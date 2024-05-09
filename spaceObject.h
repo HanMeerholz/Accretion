@@ -12,13 +12,13 @@ public:
 	SpaceObject(Tmpl8::Sprite* const sprite, Tmpl8::vec2 position, float mass);
 	SpaceObject(Tmpl8::Sprite* const sprite, Tmpl8::vec2 position, float animationSpeed, int initialFrame, bool drawReverse, float mass);
 
-	// physics
-	virtual void update(float deltaTime);
-
 	// getters/setters
 	float getMass();
 	void setMass(float mass);
 	float getRadius();
+
+	// physics
+	virtual void update(float deltaTime);
 
 	// collision
 	bool isConsumedBy(SpaceObject& object);
@@ -30,9 +30,9 @@ protected:
 	// in meters
 	float radius;
 
-	void setRadius(float radius);
-
 private:
 	virtual float calculateRadius(float mass) = 0;
+
+	void setRadius(float radius);
 };
 }

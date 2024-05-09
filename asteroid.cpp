@@ -17,6 +17,7 @@ namespace Accretion
 	{
 		update(deltaTime);
 
+		// apply gravity
 		if (!blackHole.isDestroyed()) {
 			float force = mass * blackHole.getMass() / powf(distanceTo(blackHole), 2.0f) * GRAVITATIONAL_CONSTANT;
 			float acceleration = force / mass;
@@ -26,7 +27,8 @@ namespace Accretion
 
 		position += velocity * deltaTime;
 
-		if (position.x < -2 * ScreenWidth || position.x > 3 * ScreenWidth || position.y < -2 * ScreenHeight || position.y > 3 * ScreenWidth) {
+		// if the asteroid ever gets more than a screen away, it is destroyed
+		if (position.x < -ScreenWidth || position.x > 2 * ScreenWidth || position.y < -ScreenHeight || position.y > 2 * ScreenWidth) {
 			destroy();
 		}
 	}
@@ -43,14 +45,13 @@ namespace Accretion
 		int curFrame = (int)(animationProgress * sprite->GetNumFrames());
 		sprite->SetFrame(curFrame);
 
-		float spriteRadius = radius * ASTEROID_SPRITE_RADIUS_FACTOR;
+		float spriteRadius = radius * SPRITE_RADIUS_FACTOR;
 		sprite->DrawScaled((int)topLeftPosition.x, (int)topLeftPosition.y, (int)(2 * spriteRadius), (int)(2 * spriteRadius), screen);
-
-		// screen->Circle(position.x, position.y, radius, YELLOW);
 	}
 
 	float Asteroid::calculateRadius(float mass)
 	{
+		// tau is better than pi (don't @ me)
 		return cbrtf(mass / (2.0f / 3.0f * TAU * density));
 	}
 }

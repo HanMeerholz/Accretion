@@ -29,7 +29,7 @@ namespace Accretion {
 		screen->PrintScaled(getString().c_str(), topLeftPosition.x, topLeftPosition.y, color, size);
 	}
 
-	std::string Score::getString()
+	string Score::getString()
 	{
 		return "Score: " + to_string(value);
 	}

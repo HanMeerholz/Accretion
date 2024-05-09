@@ -7,10 +7,12 @@ namespace Accretion {
 
 class UIElement {
 public:
+	// constructors
 	UIElement() = delete;
 	UIElement(Tmpl8::intvec2 dimensions);
 	UIElement(Tmpl8::intvec2 dimensions, Tmpl8::intvec2 position);
 
+	// getters & setters
 	Tmpl8::intvec2 getDimensions();
 	int getWidth();
 	int getHeight();

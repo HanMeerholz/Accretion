@@ -18,9 +18,22 @@ float SpaceObject::getMass()
 	return mass;
 }
 
+// only mass can be set from the outside, radius/size is then derived from the mass
+void SpaceObject::setMass(float mass)
+{
+	this->mass = mass;
+	setRadius(calculateRadius(mass));
+}
+
 float SpaceObject::getRadius()
 {
 	return radius;
+}
+
+void SpaceObject::setRadius(float radius)
+{
+	this->radius = radius;
+	setDimensions({ radius * 2, radius * 2 });
 }
 
 void SpaceObject::update(float deltaTime)
@@ -38,18 +51,4 @@ float SpaceObject::distanceTo(SpaceObject& object)
 {
 	return (position - object.position).length();
 }
-
-
-void SpaceObject::setRadius(float radius)
-{
-	this->radius = radius;
-	setDimensions({ radius * 2, radius * 2 });
-}
-
-void SpaceObject::setMass(float mass)
-{
-	this->mass = mass;
-	setRadius(calculateRadius(mass));
-}
-
 }

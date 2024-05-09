@@ -10,8 +10,8 @@ class ProgressBar : public UIElement {
 public:
 	ProgressBar(Tmpl8::Surface* frame, Tmpl8::Surface* leftEdge, Tmpl8::Surface* mainBar, Tmpl8::Surface* rightEdge, int padding);
 	~ProgressBar();
-	void setProgress(float progress);
 
+	void setProgress(float progress);
 	void draw(Tmpl8::Surface* screen);
 
 private:

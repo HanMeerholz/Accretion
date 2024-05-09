@@ -12,11 +12,13 @@ void ParticleEffect::update(float deltaTime)
 {
 	if (finished) return;
 
+	// save these values before the update
 	float animationLength = sprite->GetNumFrames() / animationSpeed;
 	float currentAnimationTime = animationProgress * animationLength;
 
 	GameObject::update(deltaTime);
 
+	// if the update finished the animation, don't update anymore
 	if (currentAnimationTime + deltaTime > animationLength)
 		finished = true;
 }

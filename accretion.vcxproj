@@ -222,17 +222,42 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="asteroid.cpp" />
+    <ClCompile Include="blackhole.cpp" />
+    <ClCompile Include="button.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="gamemode.h" />
+    <ClCompile Include="gameObject.cpp" />
+    <ClCompile Include="menu.cpp" />
+    <ClCompile Include="particleEffect.cpp" />
+    <ClCompile Include="progressBar.cpp" />
+    <ClCompile Include="score.cpp" />
+    <ClCompile Include="spaceObject.cpp" />
     <ClCompile Include="surface.cpp" />
     <ClCompile Include="template.cpp" />
+    <ClCompile Include="uiElement.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="asteroid.h" />
+    <ClInclude Include="blackhole.h" />
+    <ClInclude Include="button.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="gameObject.h" />
+    <ClInclude Include="menu.h" />
+    <ClInclude Include="particleEffect.h" />
+    <ClInclude Include="progressBar.h" />
+    <ClInclude Include="score.h" />
+    <ClInclude Include="spaceObject.h" />
     <ClInclude Include="surface.h" />
     <ClInclude Include="template.h" />
+    <ClInclude Include="uiElement.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="_readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitignore" />
+    <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

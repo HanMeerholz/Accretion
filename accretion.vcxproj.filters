@@ -8,6 +8,39 @@
     <ClCompile Include="template.cpp">
       <Filter>template code</Filter>
     </ClCompile>
+    <ClCompile Include="asteroid.cpp">
+      <Filter>game objects</Filter>
+    </ClCompile>
+    <ClCompile Include="blackhole.cpp">
+      <Filter>game objects</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject.cpp">
+      <Filter>game objects</Filter>
+    </ClCompile>
+    <ClCompile Include="progressBar.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="gamemode.h">
+      <Filter>game modes</Filter>
+    </ClCompile>
+    <ClCompile Include="score.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="uiElement.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="button.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="particleEffect.cpp">
+      <Filter>game objects</Filter>
+    </ClCompile>
+    <ClCompile Include="spaceObject.cpp">
+      <Filter>game objects</Filter>
+    </ClCompile>
+    <ClCompile Include="menu.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -17,15 +50,58 @@
     <ClInclude Include="template.h">
       <Filter>template code</Filter>
     </ClInclude>
+    <ClInclude Include="asteroid.h">
+      <Filter>game objects</Filter>
+    </ClInclude>
+    <ClInclude Include="blackhole.h">
+      <Filter>game objects</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject.h">
+      <Filter>game objects</Filter>
+    </ClInclude>
+    <ClInclude Include="progressBar.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="score.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="uiElement.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="button.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="menu.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="particleEffect.h">
+      <Filter>game objects</Filter>
+    </ClInclude>
+    <ClInclude Include="spaceObject.h">
+      <Filter>game objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="template code">
       <UniqueIdentifier>{bf32dd6e-4be7-4889-8ac6-49e7ee163c40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game objects">
+      <UniqueIdentifier>{abc88c46-2794-480f-8646-827b1806d093}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ui">
+      <UniqueIdentifier>{140f3f47-c54d-42d5-9880-1307e0c5fb7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game modes">
+      <UniqueIdentifier>{737c7ec5-a960-4716-99f6-1598f02043b6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="_readme.txt">
       <Filter>template code</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitignore" />
+    <None Include="README.md" />
   </ItemGroup>
 </Project>

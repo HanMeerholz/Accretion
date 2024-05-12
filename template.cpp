@@ -92,6 +92,13 @@ vec4 operator * ( const vec4& v, const mat4& M )
 	return v.x * mx + v.y * my + v.z * mz + v.w * mw;
 }
 
+float Modulo(float numerator, float denominator)
+{
+	float result = fmod(numerator, denominator);
+	if (result < 0) result += denominator;
+	return result;
+}
+
 mat4::mat4()
 {
 	memset(cell, 0, 64);
@@ -146,7 +153,7 @@ mat4 mat4::rotatez( const float a )
 
 void NotifyUser( char* s )
 {
-	HWND hApp = FindWindow(nullptr, TemplateVersion);
+	HWND hApp = FindWindow(nullptr, WindowName);
 	MessageBox( hApp, s, "ERROR", MB_OK );
 	exit( 0 );
 }
@@ -319,7 +326,7 @@ int main( int argc, char **argv )
 #ifdef FULLSCREEN
 	window = SDL_CreateWindow(TemplateVersion, 100, 100, ScreenWidth, ScreenHeight, SDL_WINDOW_FULLSCREEN );
 #else
-	window = SDL_CreateWindow(TemplateVersion, 100, 100, ScreenWidth, ScreenHeight, SDL_WINDOW_SHOWN );
+	window = SDL_CreateWindow(WindowName, 100, 100, ScreenWidth, ScreenHeight, SDL_WINDOW_SHOWN );
 #endif
 	surface = new Surface( ScreenWidth, ScreenHeight );
 	surface->Clear( 0 );
@@ -388,7 +395,7 @@ int main( int argc, char **argv )
 				game->KeyUp( event.key.keysym.scancode );
 				break;
 			case SDL_MOUSEMOTION:
-				game->MouseMove( event.motion.xrel, event.motion.yrel );
+				game->MouseMove( event.motion.x, event.motion.y );
 				break;
 			case SDL_MOUSEBUTTONUP:
 				game->MouseUp( event.button.button );

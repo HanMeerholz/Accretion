@@ -5,11 +5,21 @@
 
 namespace Tmpl8 {
 
+constexpr int AlphaMask = 0xff000000;
 constexpr int RedMask = 0xff0000;
 constexpr int GreenMask = 0x00ff00;
 constexpr int BlueMask = 0x0000ff;
 
+constexpr int CHAR_HEIGHT = 6;
+constexpr int CHAR_WIDTH = 5;
+constexpr int CHAR_PADDING = 1;
+
 typedef unsigned int Pixel; // unsigned int is assumed to be 32-bit, which seems a safe assumption.
+
+constexpr Pixel BLACK = 0x000000;
+constexpr Pixel WHITE = 0xffffff;
+constexpr Pixel RED = 0xff0000;
+constexpr Pixel YELLOW = 0xffff00;
 
 inline Pixel AddBlend( Pixel a_Color1, Pixel a_Color2 )
 {
@@ -53,13 +63,15 @@ public:
 	// Special operations
 	void InitCharset();
 	void SetChar( int c, char* c1, char* c2, char* c3, char* c4, char* c5 );
-	void Centre( char* a_String, int y1, Pixel color );
-	void Print( char* a_String, int x1, int y1, Pixel color );
+	void Centre( const char* a_String, int y1, Pixel color );
+	void Print( const char* a_String, int x1, int y1, Pixel color );
+	void PrintScaled(const char* a_String, int x1, int y1, Pixel color, int scale);
 	void Clear( Pixel a_Color );
 	void Line( float x1, float y1, float x2, float y2, Pixel color );
 	void Plot( int x, int y, Pixel c );
 	void LoadImage( char* a_File );
 	void CopyTo( Surface* a_Dst, int a_X, int a_Y );
+	void DrawScaled(Surface* a_Dst, int a_X, int a_Y, int a_Width, int a_Height);
 	void BlendCopyTo( Surface* a_Dst, int a_X, int a_Y );
 	void ScaleColor( unsigned int a_Scale );
 	void Box( int x1, int y1, int x2, int y2, Pixel color );
@@ -101,17 +113,21 @@ public:
 	// Methods
 	void Draw( Surface* a_Target, int a_X, int a_Y );
 	void DrawScaled( int a_X, int a_Y, int a_Width, int a_Height, Surface* a_Target );
+	void DrawScaledWrapAround(int a_X, int a_Y, int a_Width, int a_Height, Surface* a_Target);
 	void SetFlags( unsigned int a_Flags ) { m_Flags = a_Flags; }
 	void SetFrame( unsigned int a_Index ) { m_CurrentFrame = a_Index; }
 	unsigned int GetFlags() const { return m_Flags; }
 	int GetWidth() { return m_Width; }
 	int GetHeight() { return m_Height; }
+	unsigned int GetNumFrames() { return m_NumFrames;  }
 	Pixel* GetBuffer() { return m_Surface->GetBuffer(); }	
 	unsigned int Frames() { return m_NumFrames; }
+	unsigned int GetCurrentFrame() { return m_CurrentFrame; }
 	Surface* GetSurface() { return m_Surface; }
 private:
 	// Methods
 	void InitializeStartData();
+	Pixel ApplyTransparency(Pixel p, Pixel source);
 	// Attributes
 	int m_Width, m_Height, m_Pitch;
 	unsigned int m_NumFrames;          

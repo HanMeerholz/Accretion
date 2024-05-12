@@ -90,13 +90,13 @@ void Surface::Clear( Pixel a_Color )
 	for ( int i = 0; i < s; i++ ) m_Buffer[i] = a_Color;
 }
 
-void Surface::Centre( char* a_String, int y1, Pixel color )
+void Surface::Centre( const char* a_String, int y1, Pixel color )
 {
 	int x = (m_Width - (int)strlen( a_String ) * 6) / 2;
 	Print( a_String, x, y1, color );
 }
 
-void Surface::Print( char* a_String, int x1, int y1, Pixel color )
+void Surface::Print( const char* a_String, int x1, int y1, Pixel color )
 {
 	if (!fontInitialized) 
 	{
@@ -114,6 +114,31 @@ void Surface::Print( char* a_String, int x1, int y1, Pixel color )
 		for ( int v = 0; v < 5; v++, c++, a += m_Pitch ) 
 			for ( int h = 0; h < 5; h++ ) if (*c++ == 'o') *(a + h) = color, *(a + h + m_Pitch) = 0;
 	}
+}
+
+void Surface::PrintScaled(const char* a_String, int x1, int y1, Pixel color, int scale)
+{
+	if (!fontInitialized)
+	{
+		InitCharset();
+		fontInitialized = true;
+	}
+	Pixel* t = m_Buffer + x1 + y1 * m_Pitch;
+	for (int i = 0; i < (int)(strlen(a_String)); i++, t += 6 * scale)
+	{
+		long pos = 0;
+		if ((a_String[i] >= 'A') && (a_String[i] <= 'Z')) pos = s_Transl[(unsigned short)(a_String[i] - ('A' - 'a'))];
+		else pos = s_Transl[(unsigned short)a_String[i]];
+
+		for (int row = 0; row < scale; row++) for (int col = 0; col < scale; col++) {
+			Pixel* a = t + m_Pitch * col;
+			char* c = (char*)s_Font[pos];
+
+			for (int v = 0; v < 5 * scale; v += scale, c++, a += m_Pitch * scale)
+				for (int h = 0; h < 5 * scale; h += scale) if (*c++ == 'o') *(a + h + row) = color, * (a + h + row + m_Pitch * scale) = 0;
+		}
+	}
+	
 }
 
 void Surface::Resize( Surface* a_Orig )
@@ -232,6 +257,34 @@ void Surface::CopyTo( Surface* a_Dst, int a_X, int a_Y )
 				dst += dstpitch;
 				src += srcpitch;
 			}
+		}
+	}
+}
+
+void Surface::DrawScaled(Surface* a_Dst, int a_X, int a_Y, int a_Width, int a_Height)
+{
+	if ((a_X < -a_Width) || (a_X > (a_Dst->GetWidth()))) return;
+	if ((a_Y < -a_Height) || (a_Y > (a_Dst->GetHeight()))) return;
+
+	if ((a_Width <= 0) || (a_Height <= 0)) return;
+	for (int x = 0; x < a_Width; x++)
+	{
+		int destX = a_X + x;
+		if (destX < 0 || destX >= a_Dst->GetWidth()) continue;
+
+		for (int y = 0; y < a_Height; y++)
+		{
+			int destY = a_Y + y;
+			if (destY < 0 || destY >= a_Dst->GetHeight()) continue;
+
+			int u = (int)((float)x * ((float)m_Width / (float)a_Width));
+			int v = (int)((float)y * ((float)m_Height / (float)a_Height));
+
+			int srcPixelIndex = u + (v * m_Pitch);
+			int destPixelIndex = destX + (destY * a_Dst->GetPitch());
+
+			Pixel color = GetBuffer()[srcPixelIndex];
+			a_Dst->GetBuffer()[destPixelIndex] = color;
 		}
 	}
 }
@@ -400,11 +453,12 @@ void Sprite::Draw( Surface* a_Target, int a_X, int a_Y )
 				xs = (lsx > x1)?lsx - x1:0;
 				for ( int x = xs; x < width; x++ )
 				{
-					const Pixel c1 = *(src + x);
+					Pixel c1 = *(src + x);
 					if (c1 & 0xffffff) 
 					{
 						const Pixel c2 = *(dest + addr + x);
-						*(dest + addr + x) = AddBlend( c1, c2 );
+						c1 = ApplyTransparency(c1, c2);
+						*(dest + addr + x) = c1;
 					}
 				}
 			}
@@ -413,7 +467,8 @@ void Sprite::Draw( Surface* a_Target, int a_X, int a_Y )
 				xs = (lsx > x1)?lsx - x1:0;
 				for ( int x = xs; x < width; x++ )
 				{
-					const Pixel c1 = *(src + x);
+					Pixel c1 = *(src + x);
+					c1 = ApplyTransparency(c1, 0);
 					if (c1 & 0xffffff) *(dest + addr + x) = c1;
 				}
 			}
@@ -425,13 +480,63 @@ void Sprite::Draw( Surface* a_Target, int a_X, int a_Y )
 
 void Sprite::DrawScaled( int a_X, int a_Y, int a_Width, int a_Height, Surface* a_Target )
 {
-	if ((a_Width == 0) || (a_Height == 0)) return;
-	for ( int x = 0; x < a_Width; x++ ) for ( int y = 0; y < a_Height; y++ )
+	if ((a_X < -a_Width) || (a_X > (a_Target->GetWidth()))) return;
+	if ((a_Y < -a_Height) || (a_Y > (a_Target->GetHeight()))) return;
+
+	if ((a_Width <= 0) || (a_Height <= 0)) return;
+	for (int x = 0; x < a_Width; x++)
 	{
-		int u = (int)((float)x * ((float)m_Width / (float)a_Width));
-		int v = (int)((float)y * ((float)m_Height / (float)a_Height));
-		Pixel color = GetBuffer()[u + v * m_Pitch];
-		if (color & 0xffffff) a_Target->GetBuffer()[a_X + x + ((a_Y + y) * a_Target->GetPitch())] = color;
+		int destX = a_X + x;
+		if (destX < 0 || destX >= a_Target->GetWidth()) continue;
+
+		for (int y = 0; y < a_Height; y++)
+		{
+			int destY = a_Y + y;
+			if (destY < 0 || destY >= a_Target->GetHeight()) continue;
+
+			int u = (int)((float)x * ((float)m_Width / (float)a_Width));
+			int v = (int)((float)y * ((float)m_Height / (float)a_Height));
+
+			int srcPixelIndex = m_CurrentFrame * m_Width + u + (v * m_Pitch);
+			int destPixelIndex = destX + (destY * a_Target->GetPitch());
+
+			Pixel existingColor = a_Target->GetBuffer()[destPixelIndex];
+
+			Pixel color = GetBuffer()[srcPixelIndex];
+			color = ApplyTransparency(color, existingColor);
+			a_Target->GetBuffer()[destPixelIndex] = color;
+		}
+	}
+}
+
+void Sprite::DrawScaledWrapAround(int a_X, int a_Y, int a_Width, int a_Height, Surface* a_Target)
+{
+	if ((a_X < -a_Width) || (a_X > (a_Target->GetWidth()))) return;
+	if ((a_Y < -a_Height) || (a_Y > (a_Target->GetHeight()))) return;
+
+	if ((a_Width <= 0) || (a_Height <= 0)) return;
+	for (int x = 0; x < a_Width; x++)
+	{
+		int destX = a_X + x;
+		if (destX < 0 || destX >= a_Target->GetWidth()) destX = Modulo(destX, ScreenWidth);
+
+		for (int y = 0; y < a_Height; y++)
+		{
+			int destY = a_Y + y;
+			if (destY < 0 || destY >= a_Target->GetHeight()) destY = Modulo(destY, ScreenHeight);
+
+			int u = (int)((float)x * ((float)m_Width / (float)a_Width));
+			int v = (int)((float)y * ((float)m_Height / (float)a_Height));
+
+			int srcPixelIndex = m_CurrentFrame * m_Width + u + (v * m_Pitch);
+			int destPixelIndex = destX + (destY * a_Target->GetPitch());
+
+			Pixel existingColor = a_Target->GetBuffer()[destPixelIndex];
+
+			Pixel color = GetBuffer()[srcPixelIndex];
+			color = ApplyTransparency(color, existingColor);
+			a_Target->GetBuffer()[destPixelIndex] = color;
+		}
 	}
 }
 
@@ -454,6 +559,21 @@ void Sprite::InitializeStartData()
             }
 		}
 	}
+}
+
+Pixel Sprite::ApplyTransparency(Pixel p, Pixel source)
+{
+	int alpha = (p & AlphaMask) >> 24;
+	float scale = (float)alpha / 0xff;
+
+	int red = ((p & RedMask) >> 16) * scale + ((source & RedMask) >> 16) * (1 - scale);
+	if (red >> 0xff) red = 0xff;
+	int green = ((p & GreenMask) >> 8) * scale + ((source & GreenMask) >> 8) * (1 - scale);
+	if (green >> 0xff) green = 0xff;
+	int blue = (p & BlueMask) * scale + ((source & BlueMask)) * (1 - scale);
+	if (blue >> 0xff) blue = 0xff;
+
+	return (red << 16) + (green << 8) + blue;
 }
 
 Font::Font( char* a_File, char* a_Chars )

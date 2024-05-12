@@ -16,14 +16,20 @@ constexpr int ScreenHeight = 512;
 // #define FULLSCREEN
 // #define ADVANCEDGL	// faster if your system supports it. Switches SDL2's texture buffer out for OpenGL texture buffer with mappings to CPU Memory. 
 
-static const char* TemplateVersion = "Template_v2019.08";
+static const char* WindowName = "Accretion";
 
 //SIMD Intrinsics headers.
 //#include "emmintrin.h"
 //#include "immintrin.h"
 
 inline float Rand( float range ) { return ((float)rand() / RAND_MAX) * range; }
+inline float Rand( float min, float max ) { return min + ((float)rand() / RAND_MAX) * (max - min); }
 inline int IRand( int range ) { return rand() % range; }
+inline int IRand( int min, int max ) { return rand() % max + (max - min); }
+inline bool BRand() {
+	int randInt = rand() % 2;
+	return (bool)randInt;
+}
 int filesize( FILE* f );
 #define MALLOC64(x) _aligned_malloc(x,64)
 #define FREE64(x) _aligned_free(x)
@@ -45,7 +51,8 @@ constexpr T Max(T a, T b) { return (a > b) ? a : b; }
 template <typename T>
 constexpr T Clamp(T value, T min, T max) { return Min(max, Max(value, min)); }
 
-constexpr float PI = 3.14159265358979323846264338327950288419716939937510582097494459072381640628620899862803482534211706798f;
+constexpr float PI =  3.14159265358979323846264338327950288419716939937510582097494459072381640628620899862803482534211706798f;
+constexpr float TAU = 6.28318530717958647692528676655900576839433879875021164194988918461563281257241799725606965068423413596f;
 
 #define PREFETCH(x)			_mm_prefetch((const char*)(x),_MM_HINT_T0)
 #define PREFETCH_ONCE(x)	_mm_prefetch((const char*)(x),_MM_HINT_NTA)
@@ -94,11 +101,35 @@ public:
 	void operator *= ( float a ) { x *= a; y *= a; }
 	float& operator [] ( const int idx ) { return cell[idx]; }
 	float length() { return sqrtf( x * x + y * y ); }
-	float sqrLentgh() { return x * x + y * y; }
+	float sqrLength() { return x * x + y * y; }
 	vec2 normalized() { float r = 1.0f / length(); return vec2( x * r, y * r ); }
 	void normalize() { float r = 1.0f / length(); x *= r; y *= r; }
 	static vec2 normalize( vec2 v ) { return v.normalized(); }
 	float dot( const vec2& operand ) const { return x * operand.x + y * operand.y; }
+};
+
+class intvec2
+{
+public:
+	union { struct { int x, y; }; int cell[2]; };
+	intvec2() {}
+	intvec2(int v) : x(v), y(v) {}
+	intvec2(int x, int y) : x(x), y(y) {}
+	intvec2 operator - () const { return intvec2(-x, -y); }
+	intvec2 operator + (const intvec2& addOperand) const { return intvec2(x + addOperand.x, y + addOperand.y); }
+	intvec2 operator - (const intvec2& operand) const { return intvec2(x - operand.x, y - operand.y); }
+	intvec2 operator * (const intvec2& operand) const { return intvec2(x * operand.x, y * operand.y); }
+	intvec2 operator * (int operand) const { return intvec2(x * operand, y * operand); }
+	void operator -= (const intvec2& a) { x -= a.x; y -= a.y; }
+	void operator += (const intvec2& a) { x += a.x; y += a.y; }
+	void operator *= (const intvec2& a) { x *= a.x; y *= a.y; }
+	void operator *= (int a) { x *= a; y *= a; }
+	int& operator [] (const int idx) { return cell[idx]; }
+	float length() { return sqrtf(x * x + y * y); }
+	float sqrLength() { return x * x + y * y; }
+	vec2 normalized() { float r = 1.0f / length(); return vec2(x * r, y * r); }
+	static vec2 normalize(intvec2 v) { return v.normalized(); }
+	int dot(const intvec2& operand) const { return x * operand.x + y * operand.y; }
 };
 
 class vec3
@@ -119,7 +150,7 @@ public:
 	float operator [] ( const uint& idx ) const { return cell[idx]; }
 	float& operator [] ( const uint& idx ) { return cell[idx]; }
 	float length() const { return sqrtf( x * x + y * y + z * z ); }
-	float sqrLentgh() const { return x * x + y * y + z * z; }
+	float sqrLength() const { return x * x + y * y + z * z; }
 	vec3 normalized() const { float r = 1.0f / length(); return vec3( x * r, y * r, z * r ); }
 	void normalize() { float r = 1.0f / length(); x *= r; y *= r; z *= r; }
 	static vec3 normalize( const vec3 v ) { return v.normalized(); }
@@ -149,7 +180,7 @@ public:
 	float& operator [] ( const int idx ) { return cell[idx]; }
 	float operator [] ( const uint& idx ) const { return cell[idx]; }
 	float length() { return sqrtf( x * x + y * y + z * z + w * w ); }
-	float sqrLentgh() { return x * x + y * y + z * z + w * w; }
+	float sqrLength() { return x * x + y * y + z * z + w * w; }
 	vec4 normalized() { float r = 1.0f / length(); return vec4( x * r, y * r, z * r, w * r ); }
 	void normalize() { float r = 1.0f / length(); x *= r; y *= r; z *= r; w *= r; }
 	static vec4 normalize( vec4 v ) { return v.normalized(); }
@@ -264,5 +295,7 @@ inline bool BadFloat(float x)
 {
 	return ((*reinterpret_cast<uint*>(&x) & 0x7f000000) == 0x7f000000);
 }
+
+float Modulo(float numerator, float denominator);
 	
 }; // namespace Tmpl8

@@ -10,8 +10,6 @@ constexpr int RedMask = 0xff0000;
 constexpr int GreenMask = 0x00ff00;
 constexpr int BlueMask = 0x0000ff;
 
-constexpr int CIRCLE_RESOLUTION = 64;
-
 constexpr int CHAR_HEIGHT = 6;
 constexpr int CHAR_WIDTH = 5;
 constexpr int CHAR_PADDING = 1;

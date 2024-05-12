@@ -191,14 +191,16 @@ namespace Tmpl8
 
 		// logic for consuming asteroids
 		if (!blackHole->isDestroyed())
+		{
 			for (auto& asteroid : asteroids)
 				if (!asteroid->isDestroyed())
 					if (asteroid->isConsumedBy(*blackHole))
 					{
 						score->increaseScore((int)asteroid->getMass());
 						blackHole->consumeAsteroid(*asteroid);
-						massBar->setProgress(blackHole->getMass() / BlackHole::MAX_MASS);
 					}
+			massBar->setProgress(blackHole->getMass() / BlackHole::MAX_MASS);
+		}
 
 		// logic for removing consumed asteroids
 		for (auto& asteroid : asteroids)

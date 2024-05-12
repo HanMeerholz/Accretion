@@ -23,3 +23,9 @@ So go on and play the game; give Billy the life that he deserves!
 * Accrete and maintain mass by consuming asteroids.
 * Pay attention, as the game gets harder over time.
 * Try to achieve a highscore!
+
+## Credits
+* This game is based on the BUAS template by Jacco Bikker (see also [the other readme](_readme.txt)).
+* The black hole sprite was purchased on [Artstation](https://www.artstation.com/marketplace/p/7OvO/2d-black-hole-vortex) and was made by Alexander Terskov.
+* The sprite for the asteroids came from a free asset pack on [itch.io](https://mattwalkden.itch.io/lunar-battle-pack) and was made by 	MattWalkden.
+* The UI for the menu buttons and progress bar I used to display mass also came from [itch.io](https://free-game-assets.itch.io/free-space-shooter-game-user-interface) and was made by [craftpix.net](https://craftpix.net).

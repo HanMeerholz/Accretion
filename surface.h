@@ -23,17 +23,6 @@ constexpr Pixel WHITE = 0xffffff;
 constexpr Pixel RED = 0xff0000;
 constexpr Pixel YELLOW = 0xffff00;
 
-inline Pixel AddBlendWithAlpha(Pixel a_Color1, Pixel a_Color2)
-{
-	const unsigned int r = (a_Color1 & RedMask) + (a_Color2 & RedMask);
-	const unsigned int g = (a_Color1 & GreenMask) + (a_Color2 & GreenMask);
-	const unsigned int b = (a_Color1 & BlueMask) + (a_Color2 & BlueMask);
-	const unsigned r1 = (r & RedMask) | (RedMask * (r >> 24));
-	const unsigned g1 = (g & GreenMask) | (GreenMask * (g >> 16));
-	const unsigned b1 = (b & BlueMask) | (BlueMask * (b >> 8));
-	return (r1 + g1 + b1);
-}
-
 inline Pixel AddBlend( Pixel a_Color1, Pixel a_Color2 )
 {
 	const unsigned int r = (a_Color1 & RedMask) + (a_Color2 & RedMask);
@@ -81,7 +70,6 @@ public:
 	void PrintScaled(const char* a_String, int x1, int y1, Pixel color, int scale);
 	void Clear( Pixel a_Color );
 	void Line( float x1, float y1, float x2, float y2, Pixel color );
-	void Circle( float x, float y, float r, Pixel color );
 	void Plot( int x, int y, Pixel c );
 	void LoadImage( char* a_File );
 	void CopyTo( Surface* a_Dst, int a_X, int a_Y );
